@@ -5,10 +5,10 @@ import java.awt.EventQueue;
 import javax.swing.JFrame;
 
 
-public class AnimationBasics extends JFrame{
+public class BasicShape extends JFrame{
 
     
-    public AnimationBasics() {
+    public BasicShape() {
         init();
     }
     
@@ -25,7 +25,7 @@ public class AnimationBasics extends JFrame{
     public static void main(String[] args) {
 
         EventQueue.invokeLater(() -> {
-            AnimationBasics ex = new AnimationBasics();
+            BasicShape ex = new BasicShape();
             ex.setVisible(true);
         });        
 

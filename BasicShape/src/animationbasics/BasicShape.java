@@ -13,9 +13,10 @@ public class BasicShape extends JFrame{
     }
     
     private void init() {
+        
         add(new Board());
 
-        setSize(250, 200);
+        setSize(250, 250);
 
         setTitle("Application");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

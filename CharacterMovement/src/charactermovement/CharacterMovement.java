@@ -1,20 +1,26 @@
 
-package animationbasics;
+package charactermovement;
 
 import java.awt.EventQueue;
 import javax.swing.JFrame;
 
-public class AnimationBasics extends JFrame{
+/**
+ *
+ * @author Alexander
+ */
 
-    public int width = 350;
-    public int height = 250;
+public class CharacterMovement extends JFrame{
+
+    int WIDTH = 500;
+    int HEIGHT = 500;
     
-    public AnimationBasics() {
+    private Player;
+    
+    public CharacterMovement() {
         init();
-    
     }
     
-    private void init() {
+    private void init(){
         add(new Board());
 
         setResizable(false);
@@ -26,11 +32,11 @@ public class AnimationBasics extends JFrame{
     }
 
     public static void main(String[] args) {
+        // TODO code application logic here
         EventQueue.invokeLater(() -> {
-            AnimationBasics ex = new AnimationBasics();
-            ex.setVisible(true);
+            CharacterMovement main = new CharacterMovement();
+            main.setVisible(true);
         });
-
     }
 
 }

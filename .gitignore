@@ -24,3 +24,5 @@ hs_err_pid*
 /build/
 /BasicShape/build/
 /BasicShape/nbproject/private/
+/CharacterMovement/nbproject/private/
+/CharacterMovement/build/

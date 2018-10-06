@@ -9,14 +9,12 @@ import javax.swing.JFrame;
  * @author Alexander
  */
 
-public class CharacterMovement extends JFrame{
+public class Main extends JFrame{
 
-    int WIDTH = 500;
-    int HEIGHT = 500;
+    public static final int WIDTH = 500;
+    public static final int HEIGHT = 500;
     
-    private Player;
-    
-    public CharacterMovement() {
+    public Main() {
         init();
     }
     
@@ -26,7 +24,7 @@ public class CharacterMovement extends JFrame{
         setResizable(false);
         pack();
         
-        setTitle("Star");    
+        setTitle("Main");    
         setLocationRelativeTo(null);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); 
     }
@@ -34,7 +32,7 @@ public class CharacterMovement extends JFrame{
     public static void main(String[] args) {
         // TODO code application logic here
         EventQueue.invokeLater(() -> {
-            CharacterMovement main = new CharacterMovement();
+            Main main = new Main();
             main.setVisible(true);
         });
     }

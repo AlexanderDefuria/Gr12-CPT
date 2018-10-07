@@ -38,10 +38,7 @@ public class Board extends JPanel implements Runnable, ActionListener {
 
     // Loads required images from images package
     private void loadImages() {
-        
-        ImageIcon ii;
-        ii = new ImageIcon("src/images/testimage.jpg");
-        background = ii.getImage();
+
 
     }
 
@@ -77,6 +74,7 @@ public class Board extends JPanel implements Runnable, ActionListener {
         
         drawBackground(g);
         drawPlayer(g);
+        
     }
 
     // Draw the background of the game in the center
@@ -87,7 +85,7 @@ public class Board extends JPanel implements Runnable, ActionListener {
     }
     
     private void drawPlayer(Graphics g) {
-        
+        player1.updatePlayer();
         g.drawImage(player1.appearance, player1.getX(), player1.getY(), this);
         Toolkit.getDefaultToolkit().sync();
     }

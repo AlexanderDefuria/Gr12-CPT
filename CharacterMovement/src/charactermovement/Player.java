@@ -5,42 +5,38 @@
  */
 package charactermovement;
 
-import java.awt.Image;
 import javax.swing.ImageIcon;
 
 
-public class Player{
-    
-    public Image appearance;
+public class Player extends Sprite{
+   
     public UserInput ui;
-    public static int x;
-    public static int y;
-    
+
     public Player() {
         init();
     }
     
+
+    
     public void init() {
-        ImageIcon ii = new ImageIcon("src/images/playersprite.jpg");
+        ImageIcon ii = new ImageIcon("src/images/craft.png");
         appearance = ii.getImage();
         x = 0;
         y = 0;
         ui = new UserInput();
     }
     
-    public static int getX() {
-        return x;
-    }
-    
-    public static int getY() {
-        return y;
-    }
     
     public void updatePlayer() {
-        if(this.ui.LEFT) x++;
-        if(this.ui.RIGHT) x--;
+        if(this.ui.LEFT) x--;
+        if(this.ui.RIGHT) x++;
         if(this.ui.UP) y--;
         if(this.ui.DOWN) y++;
+        if(this.ui.SPACE) {
+            
+        }
+        
+
     }
 
 

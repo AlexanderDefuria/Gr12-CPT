@@ -17,10 +17,12 @@ public class UserInput {
     public static boolean RIGHT;
     public static boolean UP;
     public static boolean DOWN;
+    public static boolean SPACE;
     
     public UserInput() {
         
     }
+
     
     void keyPressed(KeyEvent e) {
         
@@ -30,6 +32,7 @@ public class UserInput {
         if (key == KeyEvent.VK_RIGHT) RIGHT = true;
         if (key == KeyEvent.VK_UP) UP = true;
         if (key == KeyEvent.VK_DOWN) DOWN = true;
+        if (key == KeyEvent.VK_SPACE) SPACE = true;
     }
 
     void keyReleased(KeyEvent e) {
@@ -40,6 +43,7 @@ public class UserInput {
         if (key == KeyEvent.VK_UP) UP = false;
         if (key == KeyEvent.VK_DOWN) DOWN = false;
     }
+    
 }
     
     

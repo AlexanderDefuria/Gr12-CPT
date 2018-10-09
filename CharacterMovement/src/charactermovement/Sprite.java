@@ -25,4 +25,8 @@ public class Sprite {
     public static int getY() {
         return y;
     }
+    
+    public static void removeSelf(){
+        
+    }
 }

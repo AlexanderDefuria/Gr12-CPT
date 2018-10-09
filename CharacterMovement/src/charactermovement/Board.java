@@ -17,6 +17,9 @@ import java.awt.event.KeyEvent;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import java.util.ArrayList;
+import java.util.List;
+
 
 
 public class Board extends JPanel implements Runnable, ActionListener {
@@ -36,11 +39,6 @@ public class Board extends JPanel implements Runnable, ActionListener {
         initBoard();
     }
 
-    // Loads required images from images package
-    private void loadImages() {
-
-
-    }
 
     private void initBoard() {
 
@@ -52,8 +50,6 @@ public class Board extends JPanel implements Runnable, ActionListener {
         
         player1 = new Player();
         keyboard = new UserInput();
-
-        loadImages();
 
     }
 
@@ -90,6 +86,10 @@ public class Board extends JPanel implements Runnable, ActionListener {
         Toolkit.getDefaultToolkit().sync();
     }
 
+    private void drawMissile(Graphics g) {
+        
+    }
+    
     private void cycle() {
         
 
@@ -133,8 +133,8 @@ public class Board extends JPanel implements Runnable, ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
+
     
     private class TAdapter extends KeyAdapter {
 

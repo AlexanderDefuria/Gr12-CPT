@@ -19,9 +19,9 @@ import javax.swing.JPanel;
  */
 public class Board extends JPanel implements Runnable {
 
-    private final double aspectRatio = 1.77;
-    private final int B_HEIGHT = 720;
-    private final int B_WIDTH = (int)(720 * aspectRatio);
+    private static final double aspect_ratio = 1.77;
+    public static final int B_HEIGHT = 720;
+    public static final int B_WIDTH = (int)(720 * aspect_ratio);
     private final int DELAY = 25;
 
     public static Map map;
@@ -40,6 +40,8 @@ public class Board extends JPanel implements Runnable {
         setBackground(Color.BLACK);
         setPreferredSize(new Dimension(B_WIDTH, B_HEIGHT));
         setDoubleBuffered(true);
+        
+        map = new Map("src/maps/mainmap.cvs");
 
 
     }
@@ -56,18 +58,20 @@ public class Board extends JPanel implements Runnable {
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
 
-        drawStar(g);
+        drawBackground(g);
     }
 
-    // TODO update/remove drawStar
-    private void drawStar(Graphics g) {
-        //         Image, Coordinates, Pane
-        //g.drawImage(star , x, y, this);
-        Toolkit.getDefaultToolkit().sync();
+    // TODO update/remove example
+    private void drawExample(Graphics g) {
+        // Called by paint component method above
+        // param -- Image, Start Coordinates, Pane
+        // g.drawImage(example , x, y, this);
+        // Toolkit.getDefaultToolkit().sync();
     }
     
     private void drawBackground(Graphics g) {
-        
+        Image background = map.display(g);
+        g.drawImage(background, 0, 0, this);
     }
 
     private void cycle() {

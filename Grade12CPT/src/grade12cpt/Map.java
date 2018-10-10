@@ -74,24 +74,40 @@ public class Map {
         }
     }
 
-    public BufferedImage display(Graphics g) {
+    
+    public Image display(Graphics g) {
         String imageFile = "src/images/desert_sprite.png";
+        BufferedImage background = new BufferedImage(B_WIDTH, B_HEIGHT, TYPE_3BYTE_BGR);
         BufferedImage sprites = null;
-        BufferedImage background = null;
+        BufferedImage temp;
         try {
             sprites = ImageIO.read(new File(imageFile));
         } catch (Exception e) {
             System.out.println(e);
-        }
+        }       
+
+        int tile_row = sprites.getWidth()/(tile_size + 1);
         
-        
+        // TODO change short x = 0 to x = players current y; This should allow for moving about
         for (short x = 0; (x * tile_size != B_WIDTH) && (x < map.size()); x++) {
             for (short y = 0; (y * tile_size != B_HEIGHT) && (y < map.get(0).size()); y++) {
                 short tile_id = map.get(x).get(y);
-
-                // background = sprites.getSubimage(x * (tile_size + 1), y * (tile_size + 1), tile_size, tile_size);
-                 background = sprites.getSubimage(x , y , tile_size, tile_size);
+                int tile_x;
+                int tile_y;
                 
+                // Find the x and y of the tile id in the sprite sheet
+                tile_x = (tile_id % tile_row);
+                tile_y = (int)(tile_id / tile_row);
+                
+                //adjust sizing     //The + 1 is to account for initial margin offset
+                tile_x = tile_x * (tile_size + 1) + 1;
+                tile_y = tile_y * (tile_size + 1) + 1;
+                
+                //Get the sprite from the sprite sheet based off the id's x and y
+                temp = sprites.getSubimage(tile_x,tile_y, tile_size, tile_size);
+                
+                // Create the tile image in the final background image with appropriate offset
+                background.createGraphics().drawImage(temp, tile_size * y, tile_size * x, null);
             }
         }
         

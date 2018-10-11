@@ -74,7 +74,6 @@ public class Board extends JPanel implements Runnable {
     }
     
     private void drawBackground(Graphics g) {
-        X_OFF--;
         g.drawImage(map.display(g, X_OFF), X_OFF, 0, this);
         Toolkit.getDefaultToolkit().sync();
     }

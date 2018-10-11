@@ -22,8 +22,8 @@ public class Board extends JPanel implements Runnable {
     private static final double aspect_ratio = 1.77;
     public static final int B_HEIGHT = 720;
     public static final int B_WIDTH = (int)(720 * aspect_ratio);
-    private final int DELAY = 25;
-    private boolean background_drawn = false;
+    private final int DELAY = 50;
+    private static int X_OFF = 0;
 
     public static Map map;
     public static List<Map> maps = new ArrayList<>();
@@ -74,8 +74,8 @@ public class Board extends JPanel implements Runnable {
     }
     
     private void drawBackground(Graphics g) {
-
-        g.drawImage(map.display(g), 0, 0, this);
+        X_OFF--;
+        g.drawImage(map.display(g, X_OFF), X_OFF, 0, this);
         Toolkit.getDefaultToolkit().sync();
     }
 

@@ -1,8 +1,4 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package grade12cpt;
 
 import java.io.BufferedReader;
@@ -18,7 +14,6 @@ import java.awt.image.BufferedImage;
 import static java.awt.image.BufferedImage.TYPE_3BYTE_BGR;
 import java.io.File;
 import javax.imageio.ImageIO;
-import javax.swing.ImageIcon;
 
 
 
@@ -37,8 +32,9 @@ public class Map {
     private void init(String file) {
         BufferedReader br = null;
         FileInputStream fis = null;
-        String line = "";
         String cvsSplitBy = ",";
+        String line = "";
+
 
         try {
             
@@ -75,9 +71,10 @@ public class Map {
     }
 
     
-    public Image display(Graphics g) {
+    public Image display(Graphics g, int X_OFF) {
+        if (X_OFF < 0) X_OFF *= -1;
         String imageFile = "src/images/desert_sprite.png";
-        BufferedImage background = new BufferedImage(B_WIDTH, B_HEIGHT, TYPE_3BYTE_BGR);
+        BufferedImage background = new BufferedImage(B_WIDTH + X_OFF, B_HEIGHT, TYPE_3BYTE_BGR);
         BufferedImage sprites = null;
         BufferedImage temp;
         try {
@@ -89,8 +86,8 @@ public class Map {
         int tile_row = sprites.getWidth()/(tile_size + 1);
         
         // TODO change short x = 0 to x = players current y; This should allow for moving about
-        for (short x = 0; (x * tile_size != B_WIDTH) && (x < map.size()); x++) {
-            for (short y = 0; (y * tile_size != B_HEIGHT) && (y < map.get(0).size()); y++) {
+        for (short x = 0;x < map.size(); x++) {
+            for (short y = 0; y < map.get(0).size(); y++) {
                 short tile_id = map.get(x).get(y);
                 int tile_x;
                 int tile_y;
@@ -104,7 +101,7 @@ public class Map {
                 tile_y = tile_y * (tile_size + 1) + 1;
                 
                 //Get the sprite from the sprite sheet based off the id's x and y
-                temp = sprites.getSubimage(tile_x,tile_y, tile_size, tile_size);
+                temp = sprites.getSubimage(tile_x, tile_y, tile_size, tile_size);
                 
                 // Create the tile image in the final background image with appropriate offset
                 background.createGraphics().drawImage(temp, tile_size * y, tile_size * x, null);

@@ -24,3 +24,5 @@ hs_err_pid*
 /Grade12CPT/nbproject/private/
 /Grade12CPT/build/
 /Grade12CPT/dist/
+/test/nbproject/private/
+/test/build/

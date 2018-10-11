@@ -42,7 +42,7 @@ public class Board extends JPanel implements Runnable {
         setPreferredSize(new Dimension(B_WIDTH, B_HEIGHT));
         setDoubleBuffered(true);
         
-        map = new Map("src/maps/mainmap.cvs");
+        map = new Map("src/maps/largemap.csv");
 
 
     }
@@ -75,7 +75,7 @@ public class Board extends JPanel implements Runnable {
     
     private void drawBackground(Graphics g) {
 
-        g.drawImage(map.display(g), 20, 20, this);
+        g.drawImage(map.display(g), 0, 0, this);
         Toolkit.getDefaultToolkit().sync();
     }
 

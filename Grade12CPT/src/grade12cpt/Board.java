@@ -4,19 +4,14 @@ package grade12cpt;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
-import java.awt.Image;
 import java.awt.Toolkit;
 import java.util.ArrayList;
 import java.util.List;
-import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 
-/**
- *
- * @author Alexander
- */
+
 public class Board extends JPanel implements Runnable {
 
     private static final double aspect_ratio = 1.77;
@@ -25,13 +20,14 @@ public class Board extends JPanel implements Runnable {
     private final int DELAY = 50;
     private static int X_OFF = 0;
 
+    public static Thread animator;
     public static Map map;
+    public static UserInput input;
     public static List<Map> maps = new ArrayList<>();
+    public static Player player;
     
-    private Thread animator;
-
+    
     public Board() {
-
         initBoard();
     }
 
@@ -43,6 +39,11 @@ public class Board extends JPanel implements Runnable {
         setDoubleBuffered(true);
         
         map = new Map("src/maps/largemap.csv");
+        input = new UserInput();
+        map.publish();
+        
+        player = new Player();
+        
 
 
     }
@@ -75,7 +76,8 @@ public class Board extends JPanel implements Runnable {
     
     private void drawBackground(Graphics g) {
         X_OFF--;
-        g.drawImage(map.display(g, X_OFF), X_OFF, 0, this);
+        g.drawImage(map.display(g, 0), 0, 0, this);
+        g.drawImage(player.appearance,500,500,this);
         Toolkit.getDefaultToolkit().sync();
     }
 

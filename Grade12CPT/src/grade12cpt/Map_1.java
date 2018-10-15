@@ -13,7 +13,6 @@ import java.awt.Image;
 import java.awt.image.BufferedImage;
 import static java.awt.image.BufferedImage.TYPE_3BYTE_BGR;
 import java.io.File;
-import java.util.List;
 import javax.imageio.ImageIO;
 
 
@@ -21,18 +20,10 @@ import javax.imageio.ImageIO;
 public class Map {
     
     public ArrayList<ArrayList<Short>> map = new ArrayList<>();
-    private ArrayList<ArrayList<Short>> bufferedMap = new ArrayList<>();
     public final int B_WIDTH = Board.B_WIDTH;
     public final int B_HEIGHT = Board.B_HEIGHT;
     public final byte tile_size = 32;
-    public static int MAP_Y = 0;
-    public static int MAP_X = 0;
-    public static int PIC_Y = 0;
-    public static int PIC_X = 0;
-    public static int tiledWidth = 0;
-    public static int tiledHeight = 0;
-    public static int mapWidth = 0;
-    public static int mapHeight = 0;
+    public static int TILE_X = 0;
     
     public Map(String file){
         init(file);
@@ -43,8 +34,7 @@ public class Map {
         FileInputStream fis = null;
         String cvsSplitBy = ",";
         String line = "";
-        tiledWidth = (int)(B_WIDTH / tile_size);
-        tiledHeight = (int)(B_HEIGHT/ tile_size);
+
 
         try {
             
@@ -84,10 +74,10 @@ public class Map {
     public Image display(Graphics g, int X_OFF) {
         if (X_OFF == tile_size){
             X_OFF = 0;
-            MAP_X++;
+            TILE_X++;
         } else if (X_OFF == -tile_size){
             X_OFF = 0;
-            MAP_X--;
+            TILE_X++;
         }
         
         String imageFile = "src/images/desert_sprite.png";
@@ -102,12 +92,8 @@ public class Map {
 
         int tile_row = sprites.getWidth()/(tile_size + 1);
         
-        //usefull sudo code later
-        if (PIC_X > tile_size || PIC_X < -tile_size) {
-            buffer();
-        }
-        
-        for (short x = 0;x < map.size(); x++) {
+        // TODO change short x = 0 to x = players current y; This should allow for moving about
+        for (int x = 0; x < map.size(); x++) {
             for (short y = 0; y < map.get(0).size(); y++) {
                 short tile_id = map.get(x).get(y);
                 int tile_x;
@@ -126,23 +112,11 @@ public class Map {
                 
                 // Create the tile image in the final background image with appropriate offset
                 background.createGraphics().drawImage(temp, tile_size * y, tile_size * x, null);
+                
             }
-}
-        
-        
+        }
         
         return background;
-    }
-    
-    private void buffer() {
-        for (int x = (mapWidth - MAP_X);  x > tiledWidth + (tile_size * 2);) {
-            for ( int y = (mapHeight - MAP_Y); y > tiledHeight + (tile_size * 2);) {
-                ArrayList<ArrayList<Short>> X = new ArrayList<>();
-                X.add(map.get(x));
-                X.subList();
-                bufferedMap.add(map.get(x));
-            }
-        } 
     }
             
             

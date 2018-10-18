@@ -14,9 +14,9 @@ import javax.swing.JPanel;
 
 public class Board extends JPanel implements Runnable {
 
-    private static final double aspect_ratio = 1.77;
+    private static final double aspectRatio = 1.77;
     public static final int B_HEIGHT = 720;
-    public static final int B_WIDTH = (int)(720 * aspect_ratio);
+    public static final int B_WIDTH = (int)(720 * aspectRatio);
     private final int DELAY = 50;
     private static int X_OFF = 0;
 
@@ -42,7 +42,8 @@ public class Board extends JPanel implements Runnable {
         input = new UserInput();
         map.publish();
         
-        player = new Player();
+        
+        player = new Player(input);
         
 
 
@@ -60,9 +61,7 @@ public class Board extends JPanel implements Runnable {
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
 
-        
-
-            drawBackground(g);
+        drawBackground(g);
         
     }
 
@@ -75,8 +74,8 @@ public class Board extends JPanel implements Runnable {
     }
     
     private void drawBackground(Graphics g) {
-        X_OFF--;
-        g.drawImage(map.display(g, 0), 0, 0, this);
+        player.updatePlayer();
+        g.drawImage(map.display(g, player), 0, 0, this);
         g.drawImage(player.appearance,500,500,this);
         Toolkit.getDefaultToolkit().sync();
     }

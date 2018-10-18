@@ -9,7 +9,8 @@ public class Player extends Sprite{
 
     public UserInput ui;
     
-    public Player() {
+    public Player(UserInput x) {
+        ui = x;
         init();
     }
     
@@ -23,15 +24,25 @@ public class Player extends Sprite{
     
     
     public void updatePlayer() {
+        
+        
         if(UserInput.LEFT) x--;
         if(UserInput.RIGHT) x++;
         if(UserInput.UP) y--;
         if(UserInput.DOWN) y++;
-        if(UserInput.SPACE) {
-            
-        }
+        
+        if (x != 0) System.out.println(x);
+        if (y != 0) System.out.println(y);
+    }
+    
+        
+    public static int moveX() {
+        int toPass = x;
+        x = 0;
+        return toPass; 
+    }
         
 
 }
 
-}
+

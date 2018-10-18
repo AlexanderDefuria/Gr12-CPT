@@ -20,19 +20,14 @@ import javax.imageio.ImageIO;
 
 public class Map {
     
-    public ArrayList<ArrayList<Short>> map = new ArrayList<>();
-    private ArrayList<ArrayList<Short>> bufferedMap = new ArrayList<>();
+    public ArrayList<ArrayList<Integer>> map = new ArrayList<>();
     public final int B_WIDTH = Board.B_WIDTH;
     public final int B_HEIGHT = Board.B_HEIGHT;
     public final byte tile_size = 32;
-    public static int MAP_Y = 0;
-    public static int MAP_X = 0;
-    public static int PIC_Y = 0;
-    public static int PIC_X = 0;
-    public static int tiledWidth = 0;
-    public static int tiledHeight = 0;
-    public static int mapWidth = 0;
-    public static int mapHeight = 0;
+    public static int MAP_Y, MAP_X = 0;
+    public static int PIC_Y, PIC_X = 0;
+    public static int tiledWidth, tiledHeight = 0;
+    public static int mapWidth = 0, mapHeight = 0;
     
     public Map(String file){
         init(file);
@@ -45,7 +40,7 @@ public class Map {
         String line = "";
         tiledWidth = (int)(B_WIDTH / tile_size);
         tiledHeight = (int)(B_HEIGHT/ tile_size);
-
+        
         try {
             
             fis = new FileInputStream(file);
@@ -55,11 +50,11 @@ public class Map {
             while ((line = br.readLine()) != null) {
                 // use comma as separator
                 String[] values = line.split(cvsSplitBy);
-                ArrayList<Short> listValues= new ArrayList<>();
+                ArrayList<Integer> listValues= new ArrayList<>();
                 
                 //
                 for (int i = 0; i != values.length; i++) {
-                    listValues.add(Short.parseShort(values[i]));
+                    listValues.add(Integer.parseInt(values[i]));
                 }
                 
                 map.add(listValues);
@@ -78,20 +73,50 @@ public class Map {
                 }
             }
         }
-    }
 
+    }    
     
-    public Image display(Graphics g, int X_OFF) {
-        if (X_OFF == tile_size){
-            X_OFF = 0;
-            MAP_X++;
-        } else if (X_OFF == -tile_size){
-            X_OFF = 0;
-            MAP_X--;
+    public Image display(Graphics g, Player player) {
+        int X_OFF = player.moveX();
+        
+        switch (X_OFF + PIC_X) {
+            case tile_size:
+                X_OFF = 0;
+                PIC_X = 0;
+                MAP_X--;
+                break;
+            case -tile_size:
+                X_OFF = 0;
+                PIC_X = 0;
+                MAP_X++;
+                break;
+            default:
+                PIC_X += X_OFF;
+                break;
+        }
+        
+        int Y_OFF = 0;
+        
+        switch (Y_OFF + PIC_Y) {
+            case tile_size:
+                System.out.println("xxxx");
+                Y_OFF = 0;
+                PIC_Y = 0;
+                MAP_Y--;
+                break;
+            case -tile_size:
+                System.out.println("fffff");
+                Y_OFF = 0;
+                PIC_Y = 0;
+                MAP_Y++;
+                break;
+            default:
+                PIC_Y += Y_OFF;
+                break;
         }
         
         String imageFile = "src/images/desert_sprite.png";
-        BufferedImage background = new BufferedImage(B_WIDTH + X_OFF, B_HEIGHT, TYPE_3BYTE_BGR);
+        BufferedImage background = new BufferedImage(B_WIDTH, B_HEIGHT, TYPE_3BYTE_BGR);
         BufferedImage sprites = null;
         BufferedImage temp;
         try {
@@ -102,48 +127,49 @@ public class Map {
 
         int tile_row = sprites.getWidth()/(tile_size + 1);
         
-        //usefull sudo code later
-        if (PIC_X > tile_size || PIC_X < -tile_size) {
-            buffer();
-        }
+
+        //System.out.println(MAP_X + (B_WIDTH / tile_size));
         
-        for (short x = 0;x < map.size(); x++) {
-            for (short y = 0; y < map.get(0).size(); y++) {
-                short tile_id = map.get(x).get(y);
+        for (int y = MAP_Y; y != tiledHeight + MAP_Y + 3; y++ ){
+            for (int x = MAP_X; x != tiledWidth + MAP_X + 3; x++) {
+                int tile_id = 0;
+                try {
+                    tile_id = map.get(y).get(x);
+                    if (tile_id < 0) tile_id = 38;
+                } catch (Exception e) {
+                    tile_id = 38;
+                    
+                }
+                    
                 int tile_x;
                 int tile_y;
                 
                 // Find the x and y of the tile id in the sprite sheet
-                tile_x = (tile_id % tile_row);
-                tile_y = (int)(tile_id / tile_row);
+                tile_y = (tile_id % tile_row);
+                tile_x = (int)(tile_id / tile_row);
                 
                 //adjust sizing     //The + 1 is to account for initial margin offset
                 tile_x = tile_x * (tile_size + 1) + 1;
                 tile_y = tile_y * (tile_size + 1) + 1;
                 
                 //Get the sprite from the sprite sheet based off the id's x and y
-                temp = sprites.getSubimage(tile_x, tile_y, tile_size, tile_size);
+                temp = sprites.getSubimage(tile_y, tile_x, tile_size, tile_size);
                 
                 // Create the tile image in the final background image with appropriate offset
-                background.createGraphics().drawImage(temp, tile_size * y, tile_size * x, null);
+                background.createGraphics().drawImage(temp, tile_size * (x - MAP_X - 1) + PIC_X, 
+                        tile_size * (y - MAP_Y - 1) + PIC_Y, null);
             }
-}
+        }
+        
+        
+
         
         
         
         return background;
     }
-    
-    private void buffer() {
-        for (int x = (mapWidth - MAP_X);  x > tiledWidth + (tile_size * 2);) {
-            for ( int y = (mapHeight - MAP_Y); y > tiledHeight + (tile_size * 2);) {
-                ArrayList<ArrayList<Short>> X = new ArrayList<>();
-                X.add(map.get(x));
-                X.subList();
-                bufferedMap.add(map.get(x));
-            }
-        } 
-    }
+ 
+
             
             
             
@@ -156,7 +182,7 @@ public class Map {
 //            }
 //            System.out.println("");
 //        }
-System.out.println(map.get(0).size());
+        
         
     }
 }

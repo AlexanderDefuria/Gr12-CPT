@@ -13,7 +13,6 @@ import java.awt.Image;
 import java.awt.image.BufferedImage;
 import static java.awt.image.BufferedImage.TYPE_3BYTE_BGR;
 import java.io.File;
-import java.util.List;
 import javax.imageio.ImageIO;
 
 
@@ -27,7 +26,7 @@ public class Map {
     public static int MAP_Y, MAP_X = 0;
     public static int PIC_Y, PIC_X = 0;
     public static int tiledWidth, tiledHeight = 0;
-    public static int mapWidth = 0, mapHeight = 0;
+    public static int mapWidth, mapHeight = 0;
     
     public Map(String file){
         init(file);
@@ -35,7 +34,7 @@ public class Map {
     
     private void init(String file) {
         BufferedReader br = null;
-        FileInputStream fis = null;
+        FileInputStream fis;
         String cvsSplitBy = ",";
         String line = "";
         tiledWidth = (int)(B_WIDTH / tile_size);
@@ -46,17 +45,17 @@ public class Map {
             fis = new FileInputStream(file);
             br = new BufferedReader(new InputStreamReader(fis));
 
-            
+            // Read the tile id's into map ArrayList
             while ((line = br.readLine()) != null) {
                 // use comma as separator
                 String[] values = line.split(cvsSplitBy);
                 ArrayList<Integer> listValues= new ArrayList<>();
                 
-                //
+                // Create a list of the tile id's 
                 for (int i = 0; i != values.length; i++) {
                     listValues.add(Integer.parseInt(values[i]));
                 }
-                
+                // Add the list created above to the map ArrayList
                 map.add(listValues);
             }
 
@@ -77,8 +76,7 @@ public class Map {
     }    
     
     public Image display(Graphics g, Player player) {
-        int X_OFF = player.moveX();
-        
+        int X_OFF = player.getX();
         switch (X_OFF + PIC_X) {
             case tile_size:
                 X_OFF = 0;

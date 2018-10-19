@@ -21,6 +21,7 @@ public class UserInput {
     
     void keyPressed(KeyEvent e) {
         int key = e.getKeyCode();
+        
 
         if (key == KeyEvent.VK_LEFT) LEFT = true;
         if (key == KeyEvent.VK_RIGHT) RIGHT = true;
@@ -31,6 +32,7 @@ public class UserInput {
 
     void keyReleased(KeyEvent e) {
         int key = e.getKeyCode();
+        
 
         if (key == KeyEvent.VK_LEFT) LEFT = false;
         if (key == KeyEvent.VK_RIGHT) RIGHT = false;

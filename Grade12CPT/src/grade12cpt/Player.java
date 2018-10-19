@@ -14,35 +14,28 @@ public class Player extends Sprite{
         init();
     }
     
-        public void init() {
+    public void init() {
         ImageIcon ii = new ImageIcon("src/images/guard.png");
         appearance = ii.getImage();
         x = 0;
         y = 0;
-        
     }
     
     
     public void updatePlayer() {
         
         
-        if(UserInput.LEFT) x--;
-        if(UserInput.RIGHT) x++;
+        if(UserInput.LEFT) {
+            System.out.println("LEFT");
+            x--;
+        }
+        if(UserInput.RIGHT) {
+            System.out.println("RIGHT");
+            x++;
+        }
         if(UserInput.UP) y--;
         if(UserInput.DOWN) y++;
-        
-        if (x != 0) System.out.println(x);
-        if (y != 0) System.out.println(y);
+
     }
-    
-        
-    public static int moveX() {
-        int toPass = x;
-        x = 0;
-        return toPass; 
-    }
-        
 
 }
-
-

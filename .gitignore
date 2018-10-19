@@ -28,3 +28,5 @@ hs_err_pid*
 /CharacterMovement/build/
 /MapInterpretation/nbproject/private/
 /MapInterpretation/build/
+/Collision Detection/nbproject/private/
+/Collision Detection/build/

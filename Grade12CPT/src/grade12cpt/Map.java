@@ -75,16 +75,15 @@ public class Map {
 
     }    
     
+    // TODO FIx bug where player keeps scrolling after window is deslected
     public Image display(Graphics g, Player player) {
         int X_OFF = player.getX();
         switch (X_OFF + PIC_X) {
             case tile_size:
-                X_OFF = 0;
                 PIC_X = 0;
                 MAP_X--;
                 break;
             case -tile_size:
-                X_OFF = 0;
                 PIC_X = 0;
                 MAP_X++;
                 break;
@@ -93,18 +92,14 @@ public class Map {
                 break;
         }
         
-        int Y_OFF = 0;
+        int Y_OFF = player.getY();
         
         switch (Y_OFF + PIC_Y) {
             case tile_size:
-                System.out.println("xxxx");
-                Y_OFF = 0;
                 PIC_Y = 0;
                 MAP_Y--;
                 break;
             case -tile_size:
-                System.out.println("fffff");
-                Y_OFF = 0;
                 PIC_Y = 0;
                 MAP_Y++;
                 break;
@@ -172,15 +167,10 @@ public class Map {
             
             
             
-    // TODO Remove after testing maps
+    
+    // FOR OUTPUTING DATA ABOUT MAP AT START OF PROGRAM
     public void publish() {
-//        for (int x = 0; x != map.size(); x++){
-//            for (int y = 0; y != map.size(); y++){
-//                System.out.print(map.get(x).get(y) + " ");
-//            }
-//            System.out.println("");
-//        }
-        
+        // TODO Remove after testing maps
         
     }
 }

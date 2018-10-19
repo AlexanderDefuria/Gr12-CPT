@@ -40,6 +40,9 @@ public class Board extends JPanel implements Runnable, ActionListener {
     private void initBoard() {
 
         addKeyListener(new TAdapter());
+        
+        // TODO Fix bug where player keeps scrolling after window is deslected
+        setFocusable(true);
         setBackground(Color.BLACK);
         setPreferredSize(new Dimension(B_WIDTH, B_HEIGHT));
         setDoubleBuffered(true);

@@ -83,13 +83,11 @@ public class Board extends JPanel implements Runnable, ActionListener {
     }
     
     private void drawBackground(Graphics g) {
-<<<<<<< HEAD
-        g.drawImage(map.display(g, X_OFF), X_OFF, 0, this);
-=======
+
         player.updatePlayer();
         g.drawImage(map.display(g, player), 0, 0, this);
         g.drawImage(player.appearance,B_WIDTH/2,B_HEIGHT/2,this);
->>>>>>> ActiveDev
+
         Toolkit.getDefaultToolkit().sync();
     }
 
@@ -131,9 +129,9 @@ public class Board extends JPanel implements Runnable, ActionListener {
             beforeTime = System.currentTimeMillis();
         }
     }
-<<<<<<< HEAD
-}
-=======
+
+
+
 
     @Override
     public void actionPerformed(ActionEvent e) {
@@ -153,4 +151,4 @@ public class Board extends JPanel implements Runnable, ActionListener {
         }
     }
 }
->>>>>>> ActiveDev
+

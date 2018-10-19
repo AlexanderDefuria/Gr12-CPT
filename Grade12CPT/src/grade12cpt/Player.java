@@ -25,12 +25,12 @@ public class Player extends Sprite{
     public void updatePlayer() {
         
         
-        if(UserInput.LEFT) x = -1;
-        else if(UserInput.RIGHT) x = 1; 
+        if(UserInput.LEFT) x = 2;
+        else if(UserInput.RIGHT) x = -2; 
         else x = 0;
         
-        if(UserInput.UP) y = -1;
-        else if(UserInput.DOWN) y = 1;
+        if(UserInput.UP) y = 2;
+        else if(UserInput.DOWN) y = -2;
         else y = 0;
         
     }

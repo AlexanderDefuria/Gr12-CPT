@@ -22,7 +22,8 @@ public class Board extends JPanel implements Runnable, ActionListener {
     public static final int B_HEIGHT = 720;
     public static final int B_WIDTH = (int)(720 * aspectRatio);
     // TODO adjust delay for hardware capabilities 
-    private final int DELAY = 50;
+    private final int DELAY = 40;
+    public static int offset = 0;
 
     public static Thread animator;
     public static Map map;
@@ -74,26 +75,29 @@ public class Board extends JPanel implements Runnable, ActionListener {
         
     }
 
-    // TODO update/remove example
-    private void drawExample(Graphics g) {
-        // Called by paint component method above
-        // param -- Image, Start Coordinates, Pane
-        // g.drawImage(example , x, y, this);
-        // Toolkit.getDefaultToolkit().sync();
-    }
-    
     private void drawBackground(Graphics g) {
 
-        player.updatePlayer();
+        player.updatePlayer(map);
+        
         g.drawImage(map.display(g, player), 0, 0, this);
         g.drawImage(player.appearance,B_WIDTH/2,B_HEIGHT/2,this);
+        
+        // TODO Remove hit boxes
+        g.setColor(Color.red);
+       
+        g.drawRect((int)player.getHitbox().getX(), (int)player.getHitbox().getY(),  player.getHitbox().width  ,player.getHitbox().height);
+        g.drawRect(map.getRectangle().x,  map.getRectangle().y,  map.getRectangle().width,  map.getRectangle().height);
 
         Toolkit.getDefaultToolkit().sync();
     }
 
     // TODO populate cycle() method 
     private void cycle() {
-
+        checkCollision();
+        
+    }
+    
+    private void checkCollision() {
         
     }
 

@@ -10,6 +10,7 @@ import java.util.ArrayList;
 
 import java.awt.Graphics;
 import java.awt.Image;
+import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 import static java.awt.image.BufferedImage.TYPE_3BYTE_BGR;
 import java.io.File;
@@ -27,6 +28,7 @@ public class Map {
     public static int PIC_Y, PIC_X = 0;
     public static int tiledWidth, tiledHeight = 0;
     public static int mapWidth, mapHeight = 0;
+    public static Rectangle mapOutline;
     
     public Map(String file){
         init(file);
@@ -58,6 +60,9 @@ public class Map {
                 // Add the list created above to the map ArrayList
                 map.add(listValues);
             }
+            
+            mapOutline = new Rectangle(0 - tile_size , 0 - tile_size, 
+                    map.get(0).size() * tile_size , map.size() * tile_size );
 
         } catch (FileNotFoundException e) {
             e.printStackTrace();
@@ -77,7 +82,7 @@ public class Map {
     
     // TODO FIx bug where player keeps scrolling after window is deslected
     public Image display(Graphics g, Player player) {
-        int X_OFF = player.getX();
+        int X_OFF = player.getMoveX();
         switch (X_OFF + PIC_X) {
             case tile_size:
                 PIC_X = 0;
@@ -92,8 +97,7 @@ public class Map {
                 break;
         }
         
-        int Y_OFF = player.getY();
-        
+        int Y_OFF = player.getMoveY();
         switch (Y_OFF + PIC_Y) {
             case tile_size:
                 PIC_Y = 0;
@@ -108,6 +112,10 @@ public class Map {
                 break;
         }
         
+        
+        mapOutline.setLocation((int)mapOutline.getX() + X_OFF , (int)mapOutline.getY() + Y_OFF );
+        
+        
         String imageFile = "src/images/desert_sprite.png";
         BufferedImage background = new BufferedImage(B_WIDTH, B_HEIGHT, TYPE_3BYTE_BGR);
         BufferedImage sprites = null;
@@ -119,19 +127,17 @@ public class Map {
         }       
 
         int tile_row = sprites.getWidth()/(tile_size + 1);
-        
 
-        //System.out.println(MAP_X + (B_WIDTH / tile_size));
         
         for (int y = MAP_Y; y != tiledHeight + MAP_Y + 3; y++ ){
             for (int x = MAP_X; x != tiledWidth + MAP_X + 3; x++) {
                 int tile_id = 0;
+                boolean blank = false;
                 try {
                     tile_id = map.get(y).get(x);
                     if (tile_id < 0) tile_id = 38;
                 } catch (Exception e) {
                     tile_id = 38;
-                    
                 }
                     
                 int tile_x;
@@ -154,23 +160,20 @@ public class Map {
             }
         }
         
-        
-
-        
-        
-        
         return background;
     }
  
 
+    public Rectangle getRectangle() {
+        return mapOutline;
+    }
             
-            
-            
+  
             
     
     // FOR OUTPUTING DATA ABOUT MAP AT START OF PROGRAM
     public void publish() {
-        // TODO Remove after testing maps
+        // TODO Remove after development
         
     }
 }

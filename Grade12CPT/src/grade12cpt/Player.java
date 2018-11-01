@@ -44,7 +44,7 @@ public class Player extends Sprite{
     
     public void updatePlayer(Map map) {
         
-        checkMapEdge(map.getRectangle());
+        checkMapEdge(map.getMapOutline());
             
         if(UserInput.LEFT && canMove[0]) moveX = speed;
         else if(UserInput.RIGHT && canMove[1]) moveX = -speed;
@@ -63,7 +63,7 @@ public class Player extends Sprite{
                 canMove[0] = false;
                 canMove[1] = true;
             }
-            else if (overallX > hit.getMaxX()){
+            else if (overallX + width > hit.getMaxX()){
                 canMove[1] = false;
                 canMove[0] = true;
             }

@@ -22,7 +22,7 @@ public class Board extends JPanel implements Runnable, ActionListener {
     public static final int B_HEIGHT = 720;
     public static final int B_WIDTH = (int)(720 * aspectRatio);
     // TODO adjust delay for hardware capabilities 
-    private final int DELAY = 40;
+    private final int DELAY = 20;
     public static int offset = 0;
 
     public static Thread animator;
@@ -86,7 +86,7 @@ public class Board extends JPanel implements Runnable, ActionListener {
         g.setColor(Color.red);
        
         g.drawRect((int)player.getHitbox().getX(), (int)player.getHitbox().getY(),  player.getHitbox().width  ,player.getHitbox().height);
-        g.drawRect(map.getRectangle().x,  map.getRectangle().y,  map.getRectangle().width,  map.getRectangle().height);
+        g.drawRect(map.getMapOutline().x,  map.getMapOutline().y,  map.getMapOutline().width,  map.getMapOutline().height);
 
         Toolkit.getDefaultToolkit().sync();
     }

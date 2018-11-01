@@ -7,7 +7,7 @@ import javax.swing.ImageIcon;
 
 
 
-public class Sprite extends Rectangle{
+public abstract class Sprite extends Rectangle{
 
     public static int x;
     public static int y;

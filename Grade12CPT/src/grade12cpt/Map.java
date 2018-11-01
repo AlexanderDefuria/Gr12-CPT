@@ -21,6 +21,8 @@ import javax.imageio.ImageIO;
 public class Map {
     
     public ArrayList<ArrayList<Integer>> map = new ArrayList<>();
+    public ArrayList<Rectangle> terrain = new ArrayList<>();
+    public ArrayList<Integer> terrain_id = new ArrayList<>();
     public final int B_WIDTH = Board.B_WIDTH;
     public final int B_HEIGHT = Board.B_HEIGHT;
     public final byte tile_size = 32;
@@ -139,6 +141,11 @@ public class Map {
                 } catch (Exception e) {
                     tile_id = 38;
                 }
+                              
+                if (terrain_id.contains(tile_id)) {
+                    terrain.add(new Rectangle(tile_size * (x - MAP_X - 1) + PIC_X, 
+                        tile_size * (y - MAP_Y - 1) + PIC_Y, tile_size,tile_size));
+                }
                     
                 int tile_x;
                 int tile_y;
@@ -164,10 +171,10 @@ public class Map {
     }
  
 
-    public Rectangle getRectangle() {
+    public Rectangle getMapOutline() {
         return mapOutline;
     }
-            
+              
   
             
     

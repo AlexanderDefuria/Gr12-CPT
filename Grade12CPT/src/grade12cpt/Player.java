@@ -45,6 +45,7 @@ public class Player extends Sprite{
     public void updatePlayer(Map map) {
         
         checkMapEdge(map.getMapOutline());
+        
             
         if(UserInput.LEFT && canMove[0]) moveX = speed;
         else if(UserInput.RIGHT && canMove[1]) moveX = -speed;
@@ -55,6 +56,7 @@ public class Player extends Sprite{
         else moveY = 0;
 
     }
+    
 
     public void checkMapEdge(Rectangle hit) {
 
@@ -82,6 +84,10 @@ public class Player extends Sprite{
             for (int i = 0; i != canMove.length; i++) {
                 canMove[i] = true;
             }
+    }
+    
+    public void checkTerrain() {
+        
     }
        
     public Rectangle getHitbox() {

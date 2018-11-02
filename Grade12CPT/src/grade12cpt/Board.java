@@ -48,7 +48,7 @@ public class Board extends JPanel implements Runnable, ActionListener {
         setPreferredSize(new Dimension(B_WIDTH, B_HEIGHT));
         setDoubleBuffered(true);
         
-        map = new Map("src/maps/largemap.csv");
+        map = new Map();
         input = new UserInput();
         map.publish();
         
@@ -84,7 +84,6 @@ public class Board extends JPanel implements Runnable, ActionListener {
         
         // TODO Remove hit boxes
         g.setColor(Color.red);
-       
         g.drawRect((int)player.getHitbox().getX(), (int)player.getHitbox().getY(),  player.getHitbox().width  ,player.getHitbox().height);
         g.drawRect(map.getMapOutline().x,  map.getMapOutline().y,  map.getMapOutline().width,  map.getMapOutline().height);
 
@@ -93,12 +92,7 @@ public class Board extends JPanel implements Runnable, ActionListener {
 
     // TODO populate cycle() method 
     private void cycle() {
-        checkCollision();
-        
-    }
-    
-    private void checkCollision() {
-        
+
     }
 
     @Override

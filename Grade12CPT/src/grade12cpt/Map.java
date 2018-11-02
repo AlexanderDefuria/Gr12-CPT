@@ -31,12 +31,18 @@ public class Map {
     public static int tiledWidth, tiledHeight = 0;
     public static int mapWidth, mapHeight = 0;
     public static Rectangle mapOutline;
+    public static String mapFile = "src/maps/goodmap.csv";
+    public static String spriteFile = "src/images/desert_sprite.png";
     
-    public Map(String file){
-        init(file);
+    private static BufferedImage sprites;
+    private static BufferedImage background;
+    private static BufferedImage temp;
+    
+    public Map(){
+        init();
     }
     
-    private void init(String file) {
+    private void init() {
         BufferedReader br = null;
         FileInputStream fis;
         String cvsSplitBy = ",";
@@ -44,10 +50,13 @@ public class Map {
         tiledWidth = (int)(B_WIDTH / tile_size);
         tiledHeight = (int)(B_HEIGHT/ tile_size);
         
+        background = new BufferedImage(B_WIDTH, B_HEIGHT, TYPE_3BYTE_BGR);
+        
         try {
             
-            fis = new FileInputStream(file);
+            fis = new FileInputStream(mapFile);
             br = new BufferedReader(new InputStreamReader(fis));
+            sprites = ImageIO.read(new File(spriteFile));
 
             // Read the tile id's into map ArrayList
             while ((line = br.readLine()) != null) {
@@ -117,19 +126,7 @@ public class Map {
         
         mapOutline.setLocation((int)mapOutline.getX() + X_OFF , (int)mapOutline.getY() + Y_OFF );
         
-        
-        String imageFile = "src/images/desert_sprite.png";
-        BufferedImage background = new BufferedImage(B_WIDTH, B_HEIGHT, TYPE_3BYTE_BGR);
-        BufferedImage sprites = null;
-        BufferedImage temp;
-        try {
-            sprites = ImageIO.read(new File(imageFile));
-        } catch (Exception e) {
-            System.out.println(e);
-        }       
-
         int tile_row = sprites.getWidth()/(tile_size + 1);
-
         
         for (int y = MAP_Y; y != tiledHeight + MAP_Y + 3; y++ ){
             for (int x = MAP_X; x != tiledWidth + MAP_X + 3; x++) {
@@ -174,12 +171,19 @@ public class Map {
     public Rectangle getMapOutline() {
         return mapOutline;
     }
-              
-  
-            
     
-    // FOR OUTPUTING DATA ABOUT MAP AT START OF PROGRAM
+    public static String getMapFile() {
+        return mapFile;
+    }
+    
+    public static String getSpriteFile() {
+        return spriteFile;
+    }
+    
+    
+    
     public void publish() {
+        // FOR OUTPUTING DATA ABOUT MAP AT START OF PROGRAM
         // TODO Remove after development
         
     }

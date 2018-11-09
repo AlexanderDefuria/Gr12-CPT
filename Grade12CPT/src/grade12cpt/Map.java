@@ -25,13 +25,13 @@ public class Map {
     public ArrayList<Integer> terrain_id = new ArrayList<>();
     public final int B_WIDTH = Board.B_WIDTH;
     public final int B_HEIGHT = Board.B_HEIGHT;
-    public final byte tile_size = 32;
+    public static final byte tile_size = 32;
     public static int MAP_Y, MAP_X = 0;
     public static int PIC_Y, PIC_X = 0;
     public static int tiledWidth, tiledHeight = 0;
     public static int mapWidth, mapHeight = 0;
     public static Rectangle mapOutline;
-    public static String mapFile = "src/maps/goodmap.csv";
+    public static String mapFile = "src/maps/singleterraintest.csv";
     public static String spriteFile = "src/images/desert_sprite.png";
     
     private static BufferedImage sprites;
@@ -49,6 +49,12 @@ public class Map {
         String line = "";
         tiledWidth = (int)(B_WIDTH / tile_size);
         tiledHeight = (int)(B_HEIGHT/ tile_size);
+        
+        terrain_id.add(24); terrain_id.add(25); terrain_id.add(26); 
+        terrain_id.add(32); terrain_id.add(33); terrain_id.add(34);
+        terrain_id.add(40); terrain_id.add(41); terrain_id.add(42);
+       
+
         
         background = new BufferedImage(B_WIDTH, B_HEIGHT, TYPE_3BYTE_BGR);
         
@@ -93,6 +99,7 @@ public class Map {
     
     // TODO FIx bug where player keeps scrolling after window is deslected
     public Image display(Graphics g, Player player) {
+        terrain.clear();
         int X_OFF = player.getMoveX();
         switch (X_OFF + PIC_X) {
             case tile_size:
@@ -138,12 +145,7 @@ public class Map {
                 } catch (Exception e) {
                     tile_id = 38;
                 }
-                              
-                if (terrain_id.contains(tile_id)) {
-                    terrain.add(new Rectangle(tile_size * (x - MAP_X - 1) + PIC_X, 
-                        tile_size * (y - MAP_Y - 1) + PIC_Y, tile_size,tile_size));
-                }
-                    
+
                 int tile_x;
                 int tile_y;
                 
@@ -160,9 +162,22 @@ public class Map {
                 
                 // Create the tile image in the final background image with appropriate offset
                 background.createGraphics().drawImage(temp, tile_size * (x - MAP_X - 1) + PIC_X, 
-                        tile_size * (y - MAP_Y - 1) + PIC_Y, null);
+                       tile_size * (y - MAP_Y - 1) + PIC_Y, null);
+                
+                
+                if (terrain_id.contains(tile_id)) {
+                    
+                    terrain.add(new SolidTerrain(tile_id, tile_size * (x - MAP_X - 1) + PIC_X, 
+                        tile_size * (y - MAP_Y - 1) + PIC_Y));
+                    
+                    background.createGraphics().fillRect(tile_size * (x - MAP_X - 1) + PIC_X,  tile_size * (y - MAP_Y - 1) + PIC_Y
+                            , tile_size, tile_size);
+                    
+                    
+                }
             }
         }
+        
         
         return background;
     }
@@ -172,6 +187,10 @@ public class Map {
         return mapOutline;
     }
     
+    public ArrayList<Rectangle> getSolidTerrain() {
+        return terrain;
+    }
+    
     public static String getMapFile() {
         return mapFile;
     }
@@ -179,6 +198,10 @@ public class Map {
     public static String getSpriteFile() {
         return spriteFile;
     }
+    
+    
+    
+    
     
     
     

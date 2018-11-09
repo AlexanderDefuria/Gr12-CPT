@@ -4,6 +4,7 @@ package grade12cpt;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
+import java.awt.Rectangle;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -70,9 +71,10 @@ public class Board extends JPanel implements Runnable, ActionListener {
     @Override
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
+        
 
         drawBackground(g);
-        
+        repaint();
     }
 
     private void drawBackground(Graphics g) {
@@ -84,6 +86,8 @@ public class Board extends JPanel implements Runnable, ActionListener {
         
         // TODO Remove hit boxes
         g.setColor(Color.red);
+        
+        //for (Rectangle x: map.getTerrainOutline())
         g.drawRect((int)player.getHitbox().getX(), (int)player.getHitbox().getY(),  player.getHitbox().width  ,player.getHitbox().height);
         g.drawRect(map.getMapOutline().x,  map.getMapOutline().y,  map.getMapOutline().width,  map.getMapOutline().height);
 

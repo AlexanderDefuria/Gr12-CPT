@@ -10,14 +10,18 @@ import javax.swing.ImageIcon;
 
 public abstract class Sprite extends Rectangle{
 
-    public static int x;
-    public static int y;
+    public int x;
+    public int y;
+    public int mapX;
+    public int mapY;
     public Image appearance;
-    public static Rectangle bounds;
-    protected int width = 0, height = 0;
-    private static boolean passable;
+    public Rectangle bounds;
+    
+    private boolean passable;
+    
+    public static byte health = 0;
 
-    protected void loadImage(String imageName) {
+    protected final void loadImage(String imageName) {
         ImageIcon ii = new ImageIcon(imageName);
         appearance = ii.getImage();
         getDimensions();
@@ -40,16 +44,36 @@ public abstract class Sprite extends Rectangle{
         return appearance;
     }    
     
-    public static int getMapX() {
+    public int getMapX() {
         return x;
     }
     
-    public static int getMapY() {
+    public int getMapY() {
         return y;
+    }
+    
+    public void setMapX(int x) {
+        this.x = x;
+    }
+    
+    public void setMapY(int y) {
+        this.y = y;
     }
     
     public boolean getPassable() {
         return passable;
+    }
+    
+    public int getHealth() {
+        return health;
+    }
+    
+    public void updateHealth(byte change) {
+        health += change;
+    }
+    
+    public void updateHealth(byte change, boolean complete) {
+        if (complete) health = change;
     }
 
     

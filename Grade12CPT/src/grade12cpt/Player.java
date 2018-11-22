@@ -13,6 +13,7 @@ public class Player extends Sprite{
     public static int overallX = B_WIDTH / 2;
     public static int overallY = B_HEIGHT / 2;
     public static int moveX, moveY = 0;
+    public static Rectangle attackRange;
     private static boolean canMove[] = new boolean[5];
     // Speed work with 1,2,4,8 etc      TODO No fucking clue why but that's how it is!
     public static int speed = 2;
@@ -57,6 +58,11 @@ public class Player extends Sprite{
         if(UserInput.UP && canMove[2]) moveY = speed;
         else if(UserInput.DOWN && canMove[3]) moveY = -speed;
         else moveY = 0;
+        
+        if(UserInput.SPACE) attack();
+        
+        mapX += moveX;
+        mapY += moveY;
 
     }
     
@@ -112,38 +118,18 @@ public class Player extends Sprite{
             
             this.setLocation(Xorigin, Yorigin);
                 
-                
-//                if ((this.getMinY() < rect.getMaxY() && this.getMinY() > rect.getMinY())  ||
-//                    (this.getMaxY() < rect.getMinY() && this.getMaxY() > rect.getMaxY()))
-//                    {
-//                    if  (this.getX() > rect.getX()) {
-//                        canMove[1] = true;
-//                        canMove[0] = false;
-//                    }
-//                    else if (this.getX() < rect.getX()) {
-//                        canMove[1] = false;
-//                        canMove[0] = true;
-//                    }
-//                }
-//                
-//                if ((this.getMinX() < rect.getMaxX() && this.getMinX() > rect.getMinX()) ||
-//                    (this.getMaxX() < rect.getMinX() && this.getMaxX() > rect.getMaxX())) 
-//                    {
-//                    if  (this.getY() > rect.getY()) {
-//                        canMove[3] = true;
-//                        canMove[2] = false;
-//                    }
-//                    else if (this.getY() < rect.getY()) {
-//                        canMove[3] = false;
-//                        canMove[2] = true;
-//                    }
-//                    
-//                }
-            
+
 
         }
         
     }
+    
+    
+    public void attack() {
+        
+    }
+    
+    
        
     public Rectangle getHitbox() {
         return new Rectangle(overallX, overallY, width, height);

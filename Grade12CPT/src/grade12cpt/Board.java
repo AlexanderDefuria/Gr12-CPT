@@ -23,7 +23,7 @@ public class Board extends JPanel implements Runnable, ActionListener {
     public static final int B_HEIGHT = 720;
     public static final int B_WIDTH = (int)(720 * aspectRatio);
     // TODO adjust delay for hardware capabilities 
-    private final int DELAY = 20;
+    private final int DELAY = 40;
     public static int offset = 0;
 
     public static Thread animator;
@@ -31,6 +31,7 @@ public class Board extends JPanel implements Runnable, ActionListener {
     private UserInput input;
     public static List<Map> maps = new ArrayList<>();
     public static Player player;
+    public static int loopIteration;
     
     
     public Board() {
@@ -51,11 +52,9 @@ public class Board extends JPanel implements Runnable, ActionListener {
         
         map = new Map();
         input = new UserInput();
-        map.publish();
-        
-        
         player = new Player(input);
         
+        EnemyManager.addEnemy(new Enemy());
 
 
     }
@@ -72,28 +71,32 @@ public class Board extends JPanel implements Runnable, ActionListener {
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
         
-
         drawBackground(g);
+        
         repaint();
     }
 
     private void drawBackground(Graphics g) {
 
         player.updatePlayer(map);
+        EnemyManager.updateEnemies();
         
         g.drawImage(map.display(g, player), 0, 0, this);
         g.drawImage(player.appearance,B_WIDTH/2,B_HEIGHT/2,this);
         
+        
         // TODO Remove hit boxes
-        g.setColor(Color.red);
+        //g.setColor(Color.red);
         
         //for (Rectangle x: map.getTerrainOutline())
-        g.drawRect((int)player.getHitbox().getX(), (int)player.getHitbox().getY(),  player.getHitbox().width  ,player.getHitbox().height);
-        g.drawRect(map.getMapOutline().x,  map.getMapOutline().y,  map.getMapOutline().width,  map.getMapOutline().height);
+        //g.drawRect((int)player.getHitbox().getX(), (int)player.getHitbox().getY(),  player.getHitbox().width  ,player.getHitbox().height);
+        //g.drawRect(map.getMapOutline().x,  map.getMapOutline().y,  map.getMapOutline().width,  map.getMapOutline().height);
 
         Toolkit.getDefaultToolkit().sync();
     }
 
+
+    
     // TODO populate cycle() method 
     private void cycle() {
 
@@ -113,6 +116,10 @@ public class Board extends JPanel implements Runnable, ActionListener {
 
             timeDiff = System.currentTimeMillis() - beforeTime;
             sleep = DELAY - timeDiff;
+            
+            if (loopIteration == 100) loopIteration = 0;
+            else loopIteration++;
+            
 
             if (sleep < 0) {
                 sleep = 2;

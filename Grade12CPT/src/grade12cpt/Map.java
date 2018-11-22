@@ -50,6 +50,7 @@ public class Map {
         tiledWidth = (int)(B_WIDTH / tile_size);
         tiledHeight = (int)(B_HEIGHT/ tile_size);
         
+        // Unpassable terrain ID's
         terrain_id.add(24); terrain_id.add(25); terrain_id.add(26); 
         terrain_id.add(32); terrain_id.add(33); terrain_id.add(34);
         terrain_id.add(40); terrain_id.add(41); terrain_id.add(42);
@@ -98,6 +99,7 @@ public class Map {
     }    
     
     // TODO FIx bug where player keeps scrolling after window is deslected
+    // TODO Use overallX and overallY of the player to determine where the Terrain is instead of the movements
     public Image display(Graphics g, Player player) {
         terrain.clear();
         int X_OFF = player.getMoveX();
@@ -130,11 +132,15 @@ public class Map {
                 break;
         }
         
+        EnemyManager.setOffset((-MAP_X * 32) + PIC_X, (-MAP_Y * 32) + PIC_Y);
+        //EnemyManager.setOffset( PIC_X,  PIC_Y);
+        
         
         mapOutline.setLocation((int)mapOutline.getX() + X_OFF , (int)mapOutline.getY() + Y_OFF );
         
         int tile_row = sprites.getWidth()/(tile_size + 1);
         
+        // Display background and create terrrain hitboxes
         for (int y = MAP_Y; y != tiledHeight + MAP_Y + 3; y++ ){
             for (int x = MAP_X; x != tiledWidth + MAP_X + 3; x++) {
                 int tile_id = 0;
@@ -170,12 +176,23 @@ public class Map {
                     terrain.add(new SolidTerrain(tile_id, tile_size * (x - MAP_X - 1) + PIC_X, 
                         tile_size * (y - MAP_Y - 1) + PIC_Y));
                     
-                    background.createGraphics().fillRect(tile_size * (x - MAP_X - 1) + PIC_X,  tile_size * (y - MAP_Y - 1) + PIC_Y
-                            , tile_size, tile_size);
+                    // TODO Remove Rectangle
+                    //background.createGraphics().fillRect(tile_size * (x - MAP_X - 1) + PIC_X,  tile_size * (y - MAP_Y - 1) + PIC_Y
+                      //      , tile_size, tile_size);
                     
                     
                 }
             }
+        }
+        
+        // Display enemies in proper location
+        for (Enemy enemy : EnemyManager.getEnemies()) {
+           if (    enemy.getMapX() > -50 && enemy.getMapX() < B_WIDTH + 50
+                && enemy.getMapY() > -50 && enemy.getMapY() < B_HEIGHT + 50  ) {
+               
+               background.createGraphics().drawImage(enemy.appearance, enemy.getMapX(), enemy.getMapY(), null);
+           }
+                    
         }
         
         
@@ -200,15 +217,5 @@ public class Map {
     }
     
     
-    
-    
-    
-    
-    
-    public void publish() {
-        // FOR OUTPUTING DATA ABOUT MAP AT START OF PROGRAM
-        // TODO Remove after development
-        
-    }
 }
 

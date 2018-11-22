@@ -51,5 +51,9 @@ public abstract class EnemyManager {
                 enemy.setMapY(Y_OFF);
             });
         }
+        
+        allEnemies.forEach((enemy) -> {
+            //System.out.println(enemy.getLocation());
+        });
     }
 }

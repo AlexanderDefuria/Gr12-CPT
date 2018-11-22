@@ -12,7 +12,7 @@ public class Player extends Sprite{
     public Terrain walls;
     public static int overallX = B_WIDTH / 2;
     public static int overallY = B_HEIGHT / 2;
-    public static int moveX, moveY = 0;
+    public int moveX, moveY = 0;
     public static Rectangle attackRange;
     private static boolean canMove[] = new boolean[5];
     // Speed work with 1,2,4,8 etc      TODO No fucking clue why but that's how it is!
@@ -22,6 +22,7 @@ public class Player extends Sprite{
     public Player(UserInput ui) {
         this.ui = ui;
         init();
+        
     }
       
     
@@ -29,6 +30,8 @@ public class Player extends Sprite{
         loadImage("src/images/guard.png");
         moveX = 0;
         moveY = 0;
+        this.maxHP = 100;
+        this.curHP = maxHP;
         this.setLocation(overallX, overallY);
         this.setSize(getDimensions());
         
@@ -50,6 +53,11 @@ public class Player extends Sprite{
         
         checkMapEdge(map);
         checkTerrain(map);
+        checkEnemies(map);
+        
+        
+        
+        
            
         if(UserInput.LEFT && canMove[0]) moveX = speed;
         else if(UserInput.RIGHT && canMove[1]) moveX = -speed;
@@ -101,8 +109,11 @@ public class Player extends Sprite{
             int Yorigin = (int)this.getY();
             
             this.setLocation(Xorigin - speed, Yorigin);
-            if(rect.intersects(this)) 
+            if(rect.intersects(this)){
                 canMove[0] = false;
+                curHP--;
+            } 
+                
             
             this.setLocation(Xorigin + speed, Yorigin);
             if(rect.intersects(this)) 
@@ -122,6 +133,15 @@ public class Player extends Sprite{
 
         }
         
+    }
+    
+    public void checkEnemies(Map map) {
+        for (Enemy enemy : EnemyManager.getEnemies()){
+            if (this.intersects(enemy.getBounds())) {
+                updateHealth(-1);
+            }
+            
+        }
     }
     
     

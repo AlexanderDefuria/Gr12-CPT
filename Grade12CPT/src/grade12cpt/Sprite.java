@@ -14,13 +14,14 @@ public abstract class Sprite extends Rectangle{
     public int y;
     public int mapX;
     public int mapY;
+    public double curHP = 0;
+    public double maxHP = 0;
     public Image appearance;
     public Rectangle bounds;
     
     private boolean passable;
     
-    public static byte health = 0;
-
+    
     protected final void loadImage(String imageName) {
         ImageIcon ii = new ImageIcon(imageName);
         appearance = ii.getImage();
@@ -54,26 +55,38 @@ public abstract class Sprite extends Rectangle{
     
     public void setMapX(int x) {
         this.x = x;
+        setLocation(x,y);
     }
     
     public void setMapY(int y) {
         this.y = y;
+        setLocation(x,y);
     }
     
     public boolean getPassable() {
         return passable;
     }
     
-    public int getHealth() {
-        return health;
+    public double getHealth() {
+        return curHP;
     }
     
-    public void updateHealth(byte change) {
-        health += change;
+    public double getMaxHealth() {
+        return maxHP;
+    }
+    
+    public void updateHealth(int change) {
+        curHP += change;
+        updateHealth();
+    }
+    
+    public void updateHealth() {
+        if (curHP > maxHP) curHP = maxHP;
+        else if (curHP < 0) curHP = maxHP;
     }
     
     public void updateHealth(byte change, boolean complete) {
-        if (complete) health = change;
+        if (complete) curHP = change;
     }
 
     

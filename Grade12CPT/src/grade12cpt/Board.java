@@ -25,6 +25,8 @@ public class Board extends JPanel implements Runnable, ActionListener {
     // TODO adjust delay for hardware capabilities 
     private final int DELAY = 40;
     public static int offset = 0;
+    public static int overlayWidth = B_WIDTH / 2;
+    public static int overlayHeight = B_HEIGHT / 2;
 
     public static Thread animator;
     public static Map map;
@@ -72,6 +74,7 @@ public class Board extends JPanel implements Runnable, ActionListener {
         super.paintComponent(g);
         
         drawBackground(g);
+        drawOverlay(g);
         
         repaint();
     }
@@ -95,6 +98,19 @@ public class Board extends JPanel implements Runnable, ActionListener {
         Toolkit.getDefaultToolkit().sync();
     }
 
+    private void drawOverlay(Graphics g) {
+        
+        int percentHP = (int)(100 * player.getHealth() / player.getMaxHealth());
+        
+        g.setColor(Color.green);
+        g.fillRect((int)B_WIDTH/4, (int)(B_HEIGHT * 0.9), (int)((B_WIDTH/2) * percentHP / 100), (int)(B_HEIGHT * 0.1));
+        
+        g.setColor(Color.red);
+        g.fillRect(((int)B_WIDTH/4) + (int)((B_WIDTH/2) * percentHP / 100), (int)(B_HEIGHT * 0.9), (int)(B_WIDTH/2) - (int)((B_WIDTH/2) * percentHP / 100), (int)(B_HEIGHT * 0.1));
+        
+        
+        Toolkit.getDefaultToolkit().sync();
+    }
 
     
     // TODO populate cycle() method 

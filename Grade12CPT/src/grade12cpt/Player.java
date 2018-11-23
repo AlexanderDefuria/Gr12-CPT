@@ -27,7 +27,8 @@ public class Player extends Sprite{
       
     
     public void init() {
-        loadImage("src/images/guard.png");
+        loadImage("src/images/enemy.png");
+        loadSprites("src/images/clotharmor_1.png");
         moveX = 0;
         moveY = 0;
         this.maxHP = 100;
@@ -55,10 +56,8 @@ public class Player extends Sprite{
         checkTerrain(map);
         checkEnemies(map);
         
-        
-        
-        
-           
+        animate();
+
         if(UserInput.LEFT && canMove[0]) moveX = speed;
         else if(UserInput.RIGHT && canMove[1]) moveX = -speed;
         else moveX = 0;
@@ -109,11 +108,8 @@ public class Player extends Sprite{
             int Yorigin = (int)this.getY();
             
             this.setLocation(Xorigin - speed, Yorigin);
-            if(rect.intersects(this)){
-                canMove[0] = false;
-                curHP--;
-            } 
-                
+            if(rect.intersects(this))
+                canMove[0] = false;   
             
             this.setLocation(Xorigin + speed, Yorigin);
             if(rect.intersects(this)) 
@@ -129,7 +125,6 @@ public class Player extends Sprite{
             
             this.setLocation(Xorigin, Yorigin);
                 
-
 
         }
         
@@ -156,3 +151,5 @@ public class Player extends Sprite{
     }
 
 }
+
+

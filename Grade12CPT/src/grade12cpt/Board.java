@@ -133,8 +133,9 @@ public class Board extends JPanel implements Runnable, ActionListener {
             timeDiff = System.currentTimeMillis() - beforeTime;
             sleep = DELAY - timeDiff;
             
-            if (loopIteration == 100) loopIteration = 0;
-            else loopIteration++;
+            // TODO the main loop counter is not updating smoothly when refrenced from other classes, find root of error
+            //      if (loopIteration == 101) loopIteration = 0;
+            //      else loopIteration++;
             
 
             if (sleep < 0) {

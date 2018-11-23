@@ -28,7 +28,7 @@ public class Player extends Sprite{
     
     public void init() {
         loadImage("src/images/enemy.png");
-        loadSprites("src/images/clotharmor_1.png");
+        loadSprites("src/images/clotharmor.png");
         moveX = 0;
         moveY = 0;
         this.maxHP = 100;
@@ -56,6 +56,8 @@ public class Player extends Sprite{
         checkTerrain(map);
         checkEnemies(map);
         
+        spriteLoop++;
+        
         animate();
 
         if(UserInput.LEFT && canMove[0]) moveX = speed;
@@ -66,7 +68,7 @@ public class Player extends Sprite{
         else if(UserInput.DOWN && canMove[3]) moveY = -speed;
         else moveY = 0;
         
-        if(UserInput.SPACE) attack();
+        if(UserInput.SPACE) loadSprites("src/images/platearmor.png");
         
         mapX += moveX;
         mapY += moveY;

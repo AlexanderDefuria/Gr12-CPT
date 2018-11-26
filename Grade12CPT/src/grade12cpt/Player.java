@@ -48,13 +48,7 @@ public class Player extends Sprite{
 
     }
     
-    public int getMoveX() {
-        return moveX;
-    }
-    
-    public int getMoveY() {
-        return moveY;
-    }
+
     
     
     public void updatePlayer(Map map) {
@@ -63,10 +57,24 @@ public class Player extends Sprite{
         checkTerrain(map);
         checkEnemies(map);
         
-        spriteLoop++;
-        
+        UserInput();
         animate();
+        
+        
+        
+        
+        
+        
 
+        
+        mapX += moveX;
+        mapY += moveY;
+        
+        
+
+    }
+    
+    public void UserInput() {
         if(UserInput.LEFT && canMove[0]) moveX = speed;
         else if(UserInput.RIGHT && canMove[1]) moveX = -speed;
         else moveX = 0;
@@ -88,12 +96,10 @@ public class Player extends Sprite{
                 case 2: 
                     attackRange = new Rectangle(overallX - (32 / 2), overallY - 32, 64, 32);
                     break;
-                case 3:
+                default:
                     attackRange = new Rectangle(overallX - (32 / 2), overallY + 32, 64, 32);
                     break;
-                case 4:
-                    attackRange = new Rectangle(overallX - (32 / 2), overallY + 32, 64, 32);
-                    break;
+                
                     
             }
             
@@ -101,10 +107,6 @@ public class Player extends Sprite{
             attacking = false;
             attackRange = new Rectangle();
         }
-        
-        mapX += moveX;
-        mapY += moveY;
-
     }
     
     public void checkMapEdge(Map map) {
@@ -184,6 +186,13 @@ public class Player extends Sprite{
 
     }
     
+    public int getMoveX() {
+        return moveX;
+    }
+    
+    public int getMoveY() {
+        return moveY;
+    }
     
     public void attack() {
         

@@ -112,7 +112,7 @@ public abstract class Sprite extends Rectangle{
         }
              
         if (spriteLoop > 100) spriteLoop = 0;
-            spriteLoop++;
+            spriteLoop += 2;
         
         lastX = mapX;
         lastY = mapY;

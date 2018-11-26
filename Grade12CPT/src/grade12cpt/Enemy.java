@@ -20,6 +20,7 @@ public class Enemy extends Sprite{
         this.setLocation(200, 200);
         x = 200;
         y = 200;
+        this.updateHealth(10, true);
         
     }
     

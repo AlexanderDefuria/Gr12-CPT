@@ -144,7 +144,6 @@ public class Map {
         for (int y = MAP_Y; y != tiledHeight + MAP_Y + 3; y++ ){
             for (int x = MAP_X; x != tiledWidth + MAP_X + 3; x++) {
                 int tile_id = 0;
-                boolean blank = false;
                 try {
                     tile_id = map.get(y).get(x);
                     if (tile_id < 0) tile_id = 38;

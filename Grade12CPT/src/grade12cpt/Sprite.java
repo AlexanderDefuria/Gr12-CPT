@@ -21,15 +21,21 @@ public abstract class Sprite extends Rectangle{
     public int lastY;
     public int direction;
     public int step;
+    public int actionStep;
     public int mapX;
     public int mapY;
     public int spriteLoop;
     public double curHP = 0;
     public double maxHP = 0;
+    public boolean attacking = false;
     public Image appearance;
     public BufferedImage spriteSheet;
     public Rectangle bounds;
     public Image[][] walkingSprite;
+    public Image[][] weaponSprite;
+    public Image[][] actionSprite;
+    public String armorSheet;
+    public String weaponSheet;
     
     private boolean animate = true; // TODO have different sprites not be animated, add method to set
     
@@ -46,8 +52,10 @@ public abstract class Sprite extends Rectangle{
     }
     
     protected final void loadSprites(String sheetName) {
+        armorSheet = sheetName;
         try {
             spriteSheet = ImageIO.read(new File(sheetName));
+            
             
             // Populate walking sprite image array
             walkingSprite = new Image[4][4];
@@ -63,17 +71,46 @@ public abstract class Sprite extends Rectangle{
         } catch (IOException ex) {}
     }
     
+    protected final void loadWeaponSprites(String sheetName) {
+        weaponSheet = sheetName;
+        try {
+            spriteSheet = ImageIO.read(new File(weaponSheet));  
+            weaponSprite = new Image[4][5];
+            for (int i = 0; i != 5; i++){
+                weaponSprite[0][i] = flipImage(spriteSheet.getSubimage(32 * i, 1, 32, 32));
+                weaponSprite[1][i] = spriteSheet.getSubimage(32 * i, 1, 32, 32);
+                weaponSprite[2][i] = spriteSheet.getSubimage(32 * i, 32 * 3, 32, 32);
+                weaponSprite[3][i] = spriteSheet.getSubimage(32 * i, 32 * 6, 32, 32);
+            }
+            
+            spriteSheet = ImageIO.read(new File(armorSheet));
+            actionSprite = new Image[4][5];
+            for (int i = 0; i != 5; i++){
+                actionSprite[0][i] = flipImage(spriteSheet.getSubimage(32 * i, 1, 32, 32));
+                actionSprite[1][i] = spriteSheet.getSubimage(32 * i, 1, 32, 32);
+                actionSprite[2][i] = spriteSheet.getSubimage(32 * i, 32 * 3, 32, 32);
+                actionSprite[3][i] = spriteSheet.getSubimage(32 * i, 32 * 6, 32, 32);
+            }
+            
+        } catch (IOException ex) {}
+    }
+    
     public void animate() {
-        if      (mapX > lastX) direction = 0;
-        else if (mapX < lastX) direction = 1;
-        else if (mapY > lastY) direction = 2; 
-        else if (mapY < lastY) direction = 3;
+        if      (mapX > lastX) direction = 0; // Right
+        else if (mapX < lastX) direction = 1; // Left
+        else if (mapY > lastY) direction = 2; // Down
+        else if (mapY < lastY) direction = 3; // Up
         
         if (mapX == lastX && mapY == lastY) {
-            
             direction = 4;
-        } else if (spriteLoop % 20 == 0)
-             step++;
+        } else if (spriteLoop % 20 == 0){
+            step++;
+        }
+        
+        if (spriteLoop % 5 == 0) {
+            actionStep++;
+        }
+             
         if (spriteLoop > 100) spriteLoop = 0;
             spriteLoop++;
         
@@ -82,23 +119,27 @@ public abstract class Sprite extends Rectangle{
         
         if (step == 4) step = 0;
         
-        switch (direction) {
-            case 0: 
-                appearance = walkingSprite[0][step];
-                break;
-            case 1:
-                appearance = walkingSprite[1][step];
-                break;
-            case 2:
-                appearance = walkingSprite[2][step];
-                break;
-            case 3: 
-                appearance = walkingSprite[3][step];
-                break;
-            case 4:
-                appearance = getIdle();
-                break;
-        }
+        if (actionStep == 5) actionStep = 0;
+        
+        
+        
+        if (direction == 4) appearance = getIdle();
+        else appearance = walkingSprite[direction][step];
+        
+
+        if (attacking && this instanceof Player) {
+            if (direction == 4) {
+                appearance = actionSprite[3][actionStep];
+                appearance = addWeapon(appearance, weaponSprite[3][actionStep]);
+            } else {
+                appearance = actionSprite[direction][actionStep];
+                appearance = addWeapon(appearance, weaponSprite[direction][actionStep]);
+            }
+
+        } else if (!attacking) actionStep = 0;
+        
+        
+        
         
 
         updateDimensions();
@@ -155,15 +196,11 @@ public abstract class Sprite extends Rectangle{
     
     public void updateHealth(int change) {
         curHP += change;
-        updateHealth();
+        if (this instanceof Player) 
+            if ( curHP < 0 ) curHP = maxHP;
     }
     
-    public void updateHealth() {
-        if (curHP > maxHP) curHP = maxHP;
-        else if (curHP < 0) curHP = maxHP;
-    }
-    
-    public void updateHealth(byte change, boolean complete) {
+    public void updateHealth(int change, boolean complete) {
         if (complete) curHP = change;
     }
 
@@ -171,9 +208,22 @@ public abstract class Sprite extends Rectangle{
         BufferedImage flipped = new BufferedImage(image.getWidth(null), image.getHeight(null), BufferedImage.TYPE_INT_ARGB);
         
         Graphics2D g2 = flipped.createGraphics();
-        g2.drawImage(image,  width + 1, 0, - width, height, null);
+        g2.drawImage(image,  width + 1, 0, -width, height, null);
         
-        return (Image)flipped;
+        return (Image) flipped;
+    }
+    
+
+    
+    private Image addWeapon(Image baseImage, Image weaponImage){
+        BufferedImage weapon = (BufferedImage) weaponImage;
+        
+        
+        Graphics2D g2 = weapon.createGraphics();
+        g2.drawImage(baseImage, 0, 0, null);
+        
+        
+        return (Image) weapon;
     }
     
 

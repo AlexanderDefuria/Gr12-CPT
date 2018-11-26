@@ -2,33 +2,41 @@
 package grade12cpt;
 
 import java.awt.Image;
-import javax.swing.ImageIcon;
-
 
 
 public class MeleeWeapon {
 
+    public Image appearance;
+    
+    static class Sword extends MeleeWeapon {
+
+        public Sword() {
+            add();
+        }
+        
+    }
+    
+    static class Axe extends MeleeWeapon {
+        
+        public Axe() {
+            
+        }
+    }
+    
     public void attackAnimation() {
         
     }
     
-
-}
-
-class Sword {
-       
-    public static Image getAppearance() {
-        ImageIcon ii = new ImageIcon("src/images/");
-        return ii.getImage();
-    }
-    
-}
-
-class Axe {
-    
-    public static void getAppearance() {
+    private static void add() {
         
     }
     
+    
+    
+
 }
+
+
+
+
 

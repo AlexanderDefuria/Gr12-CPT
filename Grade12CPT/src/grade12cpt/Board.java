@@ -90,8 +90,8 @@ public class Board extends JPanel implements Runnable, ActionListener {
         
         // TODO Remove hit boxes
         //g.setColor(Color.red);
-        
-        //for (Rectangle x: map.getTerrainOutline())
+        //g.fillRect(Player.attackRange.x, Player.attackRange.y, Player.attackRange.width, Player.attackRange.height);
+        //g.fillRect(640,320,100,100);
         //g.drawRect((int)player.getHitbox().getX(), (int)player.getHitbox().getY(),  player.getHitbox().width  ,player.getHitbox().height);
         //g.drawRect(map.getMapOutline().x,  map.getMapOutline().y,  map.getMapOutline().width,  map.getMapOutline().height);
 
@@ -106,8 +106,8 @@ public class Board extends JPanel implements Runnable, ActionListener {
         g.fillRect((int)B_WIDTH/4, (int)(B_HEIGHT * 0.9), (int)((B_WIDTH/2) * percentHP / 100), (int)(B_HEIGHT * 0.1));
         
         g.setColor(Color.red);
-        g.fillRect(((int)B_WIDTH/4) + (int)((B_WIDTH/2) * percentHP / 100), (int)(B_HEIGHT * 0.9), (int)(B_WIDTH/2) - (int)((B_WIDTH/2) * percentHP / 100), (int)(B_HEIGHT * 0.1));
-        
+        g.fillRect(((int)B_WIDTH/4) + (int)((B_WIDTH/2) * percentHP / 100), (int)(B_HEIGHT * 0.9), 
+                (int)(B_WIDTH/2) - (int)((B_WIDTH/2) * percentHP / 100), (int)(B_HEIGHT * 0.1));
         
         Toolkit.getDefaultToolkit().sync();
     }

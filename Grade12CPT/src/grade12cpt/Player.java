@@ -17,11 +17,13 @@ public class Player extends Sprite{
     private static boolean canMove[] = new boolean[5];
     // Speed work with 1,2,4,8 etc      TODO No fucking clue why but that's how it is!
     public static int speed = 2;
+    public static MeleeWeapon currentWeapon = null;
     
     
     public Player(UserInput ui) {
         this.ui = ui;
         init();
+        
         
     }
       
@@ -29,14 +31,19 @@ public class Player extends Sprite{
     public void init() {
         loadImage("src/images/enemy.png");
         loadSprites("src/images/clotharmor.png");
+        loadWeaponSprites("src/images/sword1.png");
         moveX = 0;
         moveY = 0;
         this.maxHP = 100;
         this.curHP = maxHP;
         this.setLocation(overallX, overallY);
         this.setSize(getDimensions());
-        
+        this.currentWeapon = new MeleeWeapon.Sword();
+        attackRange = new Rectangle(mapX, mapY,0,0);
+                
         for (int i = 0; i != canMove.length; i++) canMove[i] = true;
+        
+        
 
 
     }
@@ -68,14 +75,38 @@ public class Player extends Sprite{
         else if(UserInput.DOWN && canMove[3]) moveY = -speed;
         else moveY = 0;
         
-        if(UserInput.SPACE) loadSprites("src/images/platearmor.png");
+        if(UserInput.SPACE) {
+            attacking = true;
+            
+            switch(direction) {
+                case 0:
+                    attackRange = new Rectangle(overallX - 32, overallY - (32 / 2), 32, 64);
+                    break;
+                case 1: 
+                    attackRange = new Rectangle(overallX + 32, overallY - (32 / 2), 32, 64);
+                    break;
+                case 2: 
+                    attackRange = new Rectangle(overallX - (32 / 2), overallY - 32, 64, 32);
+                    break;
+                case 3:
+                    attackRange = new Rectangle(overallX - (32 / 2), overallY + 32, 64, 32);
+                    break;
+                case 4:
+                    attackRange = new Rectangle(overallX - (32 / 2), overallY + 32, 64, 32);
+                    break;
+                    
+            }
+            
+        } else {
+            attacking = false;
+            attackRange = new Rectangle();
+        }
         
         mapX += moveX;
         mapY += moveY;
 
     }
     
-
     public void checkMapEdge(Map map) {
 
         Rectangle hit = new Rectangle(map.getMapOutline());
@@ -135,10 +166,22 @@ public class Player extends Sprite{
     public void checkEnemies(Map map) {
         for (Enemy enemy : EnemyManager.getEnemies()){
             if (this.intersects(enemy.getBounds())) {
-                updateHealth(-1);
+                this.updateHealth(-1);
             }
             
+            if (this.attackRange.intersects(enemy.getBounds())) {
+                enemy.updateHealth(-1);
+                
+            }
+            
+            
+            
+            
+
         }
+        
+        EnemyManager.checkDamage();
+
     }
     
     

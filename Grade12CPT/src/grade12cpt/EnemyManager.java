@@ -13,6 +13,7 @@ public abstract class EnemyManager {
 
     public static ArrayList<Enemy> allEnemies = new ArrayList<>();
     public static ArrayList<Enemy> visibleEnemies = new ArrayList<>();
+    public static ArrayList<Enemy> toRemove = new ArrayList<>();
     private static int OLD_X = 0, OLD_Y = 0;
     private static int X_OFF = 0, Y_OFF = 0;
       
@@ -21,13 +22,22 @@ public abstract class EnemyManager {
         allEnemies.add(newEnemy);
     }
     
+    public static void removeEnemy(Enemy enemy) {
+        allEnemies.remove(enemy);
+    }
+    
     public static ArrayList<Enemy> getEnemies() {
         return allEnemies;
     }
     
-    public static void checkDamage(Rectangle range) {
+    public static void checkDamage() {
         for (Enemy x : allEnemies) {
-            //if (x.intersects(player.))
+            if (x.getHealth() < 0) toRemove.add(x);
+            
+        }
+        
+        for (Enemy removing : toRemove) {
+            allEnemies.remove(removing);
         }
     }
 

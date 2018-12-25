@@ -1,8 +1,8 @@
 
 package grade12cpt;
 
-import java.awt.Rectangle;
 import java.util.ArrayList;
+import java.util.Iterator;
 
 /**
  *
@@ -18,10 +18,14 @@ public abstract class EnemyManager {
     private static int X_OFF = 0, Y_OFF = 0;
       
     
+    public static void loadEnemies() {
+        
+    }
+    
     public static void addEnemy(Enemy newEnemy) {
         allEnemies.add(newEnemy);
     }
-    
+        
     public static void removeEnemy(Enemy enemy) {
         allEnemies.remove(enemy);
     }
@@ -33,7 +37,6 @@ public abstract class EnemyManager {
     public static void checkDamage() {
         for (Enemy x : allEnemies) {
             if (x.getHealth() < 0) toRemove.add(x);
-            
         }
         
         for (Enemy removing : toRemove) {
@@ -48,22 +51,42 @@ public abstract class EnemyManager {
 
     // If the currecnt offset is different then update all enemies current offset
     public static void updateEnemies() {
-        if (X_OFF != OLD_X) {
-            OLD_X = X_OFF;
-            allEnemies.forEach((enemy) -> {
-                enemy.setMapX(X_OFF);
-            });
-        }
-        
-        if (Y_OFF != OLD_Y) {
-            OLD_Y = Y_OFF;
-            allEnemies.forEach((enemy) -> {
-                enemy.setMapY(Y_OFF);
-            });
-        }
         
         allEnemies.forEach((enemy) -> {
-            //System.out.println(enemy.getLocation());
+            if (X_OFF != OLD_X) {
+                OLD_X = X_OFF;
+                enemy.setMapX(X_OFF + enemy.Xorigin + (int)enemy.moveX);                
+            } 
+            
+            if (Y_OFF != OLD_Y) {
+                OLD_Y = Y_OFF;
+                enemy.setMapY(Y_OFF + enemy.Yorigin + (int)enemy.moveY);
+            }
+            
+            
+            enemy.update();
+            System.out.println(enemy.moveX);
         });
+        
+        for (Iterator<Enemy> enemyIter = allEnemies.iterator(); enemyIter.hasNext();) {
+            Enemy enemy = enemyIter.next();
+            for (Projectile projectile : ProjectileManager.allProjectiles) 
+                if (projectile.intersects(enemy)) {
+                    enemyIter.remove();
+                    break;
+                }
+
+        }
+        
+        
+
+    }
+    
+    public static Enemy getEnemy(String name) {
+        for (Enemy enemy : allEnemies) 
+            if (enemy.getName().equals(name)) 
+                return enemy;
+        
+        throw new  IllegalArgumentException("That name does not exist as of now.... TIME TO CRASH!");
     }
 }

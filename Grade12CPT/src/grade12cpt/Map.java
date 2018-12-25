@@ -132,8 +132,8 @@ public class Map {
                 break;
         }
         
-        EnemyManager.setOffset((-MAP_X * 32) + PIC_X, (-MAP_Y * 32) + PIC_Y);
-        //EnemyManager.setOffset( PIC_X,  PIC_Y);
+        EnemyManager.setOffset( getMapXoffset(), getMapYoffset());
+        ProjectileManager.setOffset( getMapXoffset(), getMapYoffset());
         
         
         mapOutline.setLocation((int)mapOutline.getX() + X_OFF , (int)mapOutline.getY() + Y_OFF );
@@ -175,11 +175,6 @@ public class Map {
                     terrain.add(new SolidTerrain(tile_id, tile_size * (x - MAP_X - 1) + PIC_X, 
                         tile_size * (y - MAP_Y - 1) + PIC_Y));
                     
-                    // TODO Remove Rectangle
-                    //background.createGraphics().fillRect(tile_size * (x - MAP_X - 1) + PIC_X,  tile_size * (y - MAP_Y - 1) + PIC_Y
-                      //      , tile_size, tile_size);
-                    
-                    
                 }
             }
         }
@@ -188,11 +183,18 @@ public class Map {
         for (Enemy enemy : EnemyManager.getEnemies()) {
            if (    enemy.getMapX() > -50 && enemy.getMapX() < B_WIDTH + 50
                 && enemy.getMapY() > -50 && enemy.getMapY() < B_HEIGHT + 50  ) {
-               
-               background.createGraphics().drawImage(enemy.appearance, enemy.getMapX(), enemy.getMapY(), null);
-           }
-                    
+                        background.createGraphics().drawImage(enemy.appearance, enemy.getMapX(), enemy.getMapY(), null);
+           }         
         }
+        
+        // Display projectile in proper location
+        for (Projectile projectile : ProjectileManager.getProjectiles()) {
+           if (    projectile.getMapX() > -50 && projectile.getMapX() < B_WIDTH + 50
+                && projectile.getMapY() > -50 && projectile.getMapY() < B_HEIGHT + 50  ) {
+                        background.createGraphics().drawImage(projectile.appearance, projectile.getMapX(), projectile.getMapY(), null);
+           }       
+        }
+
         
         
         return background;
@@ -213,6 +215,13 @@ public class Map {
     
     public static String getSpriteFile() {
         return spriteFile;
+    }
+    
+    public static int getMapXoffset() {
+        return (-MAP_X * 32) + PIC_X;
+    }
+    public static int getMapYoffset() {
+        return (-MAP_Y * 32) + PIC_Y;
     }
     
     

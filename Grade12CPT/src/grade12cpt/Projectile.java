@@ -1,0 +1,39 @@
+
+package grade12cpt;
+
+import static grade12cpt.Board.B_HEIGHT;
+import static grade12cpt.Board.B_WIDTH;
+
+public class Projectile extends Sprite{
+
+    public double angle;
+    public double totalSpeed = 5;
+    public double Xspeed;
+    public double Yspeed;
+    public int loop = 0;
+    public int damage;
+    
+    
+    
+    public Projectile(Weapon weapon) {
+        loadImage(weapon.getSheet());
+        
+        x = B_WIDTH / 2;
+        y = B_HEIGHT / 2;
+        Xorigin = x - Map.getMapXoffset();
+        Yorigin = y - Map.getMapYoffset();
+        mapX = B_WIDTH / 2;
+        mapY = B_HEIGHT / 2;
+        angle = 1.5 * Math.PI - Math.atan2(UserInput.mouse_Y - ((B_HEIGHT ) / 2), UserInput.mouse_X - ((B_WIDTH ) / 2));
+        Xspeed = Math.sin(angle) * totalSpeed;
+        Yspeed = Math.cos(angle) * totalSpeed;
+        
+        //System.out.println("Angle: " + angle + "   X speed: " + Xspeed + "   Y speed: " + Yspeed);
+
+
+    
+    }
+
+
+
+}

@@ -4,12 +4,13 @@ package grade12cpt;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
-import java.awt.Rectangle;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.JOptionPane;
@@ -45,6 +46,7 @@ public class Board extends JPanel implements Runnable, ActionListener {
     private void initBoard() {
 
         addKeyListener(new TAdapter());
+        addMouseListener(new MAdapter());
         
         // TODO Fix bug where player keeps scrolling after window is deslected
         setFocusable(true);
@@ -54,11 +56,9 @@ public class Board extends JPanel implements Runnable, ActionListener {
         
         map = new Map();
         input = new UserInput();
-        player = new Player(input);
+        player = new Player(input, "Bill");
         
-        EnemyManager.addEnemy(new Enemy());
-
-
+        EnemyManager.addEnemy(new Enemy("Tom"));
     }
 
     @Override
@@ -83,18 +83,11 @@ public class Board extends JPanel implements Runnable, ActionListener {
 
         player.updatePlayer(map);
         EnemyManager.updateEnemies();
+        ProjectileManager.updateProjectiles();
         
         g.drawImage(map.display(g, player), 0, 0, this);
         g.drawImage(player.appearance,B_WIDTH/2,B_HEIGHT/2,this);
         
-        
-        // TODO Remove hit boxes
-        //g.setColor(Color.red);
-        //g.fillRect(Player.attackRange.x, Player.attackRange.y, Player.attackRange.width, Player.attackRange.height);
-        //g.fillRect(640,320,100,100);
-        //g.drawRect((int)player.getHitbox().getX(), (int)player.getHitbox().getY(),  player.getHitbox().width  ,player.getHitbox().height);
-        //g.drawRect(map.getMapOutline().x,  map.getMapOutline().y,  map.getMapOutline().width,  map.getMapOutline().height);
-
         Toolkit.getDefaultToolkit().sync();
     }
 
@@ -111,12 +104,7 @@ public class Board extends JPanel implements Runnable, ActionListener {
         
         Toolkit.getDefaultToolkit().sync();
     }
-
     
-    // TODO populate cycle() method 
-    private void cycle() {
-
-    }
 
     @Override
     public void run() {
@@ -127,7 +115,6 @@ public class Board extends JPanel implements Runnable, ActionListener {
 
         while (true) {
 
-            cycle();
             repaint();
 
             timeDiff = System.currentTimeMillis() - beforeTime;
@@ -174,6 +161,19 @@ public class Board extends JPanel implements Runnable, ActionListener {
         @Override
         public void keyPressed(KeyEvent e) {
             input.keyPressed(e);
+        }
+    }
+    
+    private class MAdapter extends MouseAdapter {
+        
+        @Override
+        public void mousePressed(MouseEvent e) {
+            input.mousePressed(e);
+        }
+        
+        @Override
+        public void mouseReleased(MouseEvent e) {
+            input.mouseReleased(e);
         }
     }
 }

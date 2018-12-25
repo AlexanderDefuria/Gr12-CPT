@@ -15,41 +15,37 @@ public class Player extends Sprite{
     public int moveX, moveY = 0;
     public static Rectangle attackRange;
     private static boolean canMove[] = new boolean[5];
-    // Speed work with 1,2,4,8 etc      TODO No fucking clue why but that's how it is!
-    public static int speed = 2;
-    public static MeleeWeapon currentWeapon = null;
     
-    
-    public Player(UserInput ui) {
+    public Player(UserInput ui, String name) {
         this.ui = ui;
-        init();
-        
-        
+        this.name = name;
+        init(); 
     }
-      
     
+
     public void init() {
+        this.weapon = new RangedWeapon.Orb();
+        
         loadImage("src/images/enemy.png");
         loadSprites("src/images/clotharmor.png");
-        loadWeaponSprites("src/images/sword1.png");
+            
+        if (weapon instanceof MeleeWeapon) loadWeaponSprites(weapon);
+        else if (weapon instanceof RangedWeapon)
+        
         moveX = 0;
         moveY = 0;
+        speed = 2;
         this.maxHP = 100;
         this.curHP = maxHP;
         this.setLocation(overallX, overallY);
         this.setSize(getDimensions());
-        this.currentWeapon = new MeleeWeapon.Sword();
+        
         attackRange = new Rectangle(mapX, mapY,0,0);
                 
         for (int i = 0; i != canMove.length; i++) canMove[i] = true;
-        
-        
-
 
     }
-    
 
-    
     
     public void updatePlayer(Map map) {
         
@@ -60,32 +56,29 @@ public class Player extends Sprite{
         UserInput();
         animate();
         
-        
-        
-        
-        
-        
-
-        
         mapX += moveX;
         mapY += moveY;
-        
-        
 
     }
     
     public void UserInput() {
-        if(UserInput.LEFT && canMove[0]) moveX = speed;
-        else if(UserInput.RIGHT && canMove[1]) moveX = -speed;
+        if(UserInput.A_KEY && canMove[0]) moveX = speed;
+        else if(UserInput.D_KEY && canMove[1]) moveX = -speed;
         else moveX = 0;
 
-        if(UserInput.UP && canMove[2]) moveY = speed;
-        else if(UserInput.DOWN && canMove[3]) moveY = -speed;
+        if(UserInput.W_KEY && canMove[2]) moveY = speed;
+        else if(UserInput.S_KEY && canMove[3]) moveY = -speed;
         else moveY = 0;
         
-        if(UserInput.SPACE) {
+        if(UserInput.CLICKED && canAttack) {
             attacking = true;
             
+            if (weapon instanceof RangedWeapon) {
+                ProjectileManager.addProjectile(new Projectile(weapon));
+                canAttack = false;
+                return;
+            }
+
             switch(direction) {
                 case 0:
                     attackRange = new Rectangle(overallX - 32, overallY - (32 / 2), 32, 64);
@@ -99,8 +92,6 @@ public class Player extends Sprite{
                 default:
                     attackRange = new Rectangle(overallX - (32 / 2), overallY + 32, 64, 32);
                     break;
-                
-                    
             }
             
         } else {
@@ -109,6 +100,7 @@ public class Player extends Sprite{
         }
     }
     
+    // <editor-fold defaultstate="collapsed">
     public void checkMapEdge(Map map) {
 
         Rectangle hit = new Rectangle(map.getMapOutline());
@@ -175,10 +167,6 @@ public class Player extends Sprite{
                 enemy.updateHealth(-1);
                 
             }
-            
-            
-            
-            
 
         }
         
@@ -193,13 +181,9 @@ public class Player extends Sprite{
     public int getMoveY() {
         return moveY;
     }
+    // </editor-fold>
     
-    public void attack() {
-        
-    }
-    
-    
-       
+
     public Rectangle getHitbox() {
         return new Rectangle(overallX, overallY, width, height);
     }

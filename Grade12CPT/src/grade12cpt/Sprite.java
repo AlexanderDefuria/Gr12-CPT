@@ -17,17 +17,27 @@ public abstract class Sprite extends Rectangle{
 
     public int x;
     public int y;
+    public double moveX;
+    public double moveY;
+    public int distance;
+    public int fullMove;
+    public int Xorigin;
+    public int Yorigin;
     public int lastX;
     public int lastY;
     public int direction;
+    public int attackDirection;
     public int step;
     public int actionStep;
     public int mapX;
     public int mapY;
+    public int speed; 
     public int spriteLoop;
     public double curHP = 0;
     public double maxHP = 0;
+    public boolean moves = false;
     public boolean attacking = false;
+    public boolean canAttack = true;
     public Image appearance;
     public BufferedImage spriteSheet;
     public Rectangle bounds;
@@ -36,16 +46,15 @@ public abstract class Sprite extends Rectangle{
     public Image[][] actionSprite;
     public String armorSheet;
     public String weaponSheet;
-    
-    private boolean animate = true; // TODO have different sprites not be animated, add method to set
-    
+    public String name;
+    public Weapon weapon;  
     private boolean passable;
     
     
     protected final void loadImage(String imageName) {
         ImageIcon ii = new ImageIcon(imageName);
         appearance = ii.getImage();
-        getDimensions();
+        this.setSize(getDimensions());
         
         this.setLocation(x, y);
         
@@ -55,8 +64,7 @@ public abstract class Sprite extends Rectangle{
         armorSheet = sheetName;
         try {
             spriteSheet = ImageIO.read(new File(sheetName));
-            
-            
+
             // Populate walking sprite image array
             walkingSprite = new Image[4][4];
             for (int i = 0; i != 4; i++){
@@ -64,15 +72,13 @@ public abstract class Sprite extends Rectangle{
                 walkingSprite[1][i] = spriteSheet.getSubimage(32 * i, 32, 32, 32);
                 walkingSprite[2][i] = spriteSheet.getSubimage(32 * i, 32 * 4, 32, 32);
                 walkingSprite[3][i] = spriteSheet.getSubimage(32 * i, 32 * 7, 32, 32);
-            }
-            
-            // TODO Populate combat sprite image array 
+            } 
 
         } catch (IOException ex) {}
     }
     
-    protected final void loadWeaponSprites(String sheetName) {
-        weaponSheet = sheetName;
+    protected final void loadWeaponSprites(Weapon weapon) {
+        weaponSheet = weapon.getSheet();
         try {
             spriteSheet = ImageIO.read(new File(weaponSheet));  
             weaponSprite = new Image[4][5];
@@ -110,6 +116,10 @@ public abstract class Sprite extends Rectangle{
         if (spriteLoop % 5 == 0) {
             actionStep++;
         }
+        
+        if (spriteLoop % 50 == 0 && !canAttack) {
+            canAttack = true;
+        } 
              
         if (spriteLoop > 100) spriteLoop = 0;
             spriteLoop += 2;
@@ -119,29 +129,34 @@ public abstract class Sprite extends Rectangle{
         
         if (step == 4) step = 0;
         
-        if (actionStep == 5) actionStep = 0;
+        if (actionStep == 5) {
+            actionStep = 0;
+            canAttack = false;
+        }
         
-        
-        
-        if (direction == 4) appearance = getIdle();
+                if (direction == 4) appearance = getIdle();
         else appearance = walkingSprite[direction][step];
-        
+
 
         if (attacking && this instanceof Player) {
-            if (direction == 4) {
-                appearance = actionSprite[3][actionStep];
-                appearance = addWeapon(appearance, weaponSprite[3][actionStep]);
-            } else {
-                appearance = actionSprite[direction][actionStep];
-                appearance = addWeapon(appearance, weaponSprite[direction][actionStep]);
-            }
-
+            
+            if (UserInput.UP) direction = 2;
+            else if (UserInput.LEFT) direction = 0;
+            else if (UserInput.DOWN) direction = 3;
+            else if (UserInput.RIGHT) direction = 1;
+            
+            if (weapon instanceof MeleeWeapon)
+                if (direction == 4) {
+                    appearance = actionSprite[3][actionStep];
+                    appearance = addWeapon(appearance, weaponSprite[3][actionStep]);
+                } else {
+                    appearance = actionSprite[direction][actionStep];
+                    appearance = addWeapon(appearance, weaponSprite[direction][actionStep]);
+                }
+            
+            
         } else if (!attacking) actionStep = 0;
         
-        
-        
-        
-
         updateDimensions();
     }
     
@@ -174,12 +189,12 @@ public abstract class Sprite extends Rectangle{
     
     public void setMapX(int x) {
         this.x = x;
-        setLocation(x,y);
+        this.setLocation(x, getMapY());
     }
     
     public void setMapY(int y) {
         this.y = y;
-        setLocation(x,y);
+        this.setLocation(getMapX(), y);
     }
     
     public boolean getPassable() {
@@ -192,6 +207,10 @@ public abstract class Sprite extends Rectangle{
     
     public double getMaxHealth() {
         return maxHP;
+    }
+    
+    public String getName() {
+        return name;
     }
     
     public void updateHealth(int change) {

@@ -4,14 +4,15 @@ package grade12cpt;
 import java.awt.Image;
 
 
-public class MeleeWeapon {
+public class MeleeWeapon extends Weapon{
 
     public Image appearance;
     
     static class Sword extends MeleeWeapon {
 
         public Sword() {
-            add();
+            spriteSheet = "src/images/sword1.png";
+            damage = 10;
         }
         
     }
@@ -22,14 +23,7 @@ public class MeleeWeapon {
             
         }
     }
-    
-    public void attackAnimation() {
-        
-    }
-    
-    private static void add() {
-        
-    }
+
     
     
     

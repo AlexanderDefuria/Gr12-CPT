@@ -15,6 +15,9 @@ public class Enemy extends Sprite{
         init();
     }
     
+    public int movedX = 0;
+    public int movedY = 0;
+    
     private void init() {
         loadImage("src/images/enemy.png");
         this.setSize(getDimensions());
@@ -32,22 +35,32 @@ public class Enemy extends Sprite{
     }
     
     public void update() {
-        distance += (int)Math.sqrt((moveX * moveX) + (moveY * moveY));
-        if (distance > fullMove || distance < 0) {
-            moveX = -moveX;
-            moveY = -moveY;
-        }
+        if (movedX != moveX) {
+            if (moveX > 0) {
+                x += speed;
+                movedX += speed;
+            }
+            else if (moveX < 0) {
+                x -= speed;
+                movedX += speed;
+            } 
+        } else if (movedY != moveY) {
+            if (moveY > 0) {
+                y += speed;
+                movedY += speed;
+            }
+            else if (moveY < 0) {
+                y -= speed;
+                movedY += speed;
+            } 
+        
+        }   
     }
     
-    public void walk(double angle, int range) {
-        moveX = 2; //;
-        moveY = 2; //Math.cos(angle) * speed;
-        fullMove = range;
-        System.out.println("Move X: " + moveX + "     Move Y: " + moveY);
-    }
     
     public void walk(int x, int y) {
-        
+        moveX += x;
+        moveY += y;
     }
     
     

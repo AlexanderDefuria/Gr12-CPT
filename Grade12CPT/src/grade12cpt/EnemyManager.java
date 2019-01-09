@@ -53,18 +53,18 @@ public abstract class EnemyManager {
     public static void updateEnemies() {
         
         allEnemies.forEach((enemy) -> {
+            enemy.update();
+            
             if (X_OFF != OLD_X) {
                 OLD_X = X_OFF;
-                enemy.setMapX(X_OFF + enemy.Xorigin + (int)enemy.moveX);                
+                enemy.setMapX(X_OFF + enemy.Xorigin + (int)enemy.movedX);                
             } 
             
             if (Y_OFF != OLD_Y) {
                 OLD_Y = Y_OFF;
-                enemy.setMapY(Y_OFF + enemy.Yorigin + (int)enemy.moveY);
+                enemy.setMapY(Y_OFF + enemy.Yorigin + (int)enemy.movedY);
             }
             
-            
-            enemy.update();
             System.out.println(enemy.moveX);
         });
         

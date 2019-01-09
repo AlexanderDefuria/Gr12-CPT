@@ -36,6 +36,7 @@ public class Board extends JPanel implements Runnable, ActionListener {
     public static Player player;
     public static int loopIteration;
     
+    public static Enemy tom = new Enemy("Tom");
     
     public Board() {
         System.out.println();
@@ -58,7 +59,9 @@ public class Board extends JPanel implements Runnable, ActionListener {
         input = new UserInput();
         player = new Player(input, "Bill");
         
-        EnemyManager.addEnemy(new Enemy("Tom"));
+        
+        
+        EnemyManager.addEnemy(tom);
     }
 
     @Override
@@ -81,6 +84,7 @@ public class Board extends JPanel implements Runnable, ActionListener {
 
     private void drawBackground(Graphics g) {
 
+        tom.walk(2,0);
         player.updatePlayer(map);
         EnemyManager.updateEnemies();
         ProjectileManager.updateProjectiles();

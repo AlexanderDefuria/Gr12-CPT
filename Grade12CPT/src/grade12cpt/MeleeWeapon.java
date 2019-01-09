@@ -20,7 +20,8 @@ public class MeleeWeapon extends Weapon{
     static class Axe extends MeleeWeapon {
         
         public Axe() {
-            
+            spriteSheet = "src/images/axe.png";
+            damage = 20;
         }
     }
 

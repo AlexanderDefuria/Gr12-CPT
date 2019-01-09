@@ -14,6 +14,8 @@ import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 import static java.awt.image.BufferedImage.TYPE_3BYTE_BGR;
 import java.io.File;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.imageio.ImageIO;
 
 
@@ -32,31 +34,72 @@ public class Map {
     public static int mapWidth, mapHeight = 0;
     public static Rectangle mapOutline;
     public static String mapFile = "src/maps/singleterraintest.csv";
+    public static String unpassableMap = "src/unpassablemaps";
     public static String spriteFile = "src/images/desert_sprite.png";
     
     private static BufferedImage sprites;
     private static BufferedImage background;
     private static BufferedImage temp;
+
+    private static BufferedReader br = null;
+    private static FileInputStream fis;
+    private static String cvsSplitBy = ",";
+    private static String line = "";
+
     
     public Map(){
         init();
     }
     
+    private void solveUnpassable() {
+        File dir = new File(unpassableMap);
+        File[] directoryListing = dir.listFiles();
+            if (directoryListing != null) {                
+                for (File child : directoryListing) {
+                    try {
+                        System.out.println(child);
+                        fis = new FileInputStream(child);
+                        br = new BufferedReader(new InputStreamReader(fis));
+                        
+                        while ((line = br.readLine()) != null) {
+                            // use comma as separator
+                            String[] values = line.split(cvsSplitBy); 
+                            
+                            for (int i = 0; i != values.length; i++) {
+                                
+                                int key = Integer.parseInt(values[i]);
+                                boolean toPass = true;
+                                
+                                if (key < 0) break;
+                            
+                                for (Integer item : terrain_id){
+                                    if (item == key) {
+                                        toPass = false;
+                                        break;
+                                    }
+                                }
+                                
+                                if (toPass) terrain_id.add(key);
+                            }
+                        }
+                    } catch (FileNotFoundException ex) {
+                        Logger.getLogger(Map.class.getName()).log(Level.SEVERE, null, ex);
+                    } catch (IOException ex) {
+                        Logger.getLogger(Map.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                    
+                    
+                }
+            }   
+    }
+    
     private void init() {
-        BufferedReader br = null;
-        FileInputStream fis;
-        String cvsSplitBy = ",";
-        String line = "";
+        
+        solveUnpassable();
+        
         tiledWidth = (int)(B_WIDTH / tile_size);
-        tiledHeight = (int)(B_HEIGHT/ tile_size);
-        
-        // Unpassable terrain ID's
-        terrain_id.add(24); terrain_id.add(25); terrain_id.add(26); 
-        terrain_id.add(32); terrain_id.add(33); terrain_id.add(34);
-        terrain_id.add(40); terrain_id.add(41); terrain_id.add(42);
-       
+        tiledHeight = (int)(B_HEIGHT/ tile_size);      
 
-        
         background = new BufferedImage(B_WIDTH, B_HEIGHT, TYPE_3BYTE_BGR);
         
         try {
@@ -86,16 +129,7 @@ public class Map {
             e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
-        } finally {
-            if (br != null) {
-                try {
-                    br.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
         }
-
     }    
     
     // TODO FIx bug where player keeps scrolling after window is deslected
@@ -134,7 +168,6 @@ public class Map {
         
         EnemyManager.setOffset( getMapXoffset(), getMapYoffset());
         ProjectileManager.setOffset( getMapXoffset(), getMapYoffset());
-        
         
         mapOutline.setLocation((int)mapOutline.getX() + X_OFF , (int)mapOutline.getY() + Y_OFF );
         
@@ -224,6 +257,7 @@ public class Map {
         return (-MAP_Y * 32) + PIC_Y;
     }
     
+
     
 }
 

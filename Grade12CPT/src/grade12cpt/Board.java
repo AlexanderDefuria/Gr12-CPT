@@ -84,7 +84,7 @@ public class Board extends JPanel implements Runnable, ActionListener {
 
     private void drawBackground(Graphics g) {
 
-        tom.walk(2,0);
+        //tom.walk(2,0);
         player.updatePlayer(map);
         EnemyManager.updateEnemies();
         ProjectileManager.updateProjectiles();

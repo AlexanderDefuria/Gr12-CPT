@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE fontscolors PUBLIC "-//NetBeans//DTD Editor Fonts and Colors settings 1.1//EN" "http://www.netbeans.org/dtds/EditorFontsColors-1_1.dtd">
+<fontscolors>
+    <fontcolor bgColor="ffdcdcd8" name="Dbx_Bpt_cmpx_dis"/>
+    <fontcolor name="org-netbeans-modules-cnd-navigation-overrides"/>
+    <fontcolor bgColor="ffdcdcd8" name="Dbx_Bpt_cmpx_hit_dis"/>
+    <fontcolor name="org-netbeans-modules-git-remote-Annotation"/>
+    <fontcolor name="PinnedWatch"/>
+    <fontcolor bgColor="fffc9d9f" name="Dbx_Bpt"/>
+    <fontcolor name="org-netbeans-modules-cnd-cpp-parser_annotation_err" waveUnderlined="red"/>
+    <fontcolor foreColor="ffa8c023" name="org-netbeans-spi-editor-hints-parser_annotation_todo_fixable"/>
+    <fontcolor foreColor="ffa8c023" name="org-netbeans-spi-editor-hints-parser_annotation_todo"/>
+    <fontcolor name="org-netbeans-modules-subversion-remote-Annotation"/>
+    <fontcolor name="org-netbeans-modules-cnd-navigation-overrides_pseudo"/>
+    <fontcolor bgColor="ffbde6aa" name="Dbx_Bpt_hit_broken"/>
+    <fontcolor name="org-netbeans-modules-cnd-navigation-specializes"/>
+    <fontcolor bgColor="ffbde6aa" name="Dbx_PC"/>
+    <fontcolor bgColor="ffbde6aa" name="Dbx_Bpt_cmpx_hit_broken"/>
+    <fontcolor bgColor="fffc9d9f" name="Dbx_Bpt_cmpx"/>
+    <fontcolor name="org-netbeans-modules-cnd-highlight-security-error"/>
+    <fontcolor name="org-netbeans-modules-mercurial-remote-Annotation"/>
+    <fontcolor bgColor="ffdcdcd8" name="Dbx_Bpt_cmpx_hit_broken_dis"/>
+    <fontcolor bgColor="fffc9d9f" name="Dbx_Bpt_compound"/>
+    <fontcolor name="org-netbeans-modules-cnd-navigation-is_specialized"/>
+    <fontcolor bgColor="ffdcdcd8" name="Dbx_Bpt_hit_dis"/>
+    <fontcolor bgColor="fffc9d9f" name="Dbx_Bpt_broken"/>
+    <fontcolor name="org-netbeans-modules-cnd-navigation-is_overridden_pseudo"/>
+    <fontcolor bgColor="ffdcdcd8" name="Dbx_Bpt_cmpx_broken_dis"/>
+    <fontcolor name="org-netbeans-modules-cnd-highligh-semantic-markoccurrences"/>
+    <fontcolor bgColor="ffbde6aa" name="Dbx_Bpt_compound_hit"/>
+    <fontcolor bgColor="ffdcdcd8" name="Dbx_Bpt_hit_broken_dis"/>
+    <fontcolor name="org-netbeans-modules-cnd-navigation-is_overridden_combined"/>
+    <fontcolor bgColor="ffbde6aa" name="Dbx_Bpt_cmpx_hit"/>
+    <fontcolor bgColor="ffdcdcd8" name="Dbx_Bpt_dis"/>
+    <fontcolor name="org-netbeans-modules-cnd-highlight-security-warning"/>
+    <fontcolor name="org-netbeans-modules-cnd-navigation-is_overridden_combined_pseudo"/>
+    <fontcolor bgColor="ffdcdcd8" name="Dbx_Bpt_broken_dis"/>
+    <fontcolor bgColor="ffbde6aa" name="Dbx_Bpt_hit"/>
+    <fontcolor name="org-netbeans-modules-cnd-navigation-extended_specializes"/>
+    <fontcolor name="org-netbeans-modules-cnd-navigation-is_overridden"/>
+    <fontcolor bgColor="fffc9d9f" name="Dbx_Bpt_cmpx_broken"/>
+    <fontcolor name="org-netbeans-modules-cnd-navigation-extended_is_specialized"/>
+</fontscolors>

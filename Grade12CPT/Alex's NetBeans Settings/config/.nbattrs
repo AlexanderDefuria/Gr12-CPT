@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE attributes PUBLIC "-//NetBeans//DTD DefaultAttributes 1.0//EN" "http://www.netbeans.org/dtds/attributes-1_0.dtd">
+<attributes version="1.0">
+    <fileobject name="">
+        <attr name="FormDesignerPalette\SwingControls\JList.palette_item\position" intvalue="550"/>
+        <attr name="Keymaps\currentKeymap" stringvalue="NetBeans"/>
+        <attr name="Templates\Other\file\instantiatingIterator" serialvalue=""/>
+    </fileobject>
+    <fileobject name="Editors">
+        <attr name="currentFontColorProfile" stringvalue="Norway Today"/>
+    </fileobject>
+</attributes>

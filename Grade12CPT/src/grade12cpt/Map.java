@@ -35,11 +35,12 @@ public class Map {
     
     public final int B_WIDTH = Board.B_WIDTH;
     public final int B_HEIGHT = Board.B_HEIGHT;
-    public static final byte tile_size = 32;
+    public static final byte tile_size = 16;
     public static int MAP_Y, MAP_X = 0;
     public static int PIC_Y, PIC_X = 0;
     public static int tiledWidth, tiledHeight = 0;
     public static int mapWidth, mapHeight = 0;
+    public static int mapCSVwidth, mapCSVheight = 0;
     public static Rectangle mapOutline;
     public static String mapFile = "src/maps/singleterraintest.csv";
     public static String goodmaps = "src/goodmaps";
@@ -116,12 +117,12 @@ public class Map {
         if (directoryListing != null)   
         for (File child : directoryListing) {
             try {
-
                 fis = new FileInputStream(child);
                 br = new BufferedReader(new InputStreamReader(fis));
                 sprites = ImageIO.read(new File(spriteFile));
-
-
+                 
+                int fileHeight = 0, fileWidth = 0; 
+                
                 // Read the tile id's into map ArrayList
                 while ((line = br.readLine()) != null) {
                     // use comma as separator
@@ -134,73 +135,105 @@ public class Map {
                     }
                     // Add the list created above to the map ArrayList
                     maplayer.add(listValues);
+                    
+                    fileWidth++;
+                    fileHeight++;   
+                    
                 }
+                
+                mapCSVwidth = fileWidth;
+                mapCSVheight = fileHeight;
 
                 map.add(maplayer);
 
                 mapOutline = new Rectangle(0 - tile_size , 0 - tile_size, 
                         map.get(0).size() * tile_size , map.size() * tile_size );
-
+                
+                
+                
             } catch (FileNotFoundException e) {
                 e.printStackTrace();
             } catch (IOException e) {
                 e.printStackTrace();
             }
+            
+            
         }
         
         int newID = 0;
-        int tile_row = sprites.getWidth()/(tile_size + 1);
+        int tile_row = sprites.getWidth()/(tile_size);
 
-        
+        for (int x = 0; x != mapCSVwidth + 1; x++) {
+            finalmap.add(new ArrayList<>());
+            for (int y = 0; y != mapCSVheight + 1; y++) {
+                finalmap.get(x).add(0);
+            }
+        }
+                
         for (ArrayList<ArrayList<Integer>> layer : map){
-            
             int row = 0;
-            
             for (ArrayList<Integer> x : layer){
                 
+                
+                int index = 0;
                 for (Integer y : x) {
+                    
                     if (y != -1) {
+                        int tile_id = y;
+                        System.out.println("Index: " + index);
+                        newID++;
                         
-                    }
-                    
-                    int tile_id = y;
-                    
-                    newID++;
 
-                    finalmap.get(row).set(tile_id, newID);
-                    
-                    int tile_x;
-                    int tile_y;
+                        finalmap.get(row).set(index, newID);
+          
+                        
+                        
+                        int tile_x;
+                        int tile_y;
 
-                    // Find the x and y of the tile id in the sprite sheet
-                    tile_y = (tile_id % tile_row);
-                    tile_x = (int)(tile_id / tile_row);
+                        // Find the x and y of the tile id in the sprite sheet
+                        tile_y = (tile_id % tile_row);
+                        tile_x = (int)(tile_id / tile_row);
 
-                    //adjust sizing     //The + 1 is to account for initial margin offset
-                    tile_x = tile_x * (tile_size + 1) + 1;
-                    tile_y = tile_y * (tile_size + 1) + 1;
-
-                    //Get the sprite from the sprite sheet based off the id's x and y
-                    temp = sprites.getSubimage(tile_y, tile_x, tile_size, tile_size);
-                    
-                    // Cycle Through existing images in the hashtable and if there is no identical create new tile ID
-                    boolean createNew = false;
-                    Set<Integer> keys = mapsprite.keySet();
-                    for (Integer key: keys){
-                        if (temp.equals(mapsprite.get(key))){
-                            finalmap.get(row).set(y, key);
+                        //adjust sizing     //The + 1 is to account for initial margin offset
+                        tile_x = tile_x * (tile_size);
+                        tile_y = tile_y * (tile_size);
+                        
+                        
+                        //Get the sprite from the sprite sheet based off the id's x and y
+                        try {
+                            temp = sprites.getSubimage(tile_y, tile_x, tile_size, tile_size);
+                        } catch (Exception e) {
+                            System.out.println("Y: " + y + "tile_Y: " + tile_y + "  Size: " + tile_size);
+                            System.exit(0);
                         }
-                        else if (temp.equals(mapsprite.get(key))){
+
+                        // Cycle Through existing images in the hashtable and if there is no identical create new tile ID
+                        boolean createNew = true ;
+                        int overWriteKey = 0;
+                        Set<Integer> keys = mapsprite.keySet();
+                        for (Integer key: keys){
+                            if (temp.equals(mapsprite.get(key))){
+                                finalmap.get(row).set(y, key);
+                                createNew = true;
+                                overWriteKey = key;
+                                break;
+                            }
+                                
+                        }
+                        
+                        
+                        if (createNew) {
+                            Graphics g = new BufferedImage(temp.getWidth(),temp.getHeight(), BufferedImage.TYPE_INT_ARGB).getGraphics();
+                            g.drawImage(mapsprite.get(overWriteKey),0,0,null);
+                            g.drawImage(temp,0,0,null);
+                                
                             newID++;
-                            finalmap.get(row).set(y, newID);
+                            finalmap.get(row).set(index, newID);
                             mapsprite.put(newID, background);
-
-                            break;
                         }
-                            
-                            
                     }
-
+                    index++;
                 }
                 
                 
@@ -248,9 +281,7 @@ public class Map {
         ProjectileManager.setOffset( getMapXoffset(), getMapYoffset());
         
         mapOutline.setLocation((int)mapOutline.getX() + X_OFF , (int)mapOutline.getY() + Y_OFF );
-        
-        int tile_row = sprites.getWidth()/(tile_size + 1);
-        
+               
 
         for (int y = MAP_Y; y != tiledHeight + MAP_Y + 3; y++ ){
             for (int x = MAP_X; x != tiledWidth + MAP_X + 3; x++) {
@@ -262,9 +293,8 @@ public class Map {
                     tile_id = 38;
                 }
 
-
                 //Get the sprite from the sprite sheet based off the id's x and y
-                temp = mapsprite.get(tile_id)
+                temp = mapsprite.get(tile_id);
 
                 // Create the tile image in the final background image with appropriate offset
                 background.createGraphics().drawImage(temp, tile_size * (x - MAP_X - 1) + PIC_X, 

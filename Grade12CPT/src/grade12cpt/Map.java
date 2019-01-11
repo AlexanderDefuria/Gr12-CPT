@@ -107,6 +107,8 @@ public class Map {
         
         solveUnpassable();
         
+        
+        
         tiledWidth = (int)(B_WIDTH / tile_size);
         tiledHeight = (int)(B_HEIGHT/ tile_size);      
 
@@ -122,7 +124,6 @@ public class Map {
                 sprites = ImageIO.read(new File(spriteFile));
                  
                 int fileHeight = 0, fileWidth = 0; 
-                
                 // Read the tile id's into map ArrayList
                 while ((line = br.readLine()) != null) {
                     // use comma as separator
@@ -133,8 +134,9 @@ public class Map {
                     for (int i = 0; i != values.length; i++) {
                         listValues.add(Integer.parseInt(values[i]));
                     }
-                    // Add the list created above to the map ArrayList
+                    // Add the list created above to the map ArrayLisT
                     maplayer.add(listValues);
+                    //System.out.println(maplayer.size());
                     
                     fileWidth++;
                     fileHeight++;   
@@ -144,7 +146,11 @@ public class Map {
                 mapCSVwidth = fileWidth;
                 mapCSVheight = fileHeight;
 
+               
                 map.add(maplayer);
+                maplayer.clear();
+                
+                
 
                 mapOutline = new Rectangle(0 - tile_size , 0 - tile_size, 
                         map.get(0).size() * tile_size , map.size() * tile_size );
@@ -157,10 +163,15 @@ public class Map {
                 e.printStackTrace();
             }
             
+
+            
             
         }
         
+        
+        
         int newID = 0;
+        
         int tile_row = sprites.getWidth()/(tile_size);
 
         for (int x = 0; x != mapCSVwidth + 1; x++) {
@@ -171,20 +182,33 @@ public class Map {
         }
                 
         for (ArrayList<ArrayList<Integer>> layer : map){
+            
+            System.out.println("New Layer");
             int row = 0;
+
             for (ArrayList<Integer> x : layer){
-                
                 
                 int index = 0;
                 for (Integer y : x) {
                     
+                    //System.out.println(y);
                     if (y != -1) {
                         int tile_id = y;
-                        System.out.println("Index: " + index);
+                        //System.out.println("Index: " + index);
                         newID++;
                         
 
-                        finalmap.get(row).set(index, newID);
+                        try{
+                            finalmap.get(row).set(index, newID);
+                        } catch (Exception e) {
+                            System.out.println(e);
+                            System.out.println("Row:    " + row);
+                            System.out.println("Index:  " + index);
+                            System.out.println("Layers: " + map.size());
+                            System.out.println("Rows:   " + layer.size()) ;
+                            System.out.println("Indices:" + x.size());
+                            System.exit(0);
+                        }
           
                         
                         
@@ -215,16 +239,16 @@ public class Map {
                         for (Integer key: keys){
                             if (temp.equals(mapsprite.get(key))){
                                 finalmap.get(row).set(y, key);
-                                createNew = true;
+                                createNew = false;
                                 overWriteKey = key;
                                 break;
                             }
                                 
                         }
                         
-                        
+                        // Creates the new tile by adding to the existing
                         if (createNew) {
-                            Graphics g = new BufferedImage(temp.getWidth(),temp.getHeight(), BufferedImage.TYPE_INT_ARGB).getGraphics();
+                            Graphics g = new BufferedImage(temp.getWidth(),temp.getHeight(), temp.getType()).getGraphics();
                             g.drawImage(mapsprite.get(overWriteKey),0,0,null);
                             g.drawImage(temp,0,0,null);
                                 
@@ -295,11 +319,14 @@ public class Map {
 
                 //Get the sprite from the sprite sheet based off the id's x and y
                 temp = mapsprite.get(tile_id);
+                //System.out.print("goin...");
+                temp = sprites.getSubimage(0, 0, tile_size, tile_size);
+
 
                 // Create the tile image in the final background image with appropriate offset
-                background.createGraphics().drawImage(temp, tile_size * (x - MAP_X - 1) + PIC_X, 
-                       tile_size * (y - MAP_Y - 1) + PIC_Y, null);
-
+                //background.createGraphics().drawImage(temp, tile_size * (x - MAP_X - 1) + PIC_X, 
+                  //     tile_size * (y - MAP_Y - 1) + PIC_Y, null);
+                  background.createGraphics().drawImage(temp,330,330,null);
 
                 if (terrain_id.contains(tile_id)) {
 

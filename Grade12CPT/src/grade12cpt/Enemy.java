@@ -29,7 +29,7 @@ public class Enemy extends Sprite{
         Xorigin = x;
         Yorigin = y;
         distance = 0;
-        speed = 2;
+        speed = 0;
         this.updateHealth(10, true);
 
     }

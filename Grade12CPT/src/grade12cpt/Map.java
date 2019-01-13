@@ -28,6 +28,7 @@ import javax.imageio.ImageIO;
 public class Map {
     
     public ArrayList<ArrayList<ArrayList<Integer>>> map = new ArrayList<>();
+    public ArrayList<ArrayList<Integer>> maplayer = new ArrayList<>();
     public ArrayList<ArrayList<Integer>> finalmap = new ArrayList<>();
     public ArrayList<ArrayList<Boolean>> passable = new ArrayList<>();
     public ArrayList<BufferedImage> tile_image = new ArrayList<>();
@@ -43,7 +44,6 @@ public class Map {
     public static int tiledWidth, tiledHeight = 0;
     public static int mapWidth, mapHeight = 0;
     public static int mapCSVwidth, mapCSVheight = 0;
-    public static int fileAmount = 0;
     public static Rectangle mapOutline;
     public static String mapFile = "src/maps/singleterraintest.csv";
 <<<<<<< HEAD
@@ -69,8 +69,7 @@ public class Map {
             if (directoryListing != null) {                
                 for (File child : directoryListing) {
                     try {
-                        
-                       
+                        System.out.println(child);
                         fis = new FileInputStream(child);
                         br = new BufferedReader(new InputStreamReader(fis));
                         
@@ -135,19 +134,12 @@ public class Map {
         File[] directoryListing = dir.listFiles();
         if (directoryListing != null)   
         for (File child : directoryListing) {
-            
-            fileAmount++;
-            System.out.printf("%-60s %4d\n", child, fileAmount);
-            
             try {
                 fis = new FileInputStream(child);
                 br = new BufferedReader(new InputStreamReader(fis));
                 sprites = ImageIO.read(new File(spriteFile));
                  
                 int fileHeight = 0, fileWidth = 0; 
-                ArrayList<ArrayList<Integer>> maplayer = new ArrayList<>();
-
-                
                 // Read the tile id's into map ArrayList
                 while ((line = br.readLine()) != null) {
                     // use comma as separator
@@ -170,18 +162,21 @@ public class Map {
                 mapCSVwidth = fileWidth;
                 mapCSVheight = fileHeight;
 
+               
                 map.add(maplayer);
+                maplayer.clear();
                 
                 
+
                 mapOutline = new Rectangle(0 - tile_size , 0 - tile_size, 
                         map.get(0).size() * tile_size , map.size() * tile_size );
                 
                 
                 
-            } catch (Exception e) {
+            } catch (FileNotFoundException e) {
                 e.printStackTrace();
-                System.out.println("Failed...");
-                System.exit(0);
+            } catch (IOException e) {
+                e.printStackTrace();
             }
             
 
@@ -203,19 +198,14 @@ public class Map {
             }
         }
                 
-        double curLayer = 0;
         for (ArrayList<ArrayList<Integer>> layer : map){
-            curLayer++;
-            System.out.printf("New Layer    %%%4.4f\n", ((curLayer/fileAmount)*100));
+            
+            System.out.println("New Layer");
             int row = 0;
-
 
             for (ArrayList<Integer> x : layer){
                 
                 int index = 0;
-                
-                
-                
                 for (Integer y : x) {
                     
                     //System.out.println(y);
@@ -258,36 +248,30 @@ public class Map {
                             System.out.println("Y: " + y + "tile_Y: " + tile_y + "  Size: " + tile_size);
                             System.exit(0);
                         }
-                        
-                        
 
                         // Cycle Through existing images in the hashtable and if there is no identical create new tile ID
                         boolean createNew = true ;
                         int overWriteKey = 0;
                         Set<Integer> keys = mapsprite.keySet();
                         for (Integer key: keys){
-                            if (temp.getData() == mapsprite.get(key).getData()){
+                            if (temp.equals(mapsprite.get(key))){
                                 finalmap.get(row).set(y, key);
                                 createNew = false;
                                 overWriteKey = key;
-                                System.out.println("Found");
                                 break;
-                            }                                
+                            }
+                                
                         }
                         
                         // Creates the new tile by adding to the existing
                         if (createNew) {
-                            BufferedImage BI = new BufferedImage(temp.getWidth(),temp.getHeight(), temp.getType());
-                            Graphics g = BI.getGraphics();
+                            Graphics g = new BufferedImage(temp.getWidth(),temp.getHeight(), temp.getType()).getGraphics();
                             g.drawImage(mapsprite.get(overWriteKey),0,0,null);
                             g.drawImage(temp,0,0,null);
-                            
                                 
                             newID++;
                             finalmap.get(row).set(index, newID);
-                            mapsprite.put(newID, BI);
-                            
-                            
+                            mapsprite.put(newID, background);
                         }
                     }
                     index++;
@@ -297,7 +281,6 @@ public class Map {
                 row++;
             }
         }
-        System.out.println(mapsprite.get(1));
         
 =======
         } catch (FileNotFoundException e) {
@@ -362,6 +345,7 @@ public class Map {
             for (int x = MAP_X; x != tiledWidth + MAP_X + 3; x++) {
                 int tile_id = 0;
                 try {
+
                     if (tile_id < 0) tile_id = 38;
                 } catch (Exception e) {
                     tile_id = 38;
@@ -369,15 +353,14 @@ public class Map {
 
                 //Get the sprite from the sprite sheet based off the id's x and y
                 temp = mapsprite.get(tile_id);
-                //System.out.println(temp);
                 //System.out.print("goin...");
-                //temp = sprites.getSubimage(200, 200, tile_size, tile_size);
+                temp = sprites.getSubimage(0, 0, tile_size, tile_size);
 
 
                 // Create the tile image in the final background image with appropriate offset
-               //background.createGraphics().drawImage(temp, tile_size * (x - MAP_X - 1) + PIC_X, 
-                 //      tile_size * (y - MAP_Y - 1) + PIC_Y, null);
-                background.createGraphics().drawImage(temp,330,330,null);
+                //background.createGraphics().drawImage(temp, tile_size * (x - MAP_X - 1) + PIC_X, 
+                  //     tile_size * (y - MAP_Y - 1) + PIC_Y, null);
+                  background.createGraphics().drawImage(temp,330,330,null);
 
                 if (terrain_id.contains(tile_id)) {
 

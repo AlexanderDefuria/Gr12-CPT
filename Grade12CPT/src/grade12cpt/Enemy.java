@@ -24,13 +24,13 @@ public class Enemy extends Sprite{
         this.setLocation(200, 200);
         x = 200;
         y = 100;
-        moveX = 0;
-        moveY = 0;
         Xorigin = x;
         Yorigin = y;
         distance = 0;
         speed = 0;
         this.updateHealth(10, true);
+        walk(45,100);
+        System.out.println("Move X: " + moveX + "     Move Y: " + moveY);
 
     }
     

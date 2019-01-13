@@ -14,10 +14,13 @@ import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 import static java.awt.image.BufferedImage.TYPE_3BYTE_BGR;
 import java.io.File;
+<<<<<<< HEAD
 import java.util.Hashtable;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+=======
+>>>>>>> parent of fb0da2c... In The Process of Setting Up Maps
 import javax.imageio.ImageIO;
 
 
@@ -43,24 +46,23 @@ public class Map {
     public static int fileAmount = 0;
     public static Rectangle mapOutline;
     public static String mapFile = "src/maps/singleterraintest.csv";
+<<<<<<< HEAD
     public static String goodmaps = "src/goodmaps";
     public static String unpassableMap = "src/unpassablemaps";
     public static String spriteFile = "src/maps/tilesheet.png";
+=======
+    public static String spriteFile = "src/images/desert_sprite.png";
+>>>>>>> parent of fb0da2c... In The Process of Setting Up Maps
     
     private static BufferedImage sprites;
     private static BufferedImage background;
     private static BufferedImage temp;
-
-    private static BufferedReader br = null;
-    private static FileInputStream fis;
-    private static String cvsSplitBy = ",";
-    private static String line = "";
-
     
     public Map(){
         init();
     }
     
+<<<<<<< HEAD
     private void solveUnpassable() {
         File dir = new File(unpassableMap);
         File[] directoryListing = dir.listFiles();
@@ -110,9 +112,23 @@ public class Map {
         
         
         
+=======
+    private void init() {
+        BufferedReader br = null;
+        FileInputStream fis;
+        String cvsSplitBy = ",";
+        String line = "";
+>>>>>>> parent of fb0da2c... In The Process of Setting Up Maps
         tiledWidth = (int)(B_WIDTH / tile_size);
-        tiledHeight = (int)(B_HEIGHT/ tile_size);      
+        tiledHeight = (int)(B_HEIGHT/ tile_size);
+        
+        // Unpassable terrain ID's
+        terrain_id.add(24); terrain_id.add(25); terrain_id.add(26); 
+        terrain_id.add(32); terrain_id.add(33); terrain_id.add(34);
+        terrain_id.add(40); terrain_id.add(41); terrain_id.add(42);
+       
 
+        
         background = new BufferedImage(B_WIDTH, B_HEIGHT, TYPE_3BYTE_BGR);
         
         File dir = new File(goodmaps);
@@ -169,6 +185,7 @@ public class Map {
             }
             
 
+<<<<<<< HEAD
             
             
         }
@@ -282,6 +299,22 @@ public class Map {
         }
         System.out.println(mapsprite.get(1));
         
+=======
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            if (br != null) {
+                try {
+                    br.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+
+>>>>>>> parent of fb0da2c... In The Process of Setting Up Maps
     }    
     
     // TODO FIx bug where player keeps scrolling after window is deslected
@@ -320,6 +353,7 @@ public class Map {
         
         EnemyManager.setOffset( getMapXoffset(), getMapYoffset());
         ProjectileManager.setOffset( getMapXoffset(), getMapYoffset());
+        
         
         mapOutline.setLocation((int)mapOutline.getX() + X_OFF , (int)mapOutline.getY() + Y_OFF );
                
@@ -400,7 +434,6 @@ public class Map {
         return (-MAP_Y * 32) + PIC_Y;
     }
     
-
     
 }
 

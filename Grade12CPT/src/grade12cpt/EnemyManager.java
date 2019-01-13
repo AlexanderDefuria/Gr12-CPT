@@ -64,6 +64,8 @@ public abstract class EnemyManager {
                 OLD_Y = Y_OFF;
                 enemy.setMapY(Y_OFF + enemy.Yorigin + (int)enemy.movedY);
             }
+            
+            System.out.println(enemy.moveX);
         });
         
         for (Iterator<Enemy> enemyIter = allEnemies.iterator(); enemyIter.hasNext();) {

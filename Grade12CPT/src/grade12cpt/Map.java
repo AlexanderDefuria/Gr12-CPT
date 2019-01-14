@@ -1,6 +1,7 @@
 
 package grade12cpt;
 
+import java.awt.Color;
 import java.io.BufferedReader;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -14,56 +15,48 @@ import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 import static java.awt.image.BufferedImage.TYPE_3BYTE_BGR;
 import java.io.File;
-<<<<<<< HEAD
-import java.util.Hashtable;
-import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-=======
->>>>>>> parent of fb0da2c... In The Process of Setting Up Maps
 import javax.imageio.ImageIO;
 
 
 
 public class Map {
     
-    public ArrayList<ArrayList<ArrayList<Integer>>> map = new ArrayList<>();
-    public ArrayList<ArrayList<Integer>> maplayer = new ArrayList<>();
-    public ArrayList<ArrayList<Integer>> finalmap = new ArrayList<>();
-    public ArrayList<ArrayList<Boolean>> passable = new ArrayList<>();
-    public ArrayList<BufferedImage> tile_image = new ArrayList<>();
+    public ArrayList<ArrayList<Integer>> map = new ArrayList<>();
     public ArrayList<Rectangle> terrain = new ArrayList<>();
     public ArrayList<Integer> terrain_id = new ArrayList<>();
-    public Hashtable<Integer, BufferedImage> mapsprite = new Hashtable<Integer, BufferedImage>();
-    
     public final int B_WIDTH = Board.B_WIDTH;
     public final int B_HEIGHT = Board.B_HEIGHT;
-    public static final byte tile_size = 16;
+    public static final byte tile_size = 32;
     public static int MAP_Y, MAP_X = 0;
     public static int PIC_Y, PIC_X = 0;
+    public static int IMG_Y, IMG_X = 0;
     public static int tiledWidth, tiledHeight = 0;
     public static int mapWidth, mapHeight = 0;
-    public static int mapCSVwidth, mapCSVheight = 0;
     public static Rectangle mapOutline;
     public static String mapFile = "src/maps/singleterraintest.csv";
-<<<<<<< HEAD
-    public static String goodmaps = "src/goodmaps";
-    public static String unpassableMap = "src/unpassablemaps";
-    public static String spriteFile = "src/maps/tilesheet.png";
-=======
     public static String spriteFile = "src/images/desert_sprite.png";
->>>>>>> parent of fb0da2c... In The Process of Setting Up Maps
+    public static String MapImageFiel = "src/maps/map.png";
+    public static String unpassableMap = "src/unpassable";
     
     private static BufferedImage sprites;
     private static BufferedImage background;
     private static BufferedImage temp;
+    private static BufferedImage mapBack;
     
     public Map(){
         init();
     }
     
-<<<<<<< HEAD
-    private void solveUnpassable() {
+    private void init() {
+        BufferedReader br = null;
+        FileInputStream fis;
+        String cvsSplitBy = ",";
+        String line = "";
+        tiledWidth = (int)(B_WIDTH / tile_size);
+        tiledHeight = (int)(B_HEIGHT/ tile_size);
+        
         File dir = new File(unpassableMap);
         File[] directoryListing = dir.listFiles();
             if (directoryListing != null) {                
@@ -73,25 +66,28 @@ public class Map {
                         fis = new FileInputStream(child);
                         br = new BufferedReader(new InputStreamReader(fis));
                         
+                        int lineNum = 0; 
+                        
                         while ((line = br.readLine()) != null) {
                             // use comma as separator
                             String[] values = line.split(cvsSplitBy); 
                             
+                            try {
+                                map.get(lineNum);
+                            } catch (IndexOutOfBoundsException e) {
+                                map.add(new ArrayList<>());
+                            }
+                            
                             for (int i = 0; i != values.length; i++) {
                                 
                                 int key = Integer.parseInt(values[i]);
-                                boolean toPass = true;
-                                
-                                if (key < 0) break;
-                            
-                                for (Integer item : terrain_id){
-                                    if (item == key) {
-                                        toPass = false;
-                                        break;
-                                    }
+                                try {
+                                    map.get(lineNum).set(i,key);
+                                } catch (IndexOutOfBoundsException e) {
+                                    map.get(lineNum).add(key);
                                 }
                                 
-                                if (toPass) terrain_id.add(key);
+                                
                             }
                         }
                     } catch (FileNotFoundException ex) {
@@ -102,187 +98,36 @@ public class Map {
                     
                     
                 }
-            }   
-    }
-    
-    private void init() {
-        
-        solveUnpassable();
-        
-        
-        
-=======
-    private void init() {
-        BufferedReader br = null;
-        FileInputStream fis;
-        String cvsSplitBy = ",";
-        String line = "";
->>>>>>> parent of fb0da2c... In The Process of Setting Up Maps
-        tiledWidth = (int)(B_WIDTH / tile_size);
-        tiledHeight = (int)(B_HEIGHT/ tile_size);
-        
-        // Unpassable terrain ID's
-        terrain_id.add(24); terrain_id.add(25); terrain_id.add(26); 
-        terrain_id.add(32); terrain_id.add(33); terrain_id.add(34);
-        terrain_id.add(40); terrain_id.add(41); terrain_id.add(42);
+            } 
        
 
         
         background = new BufferedImage(B_WIDTH, B_HEIGHT, TYPE_3BYTE_BGR);
         
-        File dir = new File(goodmaps);
-        File[] directoryListing = dir.listFiles();
-        if (directoryListing != null)   
-        for (File child : directoryListing) {
-            try {
-                fis = new FileInputStream(child);
-                br = new BufferedReader(new InputStreamReader(fis));
-                sprites = ImageIO.read(new File(spriteFile));
-                 
-                int fileHeight = 0, fileWidth = 0; 
-                // Read the tile id's into map ArrayList
-                while ((line = br.readLine()) != null) {
-                    // use comma as separator
-                    String[] values = line.split(cvsSplitBy);
-                    ArrayList<Integer> listValues= new ArrayList<>();
+        try {
+            
+            fis = new FileInputStream(mapFile);
+            br = new BufferedReader(new InputStreamReader(fis));
+            sprites = ImageIO.read(new File(spriteFile));
+            mapBack = ImageIO.read(new File(MapImageFiel));
 
-                    // Create a list of the tile id's 
-                    for (int i = 0; i != values.length; i++) {
-                        listValues.add(Integer.parseInt(values[i]));
-                    }
-                    // Add the list created above to the map ArrayLisT
-                    maplayer.add(listValues);
-                    //System.out.println(maplayer.size());
-                    
-                    fileWidth++;
-                    fileHeight++;   
-                    
+            // Read the tile id's into map ArrayList
+            while ((line = br.readLine()) != null) {
+                // use comma as separator
+                String[] values = line.split(cvsSplitBy);
+                ArrayList<Integer> listValues= new ArrayList<>();
+                
+                // Create a list of the tile id's 
+                for (int i = 0; i != values.length; i++) {
+                    listValues.add(Integer.parseInt(values[i]));
                 }
-                
-                mapCSVwidth = fileWidth;
-                mapCSVheight = fileHeight;
-
-               
-                map.add(maplayer);
-                maplayer.clear();
-                
-                
-
-                mapOutline = new Rectangle(0 - tile_size , 0 - tile_size, 
-                        map.get(0).size() * tile_size , map.size() * tile_size );
-                
-                
-                
-            } catch (FileNotFoundException e) {
-                e.printStackTrace();
-            } catch (IOException e) {
-                e.printStackTrace();
+                // Add the list created above to the map ArrayList
+                map.add(listValues);
             }
             
+            mapOutline = new Rectangle(0 - tile_size , 0 - tile_size, 
+                    map.get(0).size() * tile_size , map.size() * tile_size );
 
-<<<<<<< HEAD
-            
-            
-        }
-        
-        
-        
-        int newID = 0;
-        
-        int tile_row = sprites.getWidth()/(tile_size);
-
-        for (int x = 0; x != mapCSVwidth + 1; x++) {
-            finalmap.add(new ArrayList<>());
-            for (int y = 0; y != mapCSVheight + 1; y++) {
-                finalmap.get(x).add(0);
-            }
-        }
-                
-        for (ArrayList<ArrayList<Integer>> layer : map){
-            
-            System.out.println("New Layer");
-            int row = 0;
-
-            for (ArrayList<Integer> x : layer){
-                
-                int index = 0;
-                for (Integer y : x) {
-                    
-                    //System.out.println(y);
-                    if (y != -1) {
-                        int tile_id = y;
-                        //System.out.println("Index: " + index);
-                        newID++;
-                        
-
-                        try{
-                            finalmap.get(row).set(index, newID);
-                        } catch (Exception e) {
-                            System.out.println(e);
-                            System.out.println("Row:    " + row);
-                            System.out.println("Index:  " + index);
-                            System.out.println("Layers: " + map.size());
-                            System.out.println("Rows:   " + layer.size()) ;
-                            System.out.println("Indices:" + x.size());
-                            System.exit(0);
-                        }
-          
-                        
-                        
-                        int tile_x;
-                        int tile_y;
-
-                        // Find the x and y of the tile id in the sprite sheet
-                        tile_y = (tile_id % tile_row);
-                        tile_x = (int)(tile_id / tile_row);
-
-                        //adjust sizing     //The + 1 is to account for initial margin offset
-                        tile_x = tile_x * (tile_size);
-                        tile_y = tile_y * (tile_size);
-                        
-                        
-                        //Get the sprite from the sprite sheet based off the id's x and y
-                        try {
-                            temp = sprites.getSubimage(tile_y, tile_x, tile_size, tile_size);
-                        } catch (Exception e) {
-                            System.out.println("Y: " + y + "tile_Y: " + tile_y + "  Size: " + tile_size);
-                            System.exit(0);
-                        }
-
-                        // Cycle Through existing images in the hashtable and if there is no identical create new tile ID
-                        boolean createNew = true ;
-                        int overWriteKey = 0;
-                        Set<Integer> keys = mapsprite.keySet();
-                        for (Integer key: keys){
-                            if (temp.equals(mapsprite.get(key))){
-                                finalmap.get(row).set(y, key);
-                                createNew = false;
-                                overWriteKey = key;
-                                break;
-                            }
-                                
-                        }
-                        
-                        // Creates the new tile by adding to the existing
-                        if (createNew) {
-                            Graphics g = new BufferedImage(temp.getWidth(),temp.getHeight(), temp.getType()).getGraphics();
-                            g.drawImage(mapsprite.get(overWriteKey),0,0,null);
-                            g.drawImage(temp,0,0,null);
-                                
-                            newID++;
-                            finalmap.get(row).set(index, newID);
-                            mapsprite.put(newID, background);
-                        }
-                    }
-                    index++;
-                }
-                
-                
-                row++;
-            }
-        }
-        
-=======
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         } catch (IOException e) {
@@ -297,14 +142,20 @@ public class Map {
             }
         }
 
->>>>>>> parent of fb0da2c... In The Process of Setting Up Maps
     }    
+    
     
     // TODO FIx bug where player keeps scrolling after window is deslected
     // TODO Use overallX and overallY of the player to determine where the Terrain is instead of the movements
     public Image display(Graphics g, Player player) {
         terrain.clear();
         int X_OFF = player.getMoveX();
+        int Y_OFF = player.getMoveY();
+        
+        IMG_Y += Y_OFF;
+        IMG_X += X_OFF;
+        
+        
         switch (X_OFF + PIC_X) {
             case tile_size:
                 PIC_X = 0;
@@ -319,7 +170,7 @@ public class Map {
                 break;
         }
         
-        int Y_OFF = player.getMoveY();
+        
         switch (Y_OFF + PIC_Y) {
             case tile_size:
                 PIC_Y = 0;
@@ -339,38 +190,63 @@ public class Map {
         
         
         mapOutline.setLocation((int)mapOutline.getX() + X_OFF , (int)mapOutline.getY() + Y_OFF );
-               
-
+        
+        int tile_row = sprites.getWidth()/(tile_size + 1);
+        
+        /*--------------------------------------------------------------------------------------------------------------
+        // Display background and create terrrain hitboxes
         for (int y = MAP_Y; y != tiledHeight + MAP_Y + 3; y++ ){
             for (int x = MAP_X; x != tiledWidth + MAP_X + 3; x++) {
                 int tile_id = 0;
                 try {
-
+                    tile_id = map.get(y).get(x);
                     if (tile_id < 0) tile_id = 38;
                 } catch (Exception e) {
                     tile_id = 38;
                 }
 
+                int tile_x;
+                int tile_y;
+                
+                // Find the x and y of the tile id in the sprite sheet
+                tile_y = (tile_id % tile_row);
+                tile_x = (int)(tile_id / tile_row);
+                
+                //adjust sizing     //The + 1 is to account for initial margin offset
+                tile_x = tile_x * (tile_size + 1) + 1;
+                tile_y = tile_y * (tile_size + 1) + 1;
+                
                 //Get the sprite from the sprite sheet based off the id's x and y
-                temp = mapsprite.get(tile_id);
-                //System.out.print("goin...");
-                temp = sprites.getSubimage(0, 0, tile_size, tile_size);
-
-
+                temp = sprites.getSubimage(tile_y, tile_x, tile_size, tile_size);
+                
+                
                 // Create the tile image in the final background image with appropriate offset
-                //background.createGraphics().drawImage(temp, tile_size * (x - MAP_X - 1) + PIC_X, 
-                  //     tile_size * (y - MAP_Y - 1) + PIC_Y, null);
-                  background.createGraphics().drawImage(temp,330,330,null);
-
+                background.createGraphics().drawImage(mapBack, tile_size * (x - MAP_X - 1) + PIC_X, 
+                       tile_size * (y - MAP_Y - 1) + PIC_Y, null);
+                
+                
                 if (terrain_id.contains(tile_id)) {
-
+                    
                     terrain.add(new SolidTerrain(tile_id, tile_size * (x - MAP_X - 1) + PIC_X, 
                         tile_size * (y - MAP_Y - 1) + PIC_Y));
-
+                    
                 }
             }
-
         }
+                *///------------------------------------------------------------------------------
+        
+        // Display background and create terrrain hitboxes
+        for (ArrayList<Integer> y : map){
+            
+        }
+            
+        
+        g = background.createGraphics();
+        g.setColor(Color.BLACK);
+        g.drawRect(-200, -200, mapBack.getWidth() * 2, mapBack.getHeight() * 2);
+        g.drawImage(mapBack, IMG_X, IMG_Y , null);
+        
+        
         
         // Display enemies in proper location
         for (Enemy enemy : EnemyManager.getEnemies()) {

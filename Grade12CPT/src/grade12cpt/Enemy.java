@@ -30,7 +30,6 @@ public class Enemy extends Sprite{
         speed = 0;
         this.updateHealth(10, true);
         walk(45,100);
-        System.out.println("Move X: " + moveX + "     Move Y: " + moveY);
 
     }
     

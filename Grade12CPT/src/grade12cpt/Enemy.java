@@ -22,8 +22,7 @@ public class Enemy extends Sprite{
     private void init() {
         loadImage("src/images/enemy.png");
         this.setSize(getDimensions());
-        x = 200;
-        y = 1000;
+        
         Xorigin = x;
         Yorigin = y;
         distance = 0;
@@ -64,6 +63,8 @@ public class Enemy extends Sprite{
         moveX += x;
         moveY += y;
     }
+    
+    
     
     
     

@@ -1,8 +1,17 @@
 
 package grade12cpt;
 
+
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -12,14 +21,15 @@ import java.util.Iterator;
 public abstract class EnemyManager {
 
     public static ArrayList<Enemy> allEnemies = new ArrayList<>();
+    public static ArrayList<ArrayList<Integer>> start = new ArrayList<>();
     public static ArrayList<Enemy> visibleEnemies = new ArrayList<>();
     public static ArrayList<Enemy> toRemove = new ArrayList<>();
     private static int OLD_X = 0, OLD_Y = 0;
     private static int X_OFF = 0, Y_OFF = 0;
-      
+    
     
     public static void loadEnemies() {
-        
+
     }
     
     public static void addEnemy(Enemy newEnemy) {
@@ -48,7 +58,10 @@ public abstract class EnemyManager {
         X_OFF = x_off;
         Y_OFF = y_off;
     }
-
+    
+    public static void clear() {
+        allEnemies.clear();
+    }
     // If the currecnt offset is different then update all enemies current offset
     public static void updateEnemies() {
         

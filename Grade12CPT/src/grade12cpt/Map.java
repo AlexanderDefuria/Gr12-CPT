@@ -1,6 +1,7 @@
 
 package grade12cpt;
 
+
 import java.awt.Color;
 import java.io.BufferedReader;
 import java.io.FileInputStream;
@@ -19,11 +20,14 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.imageio.ImageIO;
 
-
+// TODO remove blockage from that one tree in the lava canyon that was removed in the image
+// TODO add teleportation into the hosues
+// TODO Create Enemy Movepaths
 
 public class Map {
     
     public ArrayList<ArrayList<Integer>> map = new ArrayList<>();
+    public ArrayList<ArrayList<Integer>> start = new ArrayList<>();
     public ArrayList<Rectangle> terrain = new ArrayList<>();
     public ArrayList<Integer> terrain_id = new ArrayList<>();
     public final int B_WIDTH = Board.B_WIDTH;
@@ -38,9 +42,10 @@ public class Map {
     public static int tiledWidth, tiledHeight = 0;
     public static int mapWidth, mapHeight = 0;
     public static Rectangle mapOutline;
-    public static String spriteFile = "src/images/desert_sprite.png";
-    public static String MapImageFile = "src/images/map.png";
-    public static String unpassableMap = "src/unpassable";
+    public static final String spriteFile = "src/images/desert_sprite.png";
+    public static final String MapImageFile = "src/images/map.png";
+    public static final String unpassableMap = "src/unpassable";
+    public static final String enemyFile = "src/enemies";
     private static BufferedImage background;
     private static BufferedImage mapBack;
     
@@ -147,6 +152,62 @@ public class Map {
                 }
             }
         }
+        
+        
+        dir = new File(enemyFile);
+        directoryListing = dir.listFiles();
+            if (directoryListing != null)                 
+                for (File child : directoryListing) {
+                    try {
+                        
+                        System.out.println(child);
+                        fis = new FileInputStream(child);
+                        br = new BufferedReader(new InputStreamReader(fis));
+                        
+                        int lineNum = 0; 
+                        
+                        while ((line = br.readLine()) != null) {
+                            // use comma as separator\
+                            
+                            String[] values = line.split(cvsSplitBy); 
+                            
+                            try {
+                                start.get(lineNum);
+                            } catch (IndexOutOfBoundsException e) {
+                                start.add(new ArrayList<>());
+                                
+                            }
+                            
+                            for (int i = 0; i != values.length; i++) {
+                                
+                                int key = Integer.parseInt(values[i]);
+                                
+                                
+                                try{
+                                    if (start.get(lineNum).get(i) == -1 && key != -1)
+                                        start.get(lineNum).set(i, 1);
+                                } catch (IndexOutOfBoundsException e){
+                                    start.get(lineNum).add(key);
+                                    
+                                }
+   
+                            }
+                            
+                            lineNum++;
+                        }
+                    } catch (FileNotFoundException ex) {
+                        Logger.getLogger(Map.class.getName()).log(Level.SEVERE, null, ex);
+                    } catch (IOException ex) {
+                        Logger.getLogger(Map.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                    
+                    
+                }
+            
+            
+       
+        
+        
 
     }    
     
@@ -162,9 +223,27 @@ public class Map {
         IMG_X += X_OFF;
         
 
-        
+        EnemyManager.clear();
         EnemyManager.setOffset( getMapXoffset(), getMapYoffset());
         ProjectileManager.setOffset( getMapXoffset(), getMapYoffset());
+        
+                
+        int EnemyID = 0;
+        for (int x = 0; x != start.size(); x++) {
+            for (int y = 0; y != start.get(x).size(); y++){
+                if (start.get(x).get(y) != -1) {
+                    
+                    Enemy enemy = new Enemy(Integer.toString(EnemyID));
+                    enemy.setMapX((tile_size * y) + IMG_X + X_OFF);
+                    enemy.setMapY(Y_OFF + IMG_Y + (tile_size * x));
+                    EnemyManager.addEnemy(enemy);
+                    
+                    //new SolidTerrain((tile_size * y) + IMG_X + X_OFF, Y_OFF + IMG_Y + (tile_size * x));
+                    
+                }
+                
+            }
+        } 
         
         
         mapOutline.setLocation((int)mapOutline.getX() + X_OFF , (int)mapOutline.getY() + Y_OFF );
@@ -181,14 +260,11 @@ public class Map {
                     
                     terrain.add(new SolidTerrain((tile_size * y) + IMG_X + X_OFF, Y_OFF + IMG_Y + (tile_size * x)));
                     
-                    //Rectangle rect = new Rectangle((tile_size * y) + IMG_X + X_OFF, Y_OFF + IMG_Y + (tile_size * x),tile_size,tile_size);
-                    //g.setColor(Color.red);
-                    //g.drawRect(rect.x,  rect.y, rect.width, rect.height);
-                    
                 }
                 
             }
         } 
+
         
         
         

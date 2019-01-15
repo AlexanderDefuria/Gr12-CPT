@@ -32,6 +32,8 @@ public class RangedWeapon extends Weapon{
     }
     
     
+    
+    
     public Image getProjectileImage() {
         return projectileImage;
     }

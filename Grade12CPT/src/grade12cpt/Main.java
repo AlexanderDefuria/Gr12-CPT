@@ -31,7 +31,9 @@ import javax.swing.JFrame;
 
 public class Main extends JFrame{
 
-    
+    private static final double aspectRatio = 16.0/9.0;
+    public static final int HEIGHT = 720;
+    public static final int WIDTH = (int)(HEIGHT * aspectRatio);
     
     public Main() {
         
@@ -39,8 +41,10 @@ public class Main extends JFrame{
     }
     
     private void init() {
-        add(new Board());
-
+        //add(new MainMenu(WIDTH,HEIGHT));
+        //this.removeAll();
+        add(new Board(WIDTH,HEIGHT));
+       
         setResizable(false);
         pack();
         

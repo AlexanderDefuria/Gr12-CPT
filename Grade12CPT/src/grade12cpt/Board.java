@@ -18,16 +18,12 @@ import javax.swing.JPanel;
 
 
 
-public class Board extends JPanel implements Runnable, ActionListener {
+public class Board extends JPanel implements Runnable {
 
-    private static final double aspectRatio = 16.0/9.0;
-    public static final int B_HEIGHT = 720;
-    public static final int B_WIDTH = (int)(720 * aspectRatio);
-    // TODO adjust delay for hardware capabilities 
+    public static int B_HEIGHT, B_WIDTH; 
     private final int DELAY = 40;
     public static int offset = 0;
-    public static int overlayWidth = B_WIDTH / 2;
-    public static int overlayHeight = B_HEIGHT / 2;
+    public static int overlayWidth, overlayHeight;
 
     public static Thread animator;
     public static Map map;
@@ -38,16 +34,18 @@ public class Board extends JPanel implements Runnable, ActionListener {
     
     public static Enemy tom = new Enemy("Tom");
     
-    public Board() {
-        System.out.println();
+    public Board(int width, int height) {
+        B_WIDTH = width;
+        B_HEIGHT = height;
+        overlayWidth = B_WIDTH / 2;
+        overlayHeight = B_HEIGHT / 2;
         initBoard();
     }
 
 
     private void initBoard() {
 
-        addKeyListener(new TAdapter());
-        addMouseListener(new MAdapter());
+        
         
         // TODO Fix bug where player keeps scrolling after window is deslected
         setFocusable(true);
@@ -59,6 +57,8 @@ public class Board extends JPanel implements Runnable, ActionListener {
         input = new UserInput();
         player = new Player(input, "Bill");
         
+        addKeyListener(new TAdapter(input));
+        addMouseListener(new MAdapter(input));
         
         
         EnemyManager.addEnemy(tom);
@@ -84,13 +84,17 @@ public class Board extends JPanel implements Runnable, ActionListener {
 
     private void drawBackground(Graphics g) {
 
-        tom.walk(2,0);
+
         player.updatePlayer(map);
         EnemyManager.updateEnemies();
         ProjectileManager.updateProjectiles();
         
         g.drawImage(map.display(g, player), 0, 0, this);
         g.drawImage(player.appearance,B_WIDTH/2,B_HEIGHT/2,this);
+        
+        g.setColor(Color.blue);
+        //g.drawRect(640 + 32, 360 + 32, -50,-50);
+        
         
         Toolkit.getDefaultToolkit().sync();
     }
@@ -150,35 +154,6 @@ public class Board extends JPanel implements Runnable, ActionListener {
 
 
 
-    @Override
-    public void actionPerformed(ActionEvent e) {
-    }
 
-    
-    private class TAdapter extends KeyAdapter {
-
-        @Override
-        public void keyReleased(KeyEvent e) {
-            input.keyReleased(e);
-        }
-
-        @Override
-        public void keyPressed(KeyEvent e) {
-            input.keyPressed(e);
-        }
-    }
-    
-    private class MAdapter extends MouseAdapter {
-        
-        @Override
-        public void mousePressed(MouseEvent e) {
-            input.mousePressed(e);
-        }
-        
-        @Override
-        public void mouseReleased(MouseEvent e) {
-            input.mouseReleased(e);
-        }
-    }
 }
 

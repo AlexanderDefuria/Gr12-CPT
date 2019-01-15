@@ -10,6 +10,7 @@ public class Player extends Sprite{
 
     public UserInput ui;
     public Terrain walls;
+    public static boolean checking = true;
     public static int overallX = B_WIDTH / 2;
     public static int overallY = B_HEIGHT / 2;
     public int moveX, moveY = 0;
@@ -49,11 +50,16 @@ public class Player extends Sprite{
     
     public void updatePlayer(Map map) {
         
-        checkMapEdge(map);
-        checkTerrain(map);
-        checkEnemies(map);
+        if (checking) {
+            checkTerrain(map);
+            checkEnemies(map);
+            UserInput();
+        } else {
+                
+            
+        }
         
-        UserInput();
+        
         animate();
         
         mapX += moveX;
@@ -62,6 +68,8 @@ public class Player extends Sprite{
     }
     
     public void UserInput() {
+        
+
         if(UserInput.A_KEY && canMove[0]) moveX = speed;
         else if(UserInput.D_KEY && canMove[1]) moveX = -speed;
         else moveX = 0;
@@ -100,57 +108,43 @@ public class Player extends Sprite{
         }
     }
     
-    // <editor-fold defaultstate="collapsed">
-    public void checkMapEdge(Map map) {
-
-        Rectangle hit = new Rectangle(map.getMapOutline());
-        
-        if (!hit.contains(this.getHitbox())){
-            if (overallX < hit.getMinX()) {
-                canMove[0] = false;
-                canMove[1] = true;
-            }
-            else if (overallX + width > hit.getMaxX()){
-                canMove[1] = false;
-                canMove[0] = true;
-            }
-            if (overallY - height < hit.getMinY()) {
-                canMove[2] = false;
-                canMove[3] = true;
-            }
-            else if (overallY + height> hit.getMaxY()) {
-                canMove[3] = false;
-                canMove[2] = true;
-            }
-        }
-        else 
-            for (int i = 0; i != canMove.length; i++) {
-                canMove[i] = true;
-            }
-    }
+    
     
     public void checkTerrain(Map map) {
+        canMove[0] = true;
+        canMove[1] = true;
+        canMove[2] = true;
+        canMove[3] = true;
+        
+        
         for (Rectangle rect : map.getSolidTerrain()){
-            int Xorigin = (int)this.getX();
-            int Yorigin = (int)this.getY();
+            int Xorigin = (int)rect.getX();
+            int Yorigin = (int)rect.getY();
             
-            this.setLocation(Xorigin - speed, Yorigin);
+            
+            
+            rect.setLocation(Xorigin + speed, Yorigin);
             if(rect.intersects(this))
-                canMove[0] = false;   
+                canMove[0] = false;
             
-            this.setLocation(Xorigin + speed, Yorigin);
+            
+            rect.setLocation(Xorigin - speed, Yorigin);
             if(rect.intersects(this)) 
                 canMove[1] = false;
             
-            this.setLocation(Xorigin, Yorigin  - speed);
+            
+            rect.setLocation(Xorigin, Yorigin  + speed);
             if(rect.intersects(this)) 
                 canMove[2] = false;
             
-            this.setLocation(Xorigin, Yorigin + speed);
+            
+            rect.setLocation(Xorigin, Yorigin - speed);
             if(rect.intersects(this)) 
                 canMove[3] = false;
             
-            this.setLocation(Xorigin, Yorigin);
+            rect.setLocation(Xorigin, Yorigin);
+            
+            
                 
 
         }
@@ -181,7 +175,7 @@ public class Player extends Sprite{
     public int getMoveY() {
         return moveY;
     }
-    // </editor-fold>
+
     
 
     public Rectangle getHitbox() {

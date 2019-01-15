@@ -13,6 +13,7 @@ public class Enemy extends Sprite{
     public Enemy(String name) {
         this.name = name;
         init();
+        System.out.println("Loaded Enemy: " + this.name);
     }
     
     public int movedX = 0;
@@ -21,20 +22,20 @@ public class Enemy extends Sprite{
     private void init() {
         loadImage("src/images/enemy.png");
         this.setSize(getDimensions());
-        this.setLocation(200, 200);
         x = 200;
-        y = 100;
+        y = 1000;
         Xorigin = x;
         Yorigin = y;
         distance = 0;
-        speed = 0;
+        speed = 2;
         this.updateHealth(10, true);
-        walk(45,100);
+
 
     }
     
     public void update() {
-        if (movedX != moveX) {
+        
+        if (movedX != moveX && moveX != 0) {
             if (moveX > 0) {
                 x += speed;
                 movedX += speed;
@@ -43,7 +44,9 @@ public class Enemy extends Sprite{
                 x -= speed;
                 movedX += speed;
             } 
-        } else if (movedY != moveY) {
+        }
+        
+        if (movedY != moveY && moveY != 0 ) {
             if (moveY > 0) {
                 y += speed;
                 movedY += speed;

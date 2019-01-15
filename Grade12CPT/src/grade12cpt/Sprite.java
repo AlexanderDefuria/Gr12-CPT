@@ -1,4 +1,4 @@
-
+    
 package grade12cpt;
 
 import java.awt.Dimension;
@@ -57,6 +57,7 @@ public abstract class Sprite extends Rectangle{
         this.setSize(getDimensions());
         
         this.setLocation(x, y);
+        System.out.println("Loaded Image: " + imageName);
         
     }
     
@@ -75,6 +76,9 @@ public abstract class Sprite extends Rectangle{
             } 
 
         } catch (IOException ex) {}
+        
+        System.out.println("Loaded Sprites: " + sheetName);
+
     }
     
     protected final void loadWeaponSprites(Weapon weapon) {
@@ -99,6 +103,7 @@ public abstract class Sprite extends Rectangle{
             }
             
         } catch (IOException ex) {}
+        System.out.println("Loaded Sprites: " + weapon.getClass());
     }
     
     public void animate() {

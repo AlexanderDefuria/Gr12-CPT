@@ -10,7 +10,7 @@ import java.awt.Rectangle;
 
 public abstract class Terrain extends Rectangle{
 
-    public Terrain(int tile_id, int posX, int posY) {
+    public Terrain(int posX, int posY) {
         //setSize(Map.tile_size ,Map.tile_size);
         init(posX, posY);
         

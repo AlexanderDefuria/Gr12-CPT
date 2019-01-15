@@ -25,15 +25,20 @@
 package grade12cpt;
 
 import java.awt.EventQueue;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import javax.swing.JButton;
 import javax.swing.JFrame;
 
 
 
-public class Main extends JFrame{
+public class Main extends JFrame implements ActionListener{
 
     private static final double aspectRatio = 16.0/9.0;
     public static final int HEIGHT = 720;
     public static final int WIDTH = (int)(HEIGHT * aspectRatio);
+    public static MainMenu mainmenu;
+    public static JButton button;
     
     public Main() {
         
@@ -41,23 +46,49 @@ public class Main extends JFrame{
     }
     
     private void init() {
-        //add(new MainMenu(WIDTH,HEIGHT));
-        //this.removeAll();
-        add(new Board(WIDTH,HEIGHT));
-       
+        mainmenu = new MainMenu(WIDTH, HEIGHT);
+        add(mainmenu);
         setResizable(false);
-        pack();
+        setSize(WIDTH, HEIGHT);
+        
+        button = new JButton();
+        button.setSize(200, 50);
+        mainmenu.add(button);
+        
+        button.addActionListener(this);
+        
+
         
         setTitle("CPT");    
         setLocationRelativeTo(null);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); 
     }
+    
+    public void startBoard() {
+        add(new Board(WIDTH,HEIGHT));
+        this.transferFocusUpCycle();
+        pack();
+
+    }
+    
+    
 
     public static void main(String[] args) {
         EventQueue.invokeLater(() -> {
             Main main = new Main();
             main.setVisible(true);
+            
         });
 
-}
+    }
+
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        button.removeAll();
+        this.remove(mainmenu);
+        this.revalidate();        
+        startBoard();
+    }
+    
+
 }

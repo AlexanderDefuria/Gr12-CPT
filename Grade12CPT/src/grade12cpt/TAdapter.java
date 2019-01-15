@@ -25,6 +25,7 @@ public class TAdapter extends KeyAdapter {
         @Override
         public void keyPressed(KeyEvent e) {
             input.keyPressed(e);
+            
         }
 }
 

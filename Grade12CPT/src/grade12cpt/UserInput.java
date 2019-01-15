@@ -2,8 +2,7 @@
 package grade12cpt;
 
 
-import static grade12cpt.Board.B_HEIGHT;
-import static grade12cpt.Board.B_WIDTH;
+
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 

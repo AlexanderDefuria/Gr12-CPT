@@ -25,14 +25,13 @@ public class Player extends Sprite{
     
 
     public void init() {
-        this.weapon = new RangedWeapon.Orb();
+        this.weapon = new MeleeWeapon.Sword();
         
         loadImage("src/images/enemy.png");
         loadSprites("src/images/clotharmor.png");
             
         if (weapon instanceof MeleeWeapon) loadWeaponSprites(weapon);
-        else if (weapon instanceof RangedWeapon)
-        
+                
         moveX = 0;
         moveY = 0;
         speed = 2;

@@ -29,21 +29,19 @@ public class Map {
     public final int B_WIDTH = Board.B_WIDTH;
     public final int B_HEIGHT = Board.B_HEIGHT;
     public static final byte tile_size = 16;
-    public static int MAP_Y, MAP_X = 0;
-    public static int PIC_Y, PIC_X = 0;
-    public static int IMG_Y = -1000, IMG_X = 50;
-    public static int X_OFF = 100, Y_OFF = 1000;
+    public static int MAP_Y = 0;
+    public static int MAP_X = 0;
+    public static int PIC_Y = 0; 
+    public static int PIC_X = 0;
+    public static int IMG_Y = -4300, IMG_X = 50; // Adjust This to fit different starting locations;
+    public static int X_OFF = 0, Y_OFF = 0;
     public static int tiledWidth, tiledHeight = 0;
     public static int mapWidth, mapHeight = 0;
     public static Rectangle mapOutline;
-    public static String mapFile = "src/maps/singleterraintest.csv";
     public static String spriteFile = "src/images/desert_sprite.png";
-    public static String MapImageFile = "src/maps/map.png";
+    public static String MapImageFile = "src/images/map.png";
     public static String unpassableMap = "src/unpassable";
-    
-    private static BufferedImage sprites;
     private static BufferedImage background;
-    private static BufferedImage temp;
     private static BufferedImage mapBack;
     
     public Map(){
@@ -117,9 +115,6 @@ public class Map {
         
         try {
             
-            fis = new FileInputStream(mapFile);
-            br = new BufferedReader(new InputStreamReader(fis));
-            sprites = ImageIO.read(new File(spriteFile));
             mapBack = ImageIO.read(new File(MapImageFile));
 
             // Read the tile id's into map ArrayList
@@ -228,10 +223,6 @@ public class Map {
     
     public ArrayList<Rectangle> getSolidTerrain() {
         return terrain;
-    }
-    
-    public static String getMapFile() {
-        return mapFile;
     }
     
     public static String getSpriteFile() {

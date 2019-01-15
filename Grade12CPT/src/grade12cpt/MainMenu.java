@@ -1,10 +1,23 @@
 
 package grade12cpt;
 
+import static grade12cpt.Board.animator;
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.image.BufferedImage;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.imageio.ImageIO;
+import javax.swing.JButton;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
@@ -13,13 +26,16 @@ import javax.swing.JPanel;
  * @author defur
  */
 
-public class MainMenu extends JPanel implements Runnable, ActionListener {
+public class MainMenu extends JPanel implements Runnable{
 
     public static int DELAY = 0;
     public static int B_HEIGHT, B_WIDTH;
+    public static BufferedImage menuImage;
+    public static String file = "src/images/promo-title.jpg";
+    public static JButton startBut;
     
     public MainMenu(int width, int height) {
-        B_HEIGHT = width;
+        B_WIDTH = width;
         B_HEIGHT = height;
         init();
     }
@@ -30,10 +46,49 @@ public class MainMenu extends JPanel implements Runnable, ActionListener {
         addMouseListener(new MAdapter(input));
         
         setFocusable(true);
-        setBackground(Color.BLACK);
+        setBackground(Color.white);
         setPreferredSize(new Dimension(B_WIDTH, B_HEIGHT));
         setDoubleBuffered(true);
+        
+        try {
+            menuImage = ImageIO.read(new File(file));
+        } catch (IOException ex) {
+            System.out.println("Missing Menu Image...");
+            System.exit(0);
+        }
+        
+        startBut = new JButton();
+        
+        add(startBut);
+        
+        
+        
+        
+        
     }
+    
+    @Override
+    public void addNotify() {
+        super.addNotify();
+
+        animator = new Thread(this);
+        animator.start();
+    }
+    
+    @Override
+    public void paintComponent(Graphics g) {
+        super.paintComponent(g);
+        
+        g.drawImage(menuImage,0,0,null );
+        
+        
+        repaint();
+    }
+    
+    public void cycle() {
+        
+    }
+    
     
     @Override
     public void run() {
@@ -44,6 +99,7 @@ public class MainMenu extends JPanel implements Runnable, ActionListener {
         while (true) {
 
             repaint();
+            cycle();
 
             timeDiff = System.currentTimeMillis() - beforeTime;
             sleep = DELAY - timeDiff;
@@ -70,10 +126,7 @@ public class MainMenu extends JPanel implements Runnable, ActionListener {
             beforeTime = System.currentTimeMillis();
         }    }
 
-    @Override
-    public void actionPerformed(ActionEvent e) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
+
 
     
 

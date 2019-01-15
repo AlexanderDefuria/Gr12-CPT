@@ -73,6 +73,7 @@ public abstract class EnemyManager {
             for (Projectile projectile : ProjectileManager.allProjectiles) 
                 if (projectile.intersects(enemy)) {
                     enemyIter.remove();
+                    ProjectileManager.removeProjectile(projectile);
                     break;
                 }
 

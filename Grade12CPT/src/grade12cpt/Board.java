@@ -50,6 +50,8 @@ public class Board extends JPanel implements Runnable {
         
         addKeyListener(new TAdapter(input));
         addMouseListener(new MAdapter(input));
+        
+        EnemyManager.LoadEnemies();
 
     }
 

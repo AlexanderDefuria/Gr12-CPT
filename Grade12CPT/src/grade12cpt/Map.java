@@ -152,15 +152,6 @@ public class Map {
                 }
             }
         }
-        
-        
-        
-            
-            
-       
-        
-        
-
     }    
     
     
@@ -168,36 +159,17 @@ public class Map {
     // TODO Use overallX and overallY of the player to determine where the Terrain is instead of the movements
     public Image display(Graphics g, Player player) {
         terrain.clear();
-        int X_OFF = player.getMoveX();
-        int Y_OFF = player.getMoveY();
+        X_OFF = player.getMoveX();
+        Y_OFF = player.getMoveY();
         
         IMG_Y += Y_OFF;
         IMG_X += X_OFF;
         
 
-        EnemyManager.clear();
         EnemyManager.setOffset( getMapXoffset(), getMapYoffset());
         ProjectileManager.setOffset( getMapXoffset(), getMapYoffset());
         
-                
-        int EnemyID = 0;
-        for (int x = 0; x != start.size(); x++) {
-            for (int y = 0; y != start.get(x).size(); y++){
-                if (start.get(x).get(y) != -1) {
-                    
-                    Enemy enemy = new Enemy(Integer.toString(EnemyID));
-                    enemy.setMapX((tile_size * y) + IMG_X + X_OFF);
-                    enemy.setMapY(Y_OFF + IMG_Y + (tile_size * x));
-                    EnemyManager.addEnemy(enemy);
-                    
-                    //new SolidTerrain((tile_size * y) + IMG_X + X_OFF, Y_OFF + IMG_Y + (tile_size * x));
-                    
-                }
-                
-            }
-        } 
-        
-        
+
         mapOutline.setLocation((int)mapOutline.getX() + X_OFF , (int)mapOutline.getY() + Y_OFF );
         
         g = background.createGraphics();
@@ -216,11 +188,6 @@ public class Map {
                 
             }
         } 
-
-        
-        
-        
-        
         
         
         // Display enemies in proper location

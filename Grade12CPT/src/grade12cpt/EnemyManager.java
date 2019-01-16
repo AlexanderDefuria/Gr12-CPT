@@ -2,6 +2,7 @@
 package grade12cpt;
 
 
+import static grade12cpt.Map.tile_size;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
@@ -26,10 +27,15 @@ public abstract class EnemyManager {
     public static ArrayList<Enemy> toRemove = new ArrayList<>();
     private static int OLD_X = 0, OLD_Y = 0;
     private static int X_OFF = 0, Y_OFF = 0;
+    private static int startX = 0, startY = 0;
     private static final String enemyFile = "src/enemies";
     
     
-    public static void loadEnemies() {
+    public static void LoadEnemies() {
+        
+        startX = Map.getMapXoffset();
+        startY = Map.getMapYoffset();
+        
         BufferedReader br;
         FileInputStream fis;
         String cvsSplitBy = ",";
@@ -68,7 +74,7 @@ public abstract class EnemyManager {
                                         start.get(lineNum).set(i, 1);
                                 } catch (IndexOutOfBoundsException e){
                                     start.get(lineNum).add(key);
-                                    
+                                   
                                 }
    
                             }
@@ -83,6 +89,19 @@ public abstract class EnemyManager {
                     
                     
                 }
+
+            int enemy_id = 0;
+            for (int x = 0; x != start.size(); x++) {
+                for (int y = 0; y != start.get(x).size(); y++){
+                    if (start.get(x).get(y) != -1) {
+                        enemy_id++;
+                        Enemy enemy = new Enemy(Integer.toString(enemy_id));
+                        enemy.setLocation((tile_size * y) + startX, startY + (tile_size * x));
+                        System.out.println("X:" + (tile_size * y) + startX + "   Y:" + startY + (tile_size * x));
+                    }
+                }
+            }
+            
     }
     
     public static void addEnemy(Enemy newEnemy) {
@@ -120,6 +139,7 @@ public abstract class EnemyManager {
         
         allEnemies.forEach((enemy) -> {
             enemy.update();
+            System.out.println(enemy.getX() + "  " + enemy.getY());
             
             if (X_OFF != OLD_X) {
                 OLD_X = X_OFF;

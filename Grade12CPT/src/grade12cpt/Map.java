@@ -35,8 +35,8 @@ public class Map {
     public static final byte tile_size = 16;
     public static int MAP_Y = 0;
     public static int MAP_X = 0;
-    public static int PIC_Y = 0; 
-    public static int PIC_X = 0;
+    public static int ENEMY_Y = 0; 
+    public static int ENEMY_X = 0;
     public static int IMG_Y = -4300, IMG_X = 50; // Adjust This to fit different starting locations;
     public static int X_OFF = 0, Y_OFF = 0;
     public static int tiledWidth, tiledHeight = 0;
@@ -165,8 +165,14 @@ public class Map {
         IMG_Y += Y_OFF;
         IMG_X += X_OFF;
         
-
-        EnemyManager.setOffset( getMapXoffset(), getMapYoffset());
+        ENEMY_Y += Y_OFF;
+        ENEMY_X += X_OFF;
+        
+        
+        
+        
+        
+        EnemyManager.setOffset( X_OFF, Y_OFF);
         ProjectileManager.setOffset( getMapXoffset(), getMapYoffset());
         
 
@@ -189,11 +195,13 @@ public class Map {
             }
         } 
         
+       
         
         // Display enemies in proper location
         for (Enemy enemy : EnemyManager.getEnemies()) {
            if (    enemy.getMapX() > -50 && enemy.getMapX() < B_WIDTH + 50
                 && enemy.getMapY() > -50 && enemy.getMapY() < B_HEIGHT + 50  ) {
+                        enemy.animate();
                         g.drawImage(enemy.appearance, enemy.getMapX(), enemy.getMapY(), null);
            }         
         }

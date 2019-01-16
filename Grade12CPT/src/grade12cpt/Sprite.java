@@ -46,6 +46,7 @@ public abstract class Sprite extends Rectangle{
     public Image[][] actionSprite;
     public String armorSheet;
     public String weaponSheet;
+    public String enemySheet;
     public String name;
     public Weapon weapon;  
     private boolean passable;
@@ -106,6 +107,16 @@ public abstract class Sprite extends Rectangle{
         System.out.println("Loaded Sprites: " + weapon.getClass());
     }
     
+    protected final void loadEnemySprites(Enemy enemy) {
+        enemySheet = enemy.getSheet();
+        try {
+            System.out.println("s");
+            
+        } catch (Exception e) {
+            
+        }
+    }
+    
     public void animate() {
         if      (mapX > lastX) direction = 0; // Right
         else if (mapX < lastX) direction = 1; // Left
@@ -139,7 +150,9 @@ public abstract class Sprite extends Rectangle{
             canAttack = false;
         }
         
-                if (direction == 4) appearance = getIdle();
+        if (direction == 4 ) 
+            if (this instanceof Player) appearance = getIdle();
+            else appearance = walkingSprite[2][0];
         else appearance = walkingSprite[direction][step];
 
 
@@ -166,6 +179,7 @@ public abstract class Sprite extends Rectangle{
     }
     
     private Image getIdle() {
+        
         return spriteSheet.getSubimage(32 , 32 * 8, 32, 32);
     }
     
@@ -177,6 +191,7 @@ public abstract class Sprite extends Rectangle{
     
     protected Dimension getDimensions() {
         updateDimensions();
+        System.out.println(width + "   " + height);
         return new Dimension(width, height);
     }
     
@@ -228,8 +243,10 @@ public abstract class Sprite extends Rectangle{
         if (complete) curHP = change;
     }
 
-    private Image flipImage(Image image) {
+    public static Image flipImage(Image image) {
         BufferedImage flipped = new BufferedImage(image.getWidth(null), image.getHeight(null), BufferedImage.TYPE_INT_ARGB);
+        int width = image.getWidth(null);
+        int height = image.getHeight(null);
         
         Graphics2D g2 = flipped.createGraphics();
         g2.drawImage(image,  width + 1, 0, -width, height, null);

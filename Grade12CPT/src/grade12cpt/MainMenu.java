@@ -5,33 +5,20 @@ import static grade12cpt.Board.animator;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
-import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.imageio.ImageIO;
 import javax.swing.JButton;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-
-/**
- *
- * @author defur
- */
 
 public class MainMenu extends JPanel implements Runnable{
 
     public static int DELAY = 0;
     public static int B_HEIGHT, B_WIDTH;
     public static BufferedImage menuImage;
-    public static String file = "src/images/promo-title.jpg";
+    public static String file = "src/images/Title Screen CPT Game.png";
     public static JButton startBut;
     
     public MainMenu(int width, int height) {

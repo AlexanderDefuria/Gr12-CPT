@@ -47,17 +47,17 @@ public class Main extends JFrame implements ActionListener{
     
     private void init() {
         mainmenu = new MainMenu(WIDTH, HEIGHT);
-        add(mainmenu);
+        //add(mainmenu);
         setResizable(false);
         setSize(WIDTH, HEIGHT);
         
-        button = new JButton();
-        button.setSize(200, 50);
-        mainmenu.add(button);
+        //button = new JButton();
+        //button.setSize(200, 50);
+        //mainmenu.add(button);
         
-        button.addActionListener(this);
+        //button.addActionListener(this);
         
-
+        startBoard();
         
         setTitle("CPT");    
         setLocationRelativeTo(null);

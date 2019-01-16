@@ -74,7 +74,7 @@ public abstract class EnemyManager {
                                         start.get(lineNum).set(i, 1);
                                 } catch (IndexOutOfBoundsException e){
                                     start.get(lineNum).add(key);
-                                   
+                                    
                                 }
    
                             }
@@ -89,18 +89,23 @@ public abstract class EnemyManager {
                     
                     
                 }
-
+            //System.out.println(start.get(0).size() * 16);
+            //System.exit(0);
             int enemy_id = 0;
             for (int x = 0; x != start.size(); x++) {
                 for (int y = 0; y != start.get(x).size(); y++){
                     if (start.get(x).get(y) != -1) {
                         enemy_id++;
-                        Enemy enemy = new Enemy(Integer.toString(enemy_id));
+                        Enemy enemy = new Bat(Integer.toString(enemy_id));
+                        enemy.setMapX((tile_size * y) + startX);
+                        enemy.setMapY((tile_size * x) + startY);
                         enemy.setLocation((tile_size * y) + startX, startY + (tile_size * x));
-                        System.out.println("X:" + (tile_size * y) + startX + "   Y:" + startY + (tile_size * x));
+                        System.out.println(enemy.getLocation());
+                        addEnemy(enemy);
                     }
                 }
             }
+         
             
     }
     
@@ -129,6 +134,11 @@ public abstract class EnemyManager {
     public static void setOffset(int x_off, int y_off) {
         X_OFF = x_off;
         Y_OFF = y_off;
+        
+        allEnemies.forEach((enemy) -> {
+           enemy.setMapX(enemy.getMapX() + x_off);
+           enemy.setMapY(enemy.getMapY() + y_off);
+        });
     }
     
     public static void clear() {
@@ -137,9 +147,11 @@ public abstract class EnemyManager {
     // If the currecnt offset is different then update all enemies current offset
     public static void updateEnemies() {
         
+        
+        
         allEnemies.forEach((enemy) -> {
             enemy.update();
-            System.out.println(enemy.getX() + "  " + enemy.getY());
+            //System.out.println(enemy.getX() + "  " + enemy.getY());
             
             if (X_OFF != OLD_X) {
                 OLD_X = X_OFF;
@@ -148,7 +160,7 @@ public abstract class EnemyManager {
             
             if (Y_OFF != OLD_Y) {
                 OLD_Y = Y_OFF;
-                enemy.setMapY(Y_OFF + enemy.Yorigin + (int)enemy.movedY);
+                enemy.setMapY(Y_OFF  + enemy.Yorigin + (int)enemy.movedY);
             }
             
             
@@ -158,6 +170,7 @@ public abstract class EnemyManager {
             Enemy enemy = enemyIter.next();
             for (Projectile projectile : ProjectileManager.allProjectiles) 
                 if (projectile.intersects(enemy)) {
+                    System.out.println("Was Killed At: " + enemy.getLocation());
                     enemyIter.remove();
                     ProjectileManager.removeProjectile(projectile);
                     break;

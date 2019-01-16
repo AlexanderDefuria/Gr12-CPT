@@ -154,55 +154,7 @@ public class Map {
         }
         
         
-        dir = new File(enemyFile);
-        directoryListing = dir.listFiles();
-            if (directoryListing != null)                 
-                for (File child : directoryListing) {
-                    try {
-                        
-                        System.out.println(child);
-                        fis = new FileInputStream(child);
-                        br = new BufferedReader(new InputStreamReader(fis));
-                        
-                        int lineNum = 0; 
-                        
-                        while ((line = br.readLine()) != null) {
-                            // use comma as separator\
-                            
-                            String[] values = line.split(cvsSplitBy); 
-                            
-                            try {
-                                start.get(lineNum);
-                            } catch (IndexOutOfBoundsException e) {
-                                start.add(new ArrayList<>());
-                                
-                            }
-                            
-                            for (int i = 0; i != values.length; i++) {
-                                
-                                int key = Integer.parseInt(values[i]);
-                                
-                                
-                                try{
-                                    if (start.get(lineNum).get(i) == -1 && key != -1)
-                                        start.get(lineNum).set(i, 1);
-                                } catch (IndexOutOfBoundsException e){
-                                    start.get(lineNum).add(key);
-                                    
-                                }
-   
-                            }
-                            
-                            lineNum++;
-                        }
-                    } catch (FileNotFoundException ex) {
-                        Logger.getLogger(Map.class.getName()).log(Level.SEVERE, null, ex);
-                    } catch (IOException ex) {
-                        Logger.getLogger(Map.class.getName()).log(Level.SEVERE, null, ex);
-                    }
-                    
-                    
-                }
+        
             
             
        

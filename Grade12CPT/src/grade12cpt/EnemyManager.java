@@ -1,8 +1,18 @@
 
 package grade12cpt;
 
+
+import static grade12cpt.Map.tile_size;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -12,14 +22,86 @@ import java.util.Iterator;
 public abstract class EnemyManager {
 
     public static ArrayList<Enemy> allEnemies = new ArrayList<>();
+    public static ArrayList<ArrayList<Integer>> start = new ArrayList<>();
     public static ArrayList<Enemy> visibleEnemies = new ArrayList<>();
     public static ArrayList<Enemy> toRemove = new ArrayList<>();
     private static int OLD_X = 0, OLD_Y = 0;
     private static int X_OFF = 0, Y_OFF = 0;
-      
+    private static int startX = 0, startY = 0;
+    private static final String enemyFile = "src/enemies";
     
-    public static void loadEnemies() {
+    
+    public static void LoadEnemies() {
         
+        startX = Map.getMapXoffset();
+        startY = Map.getMapYoffset();
+        
+        BufferedReader br;
+        FileInputStream fis;
+        String cvsSplitBy = ",";
+        String line;
+        File dir = new File(enemyFile);
+        File[] directoryListing = dir.listFiles();
+            if (directoryListing != null)                 
+                for (File child : directoryListing) {
+                    try {
+                        
+                        System.out.println(child);
+                        fis = new FileInputStream(child);
+                        br = new BufferedReader(new InputStreamReader(fis));
+                        
+                        int lineNum = 0; 
+                        
+                        while ((line = br.readLine()) != null) {
+                            // use comma as separator\
+                            
+                            String[] values = line.split(cvsSplitBy); 
+                            
+                            try {
+                                start.get(lineNum);
+                            } catch (IndexOutOfBoundsException e) {
+                                start.add(new ArrayList<>());
+                                
+                            }
+                            
+                            for (int i = 0; i != values.length; i++) {
+                                
+                                int key = Integer.parseInt(values[i]);
+                                
+                                
+                                try{
+                                    if (start.get(lineNum).get(i) == -1 && key != -1)
+                                        start.get(lineNum).set(i, 1);
+                                } catch (IndexOutOfBoundsException e){
+                                    start.get(lineNum).add(key);
+                                   
+                                }
+   
+                            }
+                            
+                            lineNum++;
+                        }
+                    } catch (FileNotFoundException ex) {
+                        Logger.getLogger(Map.class.getName()).log(Level.SEVERE, null, ex);
+                    } catch (IOException ex) {
+                        Logger.getLogger(Map.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                    
+                    
+                }
+
+            int enemy_id = 0;
+            for (int x = 0; x != start.size(); x++) {
+                for (int y = 0; y != start.get(x).size(); y++){
+                    if (start.get(x).get(y) != -1) {
+                        enemy_id++;
+                        Enemy enemy = new Enemy(Integer.toString(enemy_id));
+                        enemy.setLocation((tile_size * y) + startX, startY + (tile_size * x));
+                        System.out.println("X:" + (tile_size * y) + startX + "   Y:" + startY + (tile_size * x));
+                    }
+                }
+            }
+            
     }
     
     public static void addEnemy(Enemy newEnemy) {
@@ -48,12 +130,16 @@ public abstract class EnemyManager {
         X_OFF = x_off;
         Y_OFF = y_off;
     }
-
+    
+    public static void clear() {
+        allEnemies.clear();
+    }
     // If the currecnt offset is different then update all enemies current offset
     public static void updateEnemies() {
         
         allEnemies.forEach((enemy) -> {
             enemy.update();
+            System.out.println(enemy.getX() + "  " + enemy.getY());
             
             if (X_OFF != OLD_X) {
                 OLD_X = X_OFF;

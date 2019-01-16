@@ -1,6 +1,7 @@
 
 package grade12cpt;
 
+
 import java.awt.Color;
 import java.io.BufferedReader;
 import java.io.FileInputStream;
@@ -19,11 +20,14 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.imageio.ImageIO;
 
-
+// TODO remove blockage from that one tree in the lava canyon that was removed in the image
+// TODO add teleportation into the hosues
+// TODO Create Enemy Movepaths
 
 public class Map {
     
     public ArrayList<ArrayList<Integer>> map = new ArrayList<>();
+    public ArrayList<ArrayList<Integer>> start = new ArrayList<>();
     public ArrayList<Rectangle> terrain = new ArrayList<>();
     public ArrayList<Integer> terrain_id = new ArrayList<>();
     public final int B_WIDTH = Board.B_WIDTH;
@@ -38,9 +42,10 @@ public class Map {
     public static int tiledWidth, tiledHeight = 0;
     public static int mapWidth, mapHeight = 0;
     public static Rectangle mapOutline;
-    public static String spriteFile = "src/images/desert_sprite.png";
-    public static String MapImageFile = "src/images/map.png";
-    public static String unpassableMap = "src/unpassable";
+    public static final String spriteFile = "src/images/desert_sprite.png";
+    public static final String MapImageFile = "src/images/map.png";
+    public static final String unpassableMap = "src/unpassable";
+    public static final String enemyFile = "src/enemies";
     private static BufferedImage background;
     private static BufferedImage mapBack;
     
@@ -147,7 +152,6 @@ public class Map {
                 }
             }
         }
-
     }    
     
     
@@ -155,18 +159,17 @@ public class Map {
     // TODO Use overallX and overallY of the player to determine where the Terrain is instead of the movements
     public Image display(Graphics g, Player player) {
         terrain.clear();
-        int X_OFF = player.getMoveX();
-        int Y_OFF = player.getMoveY();
+        X_OFF = player.getMoveX();
+        Y_OFF = player.getMoveY();
         
         IMG_Y += Y_OFF;
         IMG_X += X_OFF;
         
 
-        
         EnemyManager.setOffset( getMapXoffset(), getMapYoffset());
         ProjectileManager.setOffset( getMapXoffset(), getMapYoffset());
         
-        
+
         mapOutline.setLocation((int)mapOutline.getX() + X_OFF , (int)mapOutline.getY() + Y_OFF );
         
         g = background.createGraphics();
@@ -181,18 +184,10 @@ public class Map {
                     
                     terrain.add(new SolidTerrain((tile_size * y) + IMG_X + X_OFF, Y_OFF + IMG_Y + (tile_size * x)));
                     
-                    //Rectangle rect = new Rectangle((tile_size * y) + IMG_X + X_OFF, Y_OFF + IMG_Y + (tile_size * x),tile_size,tile_size);
-                    //g.setColor(Color.red);
-                    //g.drawRect(rect.x,  rect.y, rect.width, rect.height);
-                    
                 }
                 
             }
         } 
-        
-        
-        
-        
         
         
         // Display enemies in proper location

@@ -25,7 +25,7 @@ public class Player extends Sprite{
     
 
     public void init() {
-        this.weapon = new MeleeWeapon.Sword();
+        this.weapon = new RangedWeapon.Orb();
         
         loadImage("src/images/enemy.png");
         loadSprites("src/images/clotharmor.png");

@@ -5,12 +5,6 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Toolkit;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.JOptionPane;
@@ -32,7 +26,6 @@ public class Board extends JPanel implements Runnable {
     public static Player player;
     public static int loopIteration;
     
-    public static Enemy tom = new Enemy("Tom");
     
     public Board(int width, int height) {
         B_WIDTH = width;
@@ -42,11 +35,9 @@ public class Board extends JPanel implements Runnable {
         initBoard();
     }
 
-
+    
     private void initBoard() {
 
-        
-        
         // TODO Fix bug where player keeps scrolling after window is deslected
         setFocusable(true);
         setBackground(Color.BLACK);
@@ -60,8 +51,8 @@ public class Board extends JPanel implements Runnable {
         addKeyListener(new TAdapter(input));
         addMouseListener(new MAdapter(input));
         
-        
-        EnemyManager.addEnemy(tom);
+        EnemyManager.LoadEnemies();
+
     }
 
     @Override

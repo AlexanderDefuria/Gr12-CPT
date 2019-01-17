@@ -1,4 +1,3 @@
-
 package grade12cpt;
 
 import java.awt.Image;
@@ -18,6 +17,7 @@ public abstract class Enemy extends Sprite{
     
     public static String enemySheet = "";
     private boolean bounce = true;
+    public static boolean moved = false;
     
     public Enemy(String name) {
         this.name = name;
@@ -88,11 +88,11 @@ public abstract class Enemy extends Sprite{
             // Populate walking sprite image array
             walkingSprite = new Image[5][5];
             for (int i = 0; i != 5; i++){
-                walkingSprite[0][i] = spriteSheet.getSubimage(32 * i, 32, 32, 32);
-                walkingSprite[1][i] = Sprite.flipImage(spriteSheet.getSubimage(32 * i, 32, 32, 32));
-                walkingSprite[2][i] = spriteSheet.getSubimage(32 * i, 32 * 4, 32, 32);
-                walkingSprite[3][i] = spriteSheet.getSubimage(32 * i, 32 * 7, 32, 32);
-                walkingSprite[4][i] = spriteSheet.getSubimage(0, 32 * 8, 32, 32);
+                walkingSprite[0][i] = spriteSheet.getSubimage(48 * i, 48, 48, 48);
+                walkingSprite[1][i] = Sprite.flipImage(spriteSheet.getSubimage(48 * i, 48, 48, 48));
+                walkingSprite[2][i] = spriteSheet.getSubimage(48 * i, 48 * 4, 48, 48);
+                walkingSprite[3][i] = spriteSheet.getSubimage(48 * i, 48 * 7, 48, 48);
+                walkingSprite[4][i] = spriteSheet.getSubimage(0, 48 * 8, 32, 48);
             } 
 
         } catch (IOException ex) {}
@@ -132,10 +132,12 @@ public abstract class Enemy extends Sprite{
             if (moveX > 0) {
                 x += speed;
                 movedX += speed;
+                mapX += speed;
             }
             else if (moveX < 0) {
                 x -= speed;
                 movedX -= speed;
+                mapX -= speed;
             } 
             
         } else if (movedX >= moveX && bounce) {
@@ -149,10 +151,12 @@ public abstract class Enemy extends Sprite{
             if (moveY > 0) {
                 y += speed;
                 movedY += speed;
+                mapY += speed;
             }
             else if (moveY < 0) {
                 y -= speed;
-                movedY += speed;
+                movedY -= speed;
+                mapY -= speed;
             } 
         
         } else if (movedX >= moveX && bounce) {

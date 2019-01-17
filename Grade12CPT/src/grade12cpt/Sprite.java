@@ -48,7 +48,7 @@ public abstract class Sprite extends Rectangle{
     public String weaponSheet;
     public String enemySheet;
     public String name;
-    public Weapon weapon;  
+    public Weapon weapon; 
     private boolean passable;
     
     
@@ -84,6 +84,9 @@ public abstract class Sprite extends Rectangle{
     
     protected final void loadWeaponSprites(Weapon weapon) {
         weaponSheet = weapon.getSheet();
+        
+        
+        
         try {
             spriteSheet = ImageIO.read(new File(weaponSheet));  
             weaponSprite = new Image[4][5];
@@ -116,7 +119,7 @@ public abstract class Sprite extends Rectangle{
         
         if (mapX == lastX && mapY == lastY) {
             direction = 4;
-        } else if (spriteLoop % 20 == 0){
+        } else if (spriteLoop % 10 == 0){
             step++;
         }
         

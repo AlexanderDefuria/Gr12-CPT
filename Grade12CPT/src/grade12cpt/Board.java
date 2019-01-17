@@ -112,9 +112,11 @@ public class Board extends JPanel implements Runnable {
 
         beforeTime = System.currentTimeMillis();
 
-        while (true) {
+        while (player.getHealth() >= 0) {
 
             repaint();
+            
+           
 
             timeDiff = System.currentTimeMillis() - beforeTime;
             sleep = DELAY - timeDiff;

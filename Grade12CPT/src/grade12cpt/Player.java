@@ -157,7 +157,7 @@ public class Player extends Sprite{
             }
             
             if (this.attackRange.intersects(enemy.getBounds())) {
-                enemy.updateHealth(-1);
+                enemy.updateHealth(-20);
                 
             }
 

@@ -195,9 +195,7 @@ public abstract class EnemyManager {
     public static void updateEnemies() {
 
         allEnemies.forEach((enemy) -> {
-            enemy.update();
-            
-           
+
             
             if (X_OFF != OLD_X) {
                 OLD_X = X_OFF;
@@ -209,10 +207,15 @@ public abstract class EnemyManager {
                 enemy.setMapY(Y_OFF  + enemy.Yorigin + (int)enemy.movedY);
             }
             
-            if (enemy.getMapX() > playerX - (4 * tile_size) && enemy.getMapX() < playerX + (4 * tile_size)
-                    && enemy.getMapY() > playerY - (4 * tile_size) && enemy.getMapY() < playerY + (4 * tile_size)) {
+            if (enemy.getMapX() > playerX - (5 * tile_size) && enemy.getMapX() < playerX + (5 * tile_size)
+                    && enemy.getMapY() > playerY - (5 * tile_size) && enemy.getMapY() < playerY + (5 * tile_size)) {
                 enemy.walk(playerX + -enemy.getMapX(), playerY + -enemy.getMapY(), false);
+                enemy.moved = true;
+            } else if(enemy.moved){
+                //enemy.walk(enemy.getMapX(),enemy.getMapY(),false);
             }
+
+            enemy.update();
             
             
         });
@@ -221,8 +224,12 @@ public abstract class EnemyManager {
             Enemy enemy = enemyIter.next();
             for (Projectile projectile : ProjectileManager.allProjectiles) 
                 if (projectile.intersects(enemy)) {
-                    System.out.println("Was Killed At: " + enemy.getLocation());
-                    enemyIter.remove();
+                    if (enemy.getHealth() <= 0){
+                        System.out.println("Was Killed At: " + enemy.getLocation());
+                        enemyIter.remove();
+                    } else {
+                        enemy.updateHealth(-15);
+                    }
                     ProjectileManager.removeProjectile(projectile);
                     break;
                 }

@@ -17,6 +17,7 @@ public abstract class Enemy extends Sprite{
     
     
     public static String enemySheet = "";
+    private boolean bounce = true;
     
     public Enemy(String name) {
         this.name = name;
@@ -32,11 +33,13 @@ public abstract class Enemy extends Sprite{
     
     static final class Bat extends Enemy{
 
-        public Bat(String name)  {
+        public Bat(String name, int x, int y)  {
             super(name);
             enemySheet = "src/images/bat.png";
             loadBatSprites(this);
             speed = 4;
+            animate();
+            walk(x,y,true);
             this.updateHealth(20, true);
             this.setSize(getDimensions());
         }
@@ -49,12 +52,13 @@ public abstract class Enemy extends Sprite{
             spriteSheet = ImageIO.read(new File(sheetName));
 
             // Populate walking sprite image array
-            walkingSprite = new Image[4][5];
+            walkingSprite = new Image[5][5];
             for (int i = 0; i != 5; i++){
                 walkingSprite[0][i] = spriteSheet.getSubimage(32 * i, 0, 32, 32);
                 walkingSprite[1][i] = Sprite.flipImage(spriteSheet.getSubimage(32 * i, 0, 32, 32));
                 walkingSprite[2][i] = spriteSheet.getSubimage(32 * i, 32 * 3, 32, 32);
                 walkingSprite[3][i] = spriteSheet.getSubimage(32 * i, 32 * 6, 32, 32);
+                walkingSprite[4][i] = walkingSprite[2][i];
             } 
 
         } catch (IOException ex) {}
@@ -64,13 +68,35 @@ public abstract class Enemy extends Sprite{
     }
     
     static class Ogre extends Enemy{
-        public Ogre (String name) {
+        public Ogre (String name, int x, int y) {
             super(name);
             enemySheet = "src/images/ogre.png";
-            super.loadEnemySprites(this);
+            loadOgreSprites(this);
             speed = 1;
+            animate();
+            walk(x,y,true);
             this.updateHealth(40, true);
             this.setSize(getDimensions());
+        }
+        
+        public void loadOgreSprites(Ogre ogre) {
+            String sheetName = ogre.getSheet();
+            
+            try {
+            spriteSheet = ImageIO.read(new File(sheetName));
+
+            // Populate walking sprite image array
+            walkingSprite = new Image[5][5];
+            for (int i = 0; i != 5; i++){
+                walkingSprite[0][i] = spriteSheet.getSubimage(32 * i, 32, 32, 32);
+                walkingSprite[1][i] = Sprite.flipImage(spriteSheet.getSubimage(32 * i, 32, 32, 32));
+                walkingSprite[2][i] = spriteSheet.getSubimage(32 * i, 32 * 4, 32, 32);
+                walkingSprite[3][i] = spriteSheet.getSubimage(32 * i, 32 * 7, 32, 32);
+                walkingSprite[4][i] = spriteSheet.getSubimage(0, 32 * 8, 32, 32);
+            } 
+
+        } catch (IOException ex) {}
+            
         }
     }
     
@@ -99,6 +125,9 @@ public abstract class Enemy extends Sprite{
     
     public void update() {
         
+        //if ()
+        
+        
         if (movedX != moveX && moveX != 0) {
             if (moveX > 0) {
                 x += speed;
@@ -106,8 +135,14 @@ public abstract class Enemy extends Sprite{
             }
             else if (moveX < 0) {
                 x -= speed;
-                movedX += speed;
+                movedX -= speed;
             } 
+            
+        } else if (movedX >= moveX && bounce) {
+            moveX -= movedX * 2;
+           
+        } else if (movedX <= 0 && bounce){
+            moveX = EnemyManager.walkDist * 16;
         }
         
         if (movedY != moveY && moveY != 0 ) {
@@ -120,13 +155,19 @@ public abstract class Enemy extends Sprite{
                 movedY += speed;
             } 
         
-        }   
+        } else if (movedX >= moveX && bounce) {
+            moveX -= movedX * 2;
+           
+        } else if (movedX <= 0){
+            moveX = EnemyManager.walkDist * 16;
+        }
     }
     
     
-    public void walk(int x, int y) {
+    public void walk(int x, int y, boolean bouncy) {
         moveX += x;
         moveY += y;
+        this.bounce = bouncy;
     }
     
     public void setStart(int x, int y) {

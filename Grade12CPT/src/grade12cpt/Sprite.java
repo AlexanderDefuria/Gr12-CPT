@@ -106,16 +106,7 @@ public abstract class Sprite extends Rectangle{
         } catch (IOException ex) {}
         System.out.println("Loaded Sprites: " + weapon.getClass());
     }
-    
-    protected final void loadEnemySprites(Enemy enemy) {
-        enemySheet = enemy.getSheet();
-        try {
-            System.out.println("s");
-            
-        } catch (Exception e) {
-            
-        }
-    }
+
     
     public void animate() {
         if      (mapX > lastX) direction = 0; // Right
@@ -191,7 +182,6 @@ public abstract class Sprite extends Rectangle{
     
     protected Dimension getDimensions() {
         updateDimensions();
-        System.out.println(width + "   " + height);
         return new Dimension(width, height);
     }
     

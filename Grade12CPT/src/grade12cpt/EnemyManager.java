@@ -28,7 +28,10 @@ public abstract class EnemyManager {
     private static int OLD_X = 0, OLD_Y = 0;
     private static int X_OFF = 0, Y_OFF = 0;
     private static int startX = 0, startY = 0;
+    public static int playerX = 0, playerY = 0;
+    public static final int walkDist = 7;
     private static final String enemyFile = "src/enemies";
+    private static Player player;
     
     
     public static void LoadEnemies() {
@@ -63,7 +66,7 @@ public abstract class EnemyManager {
                                 start.add(new ArrayList<>());
                                 
                             }
-                            
+                            int y = 0;
                             for (int i = 0; i != values.length; i++) {
                                 
                                 int key = Integer.parseInt(values[i]);
@@ -71,11 +74,15 @@ public abstract class EnemyManager {
                                 
                                 try{
                                     if (start.get(lineNum).get(i) == -1 && key != -1)
-                                        start.get(lineNum).set(i, 1);
+                                        start.get(lineNum).set(i, key);
                                 } catch (IndexOutOfBoundsException e){
                                     start.get(lineNum).add(key);
-                                    
+
                                 }
+                                
+                                
+                                
+                                
    
                             }
                             
@@ -96,12 +103,44 @@ public abstract class EnemyManager {
                 for (int y = 0; y != start.get(x).size(); y++){
                     if (start.get(x).get(y) != -1) {
                         enemy_id++;
-                        Enemy enemy = new Bat(Integer.toString(enemy_id));
+                        int walkX = 0;
+                        int walkY = 0;
+                        Enemy enemy = null;
+                        boolean Ogre = true;
+                        switch (start.get(x).get(y)) {
+                            case 0:
+                                Ogre = false;
+                            case 5:
+                                walkX = tile_size * walkDist;
+                                break;
+                            case 1:
+                                Ogre = false;
+                            case 6:
+                                walkX = tile_size * -walkDist;
+                                break;
+                            case 2:
+                                Ogre = false;
+                            case 4:
+                                walkY = tile_size * walkDist;
+                                break;
+                            case 3: 
+                                Ogre = false;
+                            case 7:
+                                walkY = tile_size * -walkDist;
+                                break;
+                            default:
+                                break;                            
+                        }
+                        
+                        if (Ogre) enemy = new Enemy.Ogre(Integer.toString(enemy_id), walkX, walkY);
+                        else enemy = new Enemy.Bat(Integer.toString(enemy_id), walkX, walkY);
+                        
                         enemy.setMapX((tile_size * y) + startX);
                         enemy.setMapY((tile_size * x) + startY);
                         enemy.setLocation((tile_size * y) + startX, startY + (tile_size * x));
                         System.out.println(enemy.getLocation());
-                        addEnemy(enemy);
+                        
+                            addEnemy(enemy);
                     }
                 }
             }
@@ -135,10 +174,18 @@ public abstract class EnemyManager {
         X_OFF = x_off;
         Y_OFF = y_off;
         
+        
         allEnemies.forEach((enemy) -> {
            enemy.setMapX(enemy.getMapX() + x_off);
            enemy.setMapY(enemy.getMapY() + y_off);
         });
+    }
+    
+    public static void setOffset(int X_OFF, int Y_OFF, double x, double y) {
+        setOffset(X_OFF, Y_OFF);
+        playerX = (int)x;
+        playerY = (int)y;
+        
     }
     
     public static void clear() {
@@ -146,12 +193,11 @@ public abstract class EnemyManager {
     }
     // If the currecnt offset is different then update all enemies current offset
     public static void updateEnemies() {
-        
-        
-        
+
         allEnemies.forEach((enemy) -> {
             enemy.update();
-            //System.out.println(enemy.getX() + "  " + enemy.getY());
+            
+           
             
             if (X_OFF != OLD_X) {
                 OLD_X = X_OFF;
@@ -161,6 +207,11 @@ public abstract class EnemyManager {
             if (Y_OFF != OLD_Y) {
                 OLD_Y = Y_OFF;
                 enemy.setMapY(Y_OFF  + enemy.Yorigin + (int)enemy.movedY);
+            }
+            
+            if (enemy.getMapX() > playerX - (4 * tile_size) && enemy.getMapX() < playerX + (4 * tile_size)
+                    && enemy.getMapY() > playerY - (4 * tile_size) && enemy.getMapY() < playerY + (4 * tile_size)) {
+                enemy.walk(playerX + -enemy.getMapX(), playerY + -enemy.getMapY(), false);
             }
             
             
@@ -189,4 +240,6 @@ public abstract class EnemyManager {
         
         throw new  IllegalArgumentException("That name does not exist as of now.... TIME TO CRASH!");
     }
+
+
 }

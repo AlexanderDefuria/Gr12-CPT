@@ -172,7 +172,7 @@ public class Map {
         
         
         
-        EnemyManager.setOffset( X_OFF, Y_OFF);
+        EnemyManager.setOffset( X_OFF, Y_OFF, player.getX(), player.getY());
         ProjectileManager.setOffset( getMapXoffset(), getMapYoffset());
         
 

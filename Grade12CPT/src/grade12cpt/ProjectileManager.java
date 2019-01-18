@@ -16,7 +16,12 @@ public abstract class ProjectileManager {
     public static ArrayList<Projectile> allProjectiles = new ArrayList<>();
     private static int X_OFF = 0, Y_OFF = 0;
       
+    // manages and calculates the new position of each active projectile, is prompted by the map 
+    // return the projectiles and their data so it can display them.
     
+    
+    
+    // Adds a new projectile at the player center and removes furthest away if there are more than 10 active
     public static void addProjectile(Projectile newProjectile) {
         allProjectiles.add(newProjectile);
         if (allProjectiles.size() > 10) allProjectiles.remove(0);
@@ -30,7 +35,7 @@ public abstract class ProjectileManager {
         return allProjectiles;
     }
     
-
+    
     public static void setOffset(int x_off, int y_off) {
         X_OFF = x_off;
         Y_OFF = y_off;

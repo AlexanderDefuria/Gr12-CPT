@@ -52,6 +52,7 @@ public abstract class Sprite extends Rectangle{
     private boolean passable;
     
     
+    // Loads the basic sprite image
     protected final void loadImage(String imageName) {
         ImageIcon ii = new ImageIcon(imageName);
         appearance = ii.getImage();
@@ -62,6 +63,9 @@ public abstract class Sprite extends Rectangle{
         
     }
     
+    
+    // Load basic walking animations sprites by cyclig through the sprite sheets with
+    // pre determined spacing and extracting subimages
     protected final void loadSprites(String sheetName) {
         armorSheet = sheetName;
         try {
@@ -82,11 +86,11 @@ public abstract class Sprite extends Rectangle{
 
     }
     
+    // Loads weapon and armor sheets with weapon by cyclig through the sprite sheets with
+    // pre determined spacing and extracting subimages
     protected final void loadWeaponSprites(Weapon weapon) {
         weaponSheet = weapon.getSheet();
-        
-        
-        
+      
         try {
             spriteSheet = ImageIO.read(new File(weaponSheet));  
             weaponSprite = new Image[4][5];
@@ -110,13 +114,15 @@ public abstract class Sprite extends Rectangle{
         System.out.println("Loaded Sprites: " + weapon.getClass());
     }
 
-    
+    // Animates and controls the actions sequences of the sprite. Most of it is based on the spriteLoop variable
     public void animate() {
         if      (mapX > lastX) direction = 0; // Right
         else if (mapX < lastX) direction = 1; // Left
         else if (mapY > lastY) direction = 2; // Down
         else if (mapY < lastY) direction = 3; // Up
         
+        // Direction 4 is Idle
+        // Sets the sprite to idle if it's not moving, otherwise increase the step for animtion of the movement
         if (mapX == lastX && mapY == lastY) {
             direction = 4;
         } else if (spriteLoop % 10 == 0){
@@ -131,6 +137,7 @@ public abstract class Sprite extends Rectangle{
             canAttack = true;
         } 
              
+        // Increase the spriteLoop
         if (spriteLoop > 100) spriteLoop = 0;
             spriteLoop += 2;
         
@@ -150,6 +157,7 @@ public abstract class Sprite extends Rectangle{
         else appearance = walkingSprite[direction][step];
 
 
+        // Draw out weapon when attacking if it's a melee weapon
         if (attacking && this instanceof Player) {
             
             if (UserInput.UP) direction = 2;
@@ -172,17 +180,19 @@ public abstract class Sprite extends Rectangle{
         updateDimensions();
     }
     
+    // each sprite has a idle state, it uses one image slected from below
     private Image getIdle() {
-        
         return spriteSheet.getSubimage(32 , 32 * 8, 32, 32);
     }
     
+    // sets the sprite height and width to the same as the appearance image
     protected void updateDimensions() {
         height = appearance.getHeight(null);
         width = appearance.getWidth(null);
         this.setSize(width, height);
     }
     
+    // Updates then returns the dimensiosn of the sprite
     protected Dimension getDimensions() {
         updateDimensions();
         return new Dimension(width, height);
@@ -226,16 +236,22 @@ public abstract class Sprite extends Rectangle{
         return name;
     }
     
+    
+    // Adds the change to the current health
     public void updateHealth(int change) {
         curHP += change;
         if (this instanceof Player) 
             if ( curHP < 0 ) curHP = maxHP;
     }
     
+    
+    // Sets the health to the provided
     public void updateHealth(int change, boolean complete) {
         if (complete) curHP = change;
     }
 
+    
+    // Flips the iamge for the left/right as there are only sprites in a single dricetion on the sheets
     public static Image flipImage(Image image) {
         BufferedImage flipped = new BufferedImage(image.getWidth(null), image.getHeight(null), BufferedImage.TYPE_INT_ARGB);
         int width = image.getWidth(null);
@@ -248,7 +264,7 @@ public abstract class Sprite extends Rectangle{
     }
     
 
-    
+    // Appends the weapon srite to the base iamge
     private Image addWeapon(Image baseImage, Image weaponImage){
         BufferedImage weapon = (BufferedImage) weaponImage;
         

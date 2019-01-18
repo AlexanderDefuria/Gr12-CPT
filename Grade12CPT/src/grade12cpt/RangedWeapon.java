@@ -17,6 +17,8 @@ public class RangedWeapon extends Weapon{
     
     public Image projectileImage;
     
+    // Loads iamge for the Orb weapon, and sets the damage of the weapon
+    
     static class Orb extends RangedWeapon{
 
         public Orb()  {
@@ -30,10 +32,7 @@ public class RangedWeapon extends Weapon{
         }
         
     }
-    
-    
-    
-    
+
     public Image getProjectileImage() {
         return projectileImage;
     }

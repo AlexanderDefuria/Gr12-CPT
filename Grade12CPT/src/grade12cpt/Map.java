@@ -168,9 +168,7 @@ public class Map {
         ENEMY_Y += Y_OFF;
         ENEMY_X += X_OFF;
         
-        
-        
-        
+        // TOP TO EXIT THE GAME IS 20 PIXELS, start at the bottom is -4000piuxels
         
         EnemyManager.setOffset( X_OFF, Y_OFF, player.getX(), player.getY());
         ProjectileManager.setOffset( getMapXoffset(), getMapYoffset());

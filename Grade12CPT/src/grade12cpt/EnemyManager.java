@@ -34,11 +34,13 @@ public abstract class EnemyManager {
     private static Player player;
     
     
+    //loads all enemies and sets them up
     public static void LoadEnemies() {
         
         startX = Map.getMapXoffset();
-        startY = Map.getMapYoffset();
+        startY = Map.getMapYoffset();        
         
+        // Loads enemies from each csv file in the enemies folder into an arrayList
         BufferedReader br;
         FileInputStream fis;
         String cvsSplitBy = ",";
@@ -56,21 +58,22 @@ public abstract class EnemyManager {
                         int lineNum = 0; 
                         
                         while ((line = br.readLine()) != null) {
-                            // use comma as separator\
-                            
+                           
+                           // Splits line into multiple values string (each column) 
                             String[] values = line.split(cvsSplitBy); 
                             
+                            // if there is no arraylist for this line add it
                             try {
                                 start.get(lineNum);
                             } catch (IndexOutOfBoundsException e) {
                                 start.add(new ArrayList<>());
                                 
                             }
-                            int y = 0;
+                            
+                            // Put the values of the line into the arraylist completing the rows and columns setup.
                             for (int i = 0; i != values.length; i++) {
                                 
                                 int key = Integer.parseInt(values[i]);
-                                
                                 
                                 try{
                                     if (start.get(lineNum).get(i) == -1 && key != -1)
@@ -79,11 +82,6 @@ public abstract class EnemyManager {
                                     start.get(lineNum).add(key);
 
                                 }
-                                
-                                
-                                
-                                
-   
                             }
                             
                             lineNum++;
@@ -96,8 +94,8 @@ public abstract class EnemyManager {
                     
                     
                 }
-            //System.out.println(start.get(0).size() * 16);
-            //System.exit(0);
+            
+            // Loads enemies from eneies starting postion 2D Arraylist and sets up their walk pattern
             int enemy_id = 0;
             for (int x = 0; x != start.size(); x++) {
                 for (int y = 0; y != start.get(x).size(); y++){
@@ -160,6 +158,8 @@ public abstract class EnemyManager {
         return allEnemies;
     }
     
+    
+    // Checks if all enemies are above 0hp and removes all that are set to remove.
     public static void checkDamage() {
         for (Enemy x : allEnemies) {
             if (x.getHealth() < 0) toRemove.add(x);
@@ -170,6 +170,8 @@ public abstract class EnemyManager {
         }
     }
 
+    
+    // Sets the initial offset of the enemy from 0,0
     public static void setOffset(int x_off, int y_off) {
         X_OFF = x_off;
         Y_OFF = y_off;
@@ -181,6 +183,8 @@ public abstract class EnemyManager {
         });
     }
     
+    
+    // Set the offset based on the player and pass the other two to the aboe method
     public static void setOffset(int X_OFF, int Y_OFF, double x, double y) {
         setOffset(X_OFF, Y_OFF);
         playerX = (int)x;
@@ -208,9 +212,11 @@ public abstract class EnemyManager {
             }
             
             if (enemy.getMapX() > playerX - (5 * tile_size) && enemy.getMapX() < playerX + (5 * tile_size)
-                    && enemy.getMapY() > playerY - (5 * tile_size) && enemy.getMapY() < playerY + (5 * tile_size)) {
-                enemy.walk(playerX + -enemy.getMapX(), playerY + -enemy.getMapY(), false);
-                enemy.moved = true;
+                    && enemy.getMapY() > playerY - (5 * tile_size) && enemy.getMapY() < playerY + (5 * tile_size)
+                    && enemy instanceof Enemy.Bat) {
+                            enemy.walk(playerX - enemy.getMapX(), playerY - enemy.getMapY(), false);
+                            enemy.moved = true;
+                            
             } else if(enemy.moved){
                 //enemy.walk(enemy.getMapX(),enemy.getMapY(),false);
             }
@@ -220,6 +226,7 @@ public abstract class EnemyManager {
             
         });
         
+        // Check each enemy for collisions with projectiles removes projectiles and updates health if thers a collision
         for (Iterator<Enemy> enemyIter = allEnemies.iterator(); enemyIter.hasNext();) {
             Enemy enemy = enemyIter.next();
             for (Projectile projectile : ProjectileManager.allProjectiles) 
@@ -240,6 +247,7 @@ public abstract class EnemyManager {
 
     }
     
+    // Get the enemy with the provided name
     public static Enemy getEnemy(String name) {
         for (Enemy enemy : allEnemies) 
             if (enemy.getName().equals(name)) 

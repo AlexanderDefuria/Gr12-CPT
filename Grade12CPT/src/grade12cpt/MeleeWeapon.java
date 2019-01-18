@@ -1,18 +1,16 @@
 
 package grade12cpt;
 
-import java.awt.Image;
-
-
 public class MeleeWeapon extends Weapon{
-
-    public Image appearance;
+  
+    // Gives two unique items and updates with unique stats of the super class (Weapon)
+    // Could be done in Weapon Class, but this is better organized
     
     static class Sword extends MeleeWeapon {
 
         public Sword() {
             spriteSheet = "src/images/sword1.png";
-            damage = 10;
+            damage = 30;
         }
         
     }

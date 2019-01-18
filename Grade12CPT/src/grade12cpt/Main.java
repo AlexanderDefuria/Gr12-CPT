@@ -24,11 +24,12 @@
 
 package grade12cpt;
 
-import java.awt.EventQueue;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.JButton;
 import javax.swing.JFrame;
+import java.awt.EventQueue;
+
 
 
 
@@ -39,6 +40,8 @@ public class Main extends JFrame implements ActionListener{
     public static final int WIDTH = (int)(HEIGHT * aspectRatio);
     public static MainMenu mainmenu;
     public static JButton button;
+    public static Boolean alive = true;
+    public static Board board;
     
     public Main() {
         
@@ -46,33 +49,47 @@ public class Main extends JFrame implements ActionListener{
     }
     
     private void init() {
+        
+        //Setup mainmenu
         mainmenu = new MainMenu(WIDTH, HEIGHT);
-        //add(mainmenu);
+        add(mainmenu);
+        
+        // Setup the window
         setResizable(false);
         setSize(WIDTH, HEIGHT);
-        
-        //button = new JButton();
-        //button.setSize(200, 50);
-        //mainmenu.add(button);
-        
-        //button.addActionListener(this);
-        
-        startBoard();
-        
         setTitle("CPT");    
         setLocationRelativeTo(null);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); 
+        
+        // Create invisiable button in line with image start button
+        button = new JButton();
+        button.setOpaque(false);
+        button.setContentAreaFilled(false);
+        button.setBorderPainted(false);
+        button.setBounds(500, 480, 320, 150);
+        button.addActionListener(this);
+        mainmenu.add(button);
+        mainmenu.setLayout(null);
+        
+
+        
     }
     
+    
+    // Begin the new board and wait for the player to die
     public void startBoard() {
-        add(new Board(WIDTH,HEIGHT));
+        alive = true;
+        board = new Board(WIDTH,HEIGHT);
+        add(board);
         this.transferFocusUpCycle();
-        pack();
+        pack();     
+        
 
     }
     
     
 
+    // Initially begins this program
     public static void main(String[] args) {
         EventQueue.invokeLater(() -> {
             Main main = new Main();
@@ -82,6 +99,8 @@ public class Main extends JFrame implements ActionListener{
 
     }
 
+    
+    // When the button has an action performed on it switch to the playing board
     @Override
     public void actionPerformed(ActionEvent e) {
         button.removeAll();

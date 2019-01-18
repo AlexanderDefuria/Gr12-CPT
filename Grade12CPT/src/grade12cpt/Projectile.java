@@ -13,9 +13,10 @@ public class Projectile extends Sprite{
     public int loop = 0;
     public int damage;
     
+    // Loads a ranged weapon image as it’s appearance, and sets the XY origin from the player’s. 
+    // calculats angles and the rate of change in each axis when moving from mouse.
     
-    
-    public Projectile(Weapon weapon) {
+    public Projectile(RangedWeapon weapon) {
         loadImage(weapon.getSheet());
         
         x = B_WIDTH / 2;
@@ -27,10 +28,6 @@ public class Projectile extends Sprite{
         angle = 1.5 * Math.PI - Math.atan2(UserInput.mouse_Y - ((B_HEIGHT ) / 2), UserInput.mouse_X - ((B_WIDTH ) / 2));
         Xspeed = Math.sin(angle) * totalSpeed;
         Yspeed = Math.cos(angle) * totalSpeed;
-        
-        //System.out.println("Angle: " + angle + "   X speed: " + Xspeed + "   Y speed: " + Yspeed);
-
-
     
     }
 

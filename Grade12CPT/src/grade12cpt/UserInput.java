@@ -19,14 +19,13 @@ public class UserInput {
     public static boolean A_KEY;
     public static boolean S_KEY;
     public static boolean D_KEY;
+    public static boolean E_KEY;
     public static int mouse_X;
     public static int mouse_Y;
     public static boolean CLICKED;
     
-    public UserInput() {
-        
-    }
-
+    // Takes actions from TAdapter and MAdapter Classes and packages them nicely
+    // with distinct variables for each relevant action or piece of data.
     
     void keyPressed(KeyEvent e) {
         int key = e.getKeyCode();
@@ -41,6 +40,7 @@ public class UserInput {
         if (key == KeyEvent.VK_A) A_KEY = true;
         if (key == KeyEvent.VK_S) S_KEY = true;
         if (key == KeyEvent.VK_D) D_KEY = true;
+        if (key == KeyEvent.VK_E) E_KEY = true;
     }
 
     void keyReleased(KeyEvent e) {
@@ -56,6 +56,7 @@ public class UserInput {
         if (key == KeyEvent.VK_A) A_KEY = false;
         if (key == KeyEvent.VK_S) S_KEY = false;
         if (key == KeyEvent.VK_D) D_KEY = false;
+        if (key == KeyEvent.VK_E) E_KEY = false;
     }
 
 

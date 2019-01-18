@@ -9,11 +9,13 @@ import java.awt.event.KeyEvent;
  * @author defur
  */
 
-public class TAdapter extends KeyAdapter {
+public class KAdapter extends KeyAdapter {
     
         public static UserInput input;
+        
+        // Passes all actions performed by the keyBoard to the UserInput Object Given
     
-        public TAdapter(UserInput ui) {
+        public KAdapter(UserInput ui) {
             this.input = ui;
         }
         

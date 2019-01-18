@@ -12,7 +12,9 @@ import java.awt.event.MouseEvent;
 public class MAdapter extends MouseAdapter{
 
         public static UserInput input;
-    
+        
+        // Passes all actions performed by the mouse to the UserInput Object Given
+        
         public MAdapter(UserInput ui) {
             this.input = ui;
         }

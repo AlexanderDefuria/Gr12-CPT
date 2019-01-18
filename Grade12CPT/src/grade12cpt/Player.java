@@ -9,7 +9,7 @@ import java.awt.Rectangle;
 public class Player extends Sprite{
 
     public UserInput ui;
-    public Terrain walls;
+    public SolidTerrain walls;
     public static boolean checking = true;
     public static int overallX = B_WIDTH / 2;
     public static int overallY = B_HEIGHT / 2;
@@ -81,7 +81,7 @@ public class Player extends Sprite{
             attacking = true;
             
             if (weapon instanceof RangedWeapon) {
-                ProjectileManager.addProjectile(new Projectile(weapon));
+                ProjectileManager.addProjectile(new Projectile((RangedWeapon)weapon));
                 canAttack = false;
                 return;
             }
@@ -150,6 +150,7 @@ public class Player extends Sprite{
         
     }
     
+    // Cehcks to see if any enemies
     public void checkEnemies(Map map) {
         for (Enemy enemy : EnemyManager.getEnemies()){
             if (this.intersects(enemy.getBounds())) {
@@ -175,8 +176,7 @@ public class Player extends Sprite{
         return moveY;
     }
 
-    
-
+    //Returns the player hitbox as a rectangle
     public Rectangle getHitbox() {
         return new Rectangle(overallX, overallY, width, height);
     }

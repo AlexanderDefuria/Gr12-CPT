@@ -80,9 +80,10 @@ public class Main extends JFrame implements ActionListener{
         
         
         // --------- Start of Kamren's Code --------------
+        // There to be used, but not currently in use
         try {
              // Open an audio input stream.       	  
-             File soundFile = new File("H:\\Documents\\Downloads\\Sound.wav"); //you could also get the sound file with an URL
+             File soundFile = new File("C://Users//alexm//Downloads//gameTrack.wav"); //you could also get the sound file with an URL
              AudioInputStream audioIn = AudioSystem.getAudioInputStream(soundFile);        	  
              // Get a sound clip resource.
              Clip clip = AudioSystem.getClip();

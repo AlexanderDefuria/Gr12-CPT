@@ -27,12 +27,13 @@ public class Player extends Sprite{
     
     //loads basic sprites, weapon, and sets stats, initializes attackRange rectangle and the movement system.
     public void init() {
-        this.weapon = new RangedWeapon.Orb();
+        
+        loadWeapon(new RangedWeapon.Orb());
         
         loadImage("src/images/enemy.png");
         loadSprites("src/images/clotharmor.png");
             
-        if (weapon instanceof MeleeWeapon) loadWeaponSprites(weapon);
+        
                 
         moveX = 0;
         moveY = 0;
@@ -46,6 +47,11 @@ public class Player extends Sprite{
                 
         for (int i = 0; i != canMove.length; i++) canMove[i] = true;
 
+    }
+    
+    public void loadWeapon(Weapon weapon) {
+        this.weapon = weapon;
+        if (weapon instanceof MeleeWeapon) loadWeaponSprites(weapon);
     }
 
     
@@ -68,7 +74,11 @@ public class Player extends Sprite{
     
     
     // Basic momvement of the player, WSAD and attack control
-    public void UserInput() {        
+    public void UserInput() {     
+        
+        if (UserInput.E_KEY) loadWeapon(new MeleeWeapon.Sword());
+        else if (UserInput.Q_KEY) loadWeapon(new RangedWeapon.Orb());
+        
 
         if(UserInput.A_KEY && canMove[0]) moveX = speed;        // Left
         else if(UserInput.D_KEY && canMove[1]) moveX = -speed;  // Right

@@ -24,6 +24,8 @@ public class Player extends Sprite{
     }
     
 
+    
+    //loads basic sprites, weapon, and sets stats, initializes attackRange rectangle and the movement system.
     public void init() {
         this.weapon = new RangedWeapon.Orb();
         
@@ -47,17 +49,14 @@ public class Player extends Sprite{
     }
 
     
+    // Groups the different checks that are prformed on the player and updates the movements of the player
     public void updatePlayer(Map map) {
         
-        if (checking) {
-            checkTerrain(map);
-            checkEnemies(map);
-            UserInput();
-        } else {
-                
-            
-        }
         
+        checkTerrain(map);
+        checkEnemies(map);
+        UserInput();
+           
         
         animate();
         
@@ -66,17 +65,21 @@ public class Player extends Sprite{
 
     }
     
-    public void UserInput() {
-        
+    
+    
+    // Basic momvement of the player, WSAD and attack control
+    public void UserInput() {        
 
-        if(UserInput.A_KEY && canMove[0]) moveX = speed;
-        else if(UserInput.D_KEY && canMove[1]) moveX = -speed;
-        else moveX = 0;
+        if(UserInput.A_KEY && canMove[0]) moveX = speed;        // Left
+        else if(UserInput.D_KEY && canMove[1]) moveX = -speed;  // Right
+        else moveX = 0; 
 
-        if(UserInput.W_KEY && canMove[2]) moveY = speed;
-        else if(UserInput.S_KEY && canMove[3]) moveY = -speed;
+        if(UserInput.W_KEY && canMove[2]) moveY = speed;        // Up
+        else if(UserInput.S_KEY && canMove[3]) moveY = -speed;  // Down
         else moveY = 0;
         
+        
+        // When attacking check the direction and create an attack range rectangle and possibly a new projectile
         if(UserInput.CLICKED && canAttack) {
             attacking = true;
             
@@ -86,6 +89,7 @@ public class Player extends Sprite{
                 return;
             }
 
+            // Creates atackBox based on direction
             switch(direction) {
                 case 0:
                     attackRange = new Rectangle(overallX - 32, overallY - (32 / 2), 32, 64);
@@ -109,38 +113,43 @@ public class Player extends Sprite{
     
     
     
+    // Basic terrain collision detection 
     public void checkTerrain(Map map) {
-        canMove[0] = true;
-        canMove[1] = true;
-        canMove[2] = true;
-        canMove[3] = true;
+        
+        // Resets where the player can move to be updated again
+        canMove[0] = true; // Left
+        canMove[1] = true; // Right
+        canMove[2] = true; // Up
+        canMove[3] = true; // Down
         
         
+        // Check if each rectangle will collide with the player from a set direction
         for (Rectangle rect : map.getSolidTerrain()){
             int Xorigin = (int)rect.getX();
             int Yorigin = (int)rect.getY();
             
             
-            
+            // Left
             rect.setLocation(Xorigin + speed, Yorigin);
             if(rect.intersects(this))
                 canMove[0] = false;
             
-            
+            // Right
             rect.setLocation(Xorigin - speed, Yorigin);
             if(rect.intersects(this)) 
                 canMove[1] = false;
             
-            
+            // Up
             rect.setLocation(Xorigin, Yorigin  + speed);
             if(rect.intersects(this)) 
                 canMove[2] = false;
             
-            
+            // Down
             rect.setLocation(Xorigin, Yorigin - speed);
             if(rect.intersects(this)) 
                 canMove[3] = false;
             
+            // Resets rectangle location
             rect.setLocation(Xorigin, Yorigin);
             
             

@@ -1,0 +1,9 @@
+<component name="ArtifactManager">
+  <artifact type="jar" build-on-make="true" name="Grade12CPT:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/Grade12CPT_jar</output-path>
+    <root id="archive" name="Grade12CPT.jar">
+      <element id="module-output" name="MusicTest3" />
+      <element id="module-output" name="Grade12CPT" />
+    </root>
+  </artifact>
+</component>

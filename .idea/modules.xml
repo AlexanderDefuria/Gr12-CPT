@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/.idea/Gr12-CPT.iml" filepath="$PROJECT_DIR$/.idea/Gr12-CPT.iml" />
+      <module fileurl="file://$PROJECT_DIR$/Grade12CPT/Grade12CPT.iml" filepath="$PROJECT_DIR$/Grade12CPT/Grade12CPT.iml" />
+      <module fileurl="file://$PROJECT_DIR$/Java Sound Test/Java Sound Test.iml" filepath="$PROJECT_DIR$/Java Sound Test/Java Sound Test.iml" />
+      <module fileurl="file://$PROJECT_DIR$/Grade12CPT/MusicTest3/MusicTest3.iml" filepath="$PROJECT_DIR$/Grade12CPT/MusicTest3/MusicTest3.iml" />
+    </modules>
+  </component>
+</project>
